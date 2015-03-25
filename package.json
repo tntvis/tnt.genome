@@ -1,0 +1,54 @@
+{
+  "name": "tnt.genome",
+  "version": "0.0.0",
+  "description": "Minimal genome browser based on TnT board",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "gulp test",
+    "prepublish": "gulp test && gulp build-browser"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emepyc/tnt.genome"
+  },
+  "keywords": [
+    "tnt",
+    "javascript",
+    "browser",
+    "genome"
+  ],
+  "author": "Miguel Pignatelli",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/emepyc/tnt.genome/issues"
+  },
+  "homepage": "https://github.com/emepyc/tnt.genome",
+  "devDependencies": {
+    "browserify": "~4.2.0",
+    "chai": "^1.9.1",
+    "gulp": "^3.8.8",
+    "gulp-browserify": "^0.5.0",
+    "gulp-gzip": "0.0.8",
+    "gulp-jshint": "^1.8.4",
+    "gulp-mocha": "^1.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-rimraf": "^0.1.0",
+    "gulp-sass": "^1.2.4",
+    "gulp-uglify": "^1.0.1",
+    "gulp-watch": "^1.0.2",
+    "mkdirp": "^0.5.0",
+    "mocha": "~1.20.1",
+    "npm-css": "^0.2.3",
+    "uglify-js": "~2.4.15",
+    "watchify": "^1.0.2"
+  },
+  "dependencies": {
+    "tnt.api": "0.0.0",
+    "tnt.board": "file:../tnt.board",
+    "tnt.tooltip": "0.0.6",
+    "tnt.utils": "file:../tnt.utils"
+  }
+}
