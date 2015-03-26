@@ -1,7 +1,7 @@
 {
   "name": "tnt.genome",
   "version": "0.0.0",
-  "description": "Minimal genome browser based on TnT board",
+  "description": "Minimal genome browser based on TnT board and Ensembl data",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -47,10 +47,10 @@
   },
   "dependencies": {
     "tnt.api": "0.0.0",
-    "tnt.board": "file:../tnt.board",
-    "tnt.ensembl": "file:../tnt.ensembl",
-    "tnt.legend": "file:../tnt.legend",
+    "tnt.board": "0.0.0",
+    "tnt.ensembl": "0.0.0",
+    "tnt.legend": "0.0.0",
     "tnt.tooltip": "0.0.6",
-    "tnt.utils": "file:../tnt.utils"
+    "tnt.utils": "0.0.0"
   }
 }

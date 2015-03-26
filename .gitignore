@@ -1,5 +1,3 @@
 node_modules
 .sass-cache
-.coveralls.yml
 *~
-coverage/lcov.info
