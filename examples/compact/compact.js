@@ -12,9 +12,7 @@ var tnt_theme_track_compact = function() {
     var show_links   = true;
     var title   = "e!Peek";
 
-    var path = tnt.utils.script_path("compact.js");
-
-    var qr_tooltip = tooltip.plain();
+    var qr_tooltip = tnt.tooltip.plain();
 
     // div_ids to display different elements
     // They have to be set dynamically because the IDs contain the div_id of the main element containing the plug-in
@@ -72,7 +70,7 @@ var tnt_theme_track_compact = function() {
 	    .on("click", function(){toggle(d3.select("#tnt_" + div_id + "_ortho_option"))});
 	orthologuesLabel
 	    .append("img")
-	    .attr("src", path + "./pics/orthologues.png")
+	    .attr("src", "./pics/orthologues.png")
 	    .attr("title", "Orthologues")
 	    .attr("width", "55px")
 	orthologuesLabel
@@ -91,7 +89,7 @@ var tnt_theme_track_compact = function() {
 	    .on("click", function(){toggle(d3.select("#tnt_" + div_id + "_para_option"))});
 	paraloguesLabel
 	    .append("img")
-	    .attr("src", path + "./pics/paralogues.png")
+	    .attr("src", "./pics/paralogues.png")
 	    .attr("title", "Paralogues")
 	    .attr("width", "55px")
 	paraloguesLabel
@@ -110,7 +108,7 @@ var tnt_theme_track_compact = function() {
 	    .on("click", function(){toggle(d3.select("#tnt_" + div_id + "_search_option"))});
 	searchLabel
 	    .append("img")
-	    .attr("src", path + "./pics/lookup.png")
+	    .attr("src", "./pics/lookup.png")
 	    .attr("title", "Lookup gene")
 	    .attr("width", "30px");
 
@@ -120,7 +118,7 @@ var tnt_theme_track_compact = function() {
 	    .on("click", function(){ gBrowser.start(orig) });
 	origLabel
 	    .append("img")
-	    .attr("src", path + "./pics/orig.png")
+	    .attr("src", "./pics/orig.png")
 	    .attr("title", "Return to origin")
 	    .attr("width", "25px");
 
@@ -203,7 +201,6 @@ var tnt_theme_track_compact = function() {
 	    }
 	}
 
-	console.log(tnt.board.track.data);
 	var gene_track = tnt.board.track()
 	    .height(200)
 	    .background_color(gBrowserTheme.background_color())
@@ -244,7 +241,7 @@ var tnt_theme_track_compact = function() {
 	.on("click", function() {console.log("here"); var link = buildLink("desktop"); window.open(link, "_blank")});
 	tntweb
 	    .append("img")
-	    .attr("src", path + "./pics/open_in_new_window.png")
+	    .attr("src", "./pics/open_in_new_window.png")
 	    .attr("width", "40px");
 
 	// ensembl
@@ -255,7 +252,7 @@ var tnt_theme_track_compact = function() {
 	    .on("click", function() {var link = buildEnsemblLink(); window.open(link, "_blank")});
 	ensemblLoc
 	    .append("img")
-	    .attr("src", path + "./pics/e_open_in_new_window.png")
+	    .attr("src", "./pics/e_open_in_new_window.png")
 	    .attr("width", "40px");
 
 	// QRtag label
@@ -267,7 +264,7 @@ var tnt_theme_track_compact = function() {
 
 	qrtagLabel
 	    .append("img")
-	    .attr("src", path + "./pics/qr.png")
+	    .attr("src", "./pics/qr.png")
 	    .attr("title", "QR code")
 	    .attr("width", "30px");
 

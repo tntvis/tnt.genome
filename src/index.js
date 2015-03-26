@@ -5,3 +5,4 @@ board.track.feature.gene = require("./feature");
 board.track.data.gene = require("./data");
 
 module.exports = exports = board;
+

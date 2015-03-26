@@ -48,6 +48,8 @@
   "dependencies": {
     "tnt.api": "0.0.0",
     "tnt.board": "file:../tnt.board",
+    "tnt.ensembl": "file:../tnt.ensembl",
+    "tnt.legend": "file:../tnt.legend",
     "tnt.tooltip": "0.0.6",
     "tnt.utils": "file:../tnt.utils"
   }
