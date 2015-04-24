@@ -1,6 +1,6 @@
 {
   "name": "tnt.genome",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Minimal genome browser based on TnT board and Ensembl data",
   "main": "index.js",
   "directories": {
@@ -25,19 +25,19 @@
   "bugs": {
     "url": "https://github.com/emepyc/tnt.genome/issues"
   },
-    "sniper" : {
-	"js": [
-	    "http://d3js.org/d3.v3.min.js",
-	    "./build/tnt.genome.js"
-	],
-	"snippets": [
-	    "snippets"
-	],
-	"css": [
-	    "./build/index.css"
-	],
-	"first": "simple"
-    },
+  "sniper": {
+    "js": [
+      "http://d3js.org/d3.v3.min.js",
+      "./build/tnt.genome.js"
+    ],
+    "snippets": [
+      "snippets"
+    ],
+    "css": [
+      "./build/index.css"
+    ],
+    "first": "simple"
+  },
   "homepage": "https://github.com/emepyc/tnt.genome",
   "devDependencies": {
     "browserify": "~4.2.0",
