@@ -25,6 +25,19 @@
   "bugs": {
     "url": "https://github.com/emepyc/tnt.genome/issues"
   },
+    "sniper" : {
+	"js": [
+	    "http://d3js.org/d3.v3.min.js",
+	    "./build/tnt.genome.js"
+	],
+	"snippets": [
+	    "snippets"
+	],
+	"css": [
+	    "./build/index.css"
+	],
+	"first": "simple"
+    },
   "homepage": "https://github.com/emepyc/tnt.genome",
   "devDependencies": {
     "browserify": "~4.2.0",
@@ -48,9 +61,9 @@
   "dependencies": {
     "tnt.api": "0.0.0",
     "tnt.board": "0.0.0",
-    "tnt.ensembl": "0.0.0",
+    "tnt.ensembl": "^0.0.1",
     "tnt.legend": "0.0.0",
-    "tnt.tooltip": "0.0.6",
+    "tnt.tooltip": "^0.0.6",
     "tnt.utils": "0.0.0"
   }
 }

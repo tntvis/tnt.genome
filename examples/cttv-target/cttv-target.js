@@ -110,6 +110,31 @@ var cttv_genome_browser = function() {
 	    .background_color(gBrowserTheme.background_color())
 	    .display(tnt.board.track.feature.gene()
 		     .foreground_color(gBrowserTheme.foreground_color())
+		     .on_click (function (gene) {
+			 console.log("clicked gene ");
+			 console.log(gene.id);
+			 var rest = tnt_ensembl();
+			 var url = rest.url.gene({
+			     id: gene.id,
+			     expand: 1
+			 });
+			 console.log("URL: " + url);
+
+			 rest.call({ url : url
+			     .then(function (resp) {
+				 console.log("RESP IS:");
+				 console.log(resp);
+			     });
+			 
+			 d3.selectAll("#tnt_transcriptView")
+			     .remove();
+			 var transcript_svg = d3.select(div)
+			     .append("svg")
+			     .attr("id", "tnt_transcriptView");
+
+			 var transcriptBoard = tnt.board().from(0).to(1).width(950).allow_drag(false);
+			 console.log(transcriptBoard);
+		     })
 		    )
 	    .data(tnt.board.track.data.gene());
 
