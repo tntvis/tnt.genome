@@ -120,12 +120,12 @@ var cttv_genome_browser = function() {
 			 });
 			 console.log("URL: " + url);
 
-			 rest.call({ url : url
+			 rest.call(url)
 			     .then(function (resp) {
 				 console.log("RESP IS:");
 				 console.log(resp);
 			     });
-			 
+	
 			 d3.selectAll("#tnt_transcriptView")
 			     .remove();
 			 var transcript_svg = d3.select(div)
@@ -169,6 +169,7 @@ var cttv_genome_browser = function() {
 	    .attr("src", path + "./pics/e_open_in_new_window.png")
 	    .attr("width", "40px");
 
+	console.log("start");
 	gB.start();
 
     };

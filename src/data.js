@@ -18,20 +18,19 @@ var data_gene = function () {
 	    // Object has loc and a plug-in defined callback
 	    var loc = obj.loc;
 	    var plugin_cbak = obj.on_success;
-	    eRest.call({
-		url: eRest.url[update_track.endpoint()](loc),
-		success: function (resp) {
-		    data_parent.elements(resp);
+	    var url = eRest.url[update_track.endpoint()](loc);
+	    eRest.call(url)
+		.then (function (resp) {
+		    data_parent.elements(resp.body);
 
 		    // User defined
 		    for (var i=0; i<success.length; i++) {
-			success[i](resp);
+			success[i](resp.body);
 		    }
 
 		    // plug-in defined
 		    plugin_cbak();
-		}
-	    });
+		});
 	};
 	apijs (update_track)
 	    .getset ('endpoint');

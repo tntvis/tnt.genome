@@ -108,27 +108,29 @@ tnt_board_genome = function() {
 	    genome_browser.zoom_in (limits.zoom_in);
 	    genome_browser.zoom_out (limits.zoom_out);
 
-	    eRest.call({url : eRest.url.chr_info ({species : where.species,
-						   chr     : where.chr
-						  }),
-			success : function (resp) {
-			    done(resp.length);
-			}
-		       });
+	    var url = eRest.url.chr_info ({
+		species : where.species,
+		chr     : where.chr
+	    });
+
+	    eRest.call (url)
+		.then( function (resp) {
+		    done(resp.body.length);
+		});
 	});
 	genome_browser._start();
     };
 
-     var homologues = function (ensGene, callback)  {
-	eRest.call({url : eRest.url.homologues ({id : ensGene}),
-		    success : function(resp) {
-			var homologues = resp.data[0].homologies;
-			if (callback !== undefined) {
-			    var homologues_obj = split_homologues(homologues)
-			    callback(homologues_obj);
-			}
-		    }
-		   });
+    var homologues = function (ensGene, callback)  {
+	var url = eRest.url.homologues ({id : ensGene})
+	eRest.call(url)
+	    .then (function(resp) {
+		var homologues = resp.body.data[0].homologies;
+		if (callback !== undefined) {
+		    var homologues_obj = split_homologues(homologues)
+		    callback(homologues_obj);
+		}
+	    });
     }
 
     var isEnsemblGene = function(term) {
@@ -143,45 +145,46 @@ tnt_board_genome = function() {
 	if (isEnsemblGene(where.gene)) {
 	    get_ensGene(where.gene)
 	} else {
-	    eRest.call({url : eRest.url.xref ({ species : where.species,
-						name    : where.gene 
-					      }
-					     ),
-			success : function(resp) {
-			    resp = resp.filter(function(d) {
-				return !d.id.indexOf("ENS");
-			    });
-			    if (resp[0] !== undefined) {
-				conf.xref_search(resp);
-				get_ensGene(resp[0].id)
-			    } else {
-				genome_browser.start();
-			    }
-			}
-		       }
-		      );
+	    var url = eRest.url.xref ({
+		species : where.species,
+		name    : where.gene 
+	    });
+	    eRest.call(url)
+		.then (function(resp) {
+		    var data = resp.body;
+		    data = data.filter(function(d) {
+			return !d.id.indexOf("ENS");
+		    });
+		    if (data[0] !== undefined) {
+			conf.xref_search(resp);
+			get_ensGene(data[0].id)
+		    } else {
+			genome_browser.start();
+		    }
+		});
 	}
     };
 
     var get_ensGene = function (id) {
-	eRest.call({url     : eRest.url.gene ({id : id}),
-		    success : function(resp) {
-			conf.ensgene_search(resp);
+	var url = eRest.url.gene ({id : id})
+	eRest.call(url)
+	    .then (function(resp) {
+		var data = resp.body;
+		conf.ensgene_search(data);
+		var extra = ~~((data.end - data.start) * (conf.context/100));
+		console.log(data);
+		genome_browser
+		    .species(data.species)
+		    .chr(data.seq_region_name)
+		    .from(data.start - extra)
+		    .to(data.end + extra);
 
-			var extra = ~~((resp.end - resp.start) * (conf.context/100));
-			genome_browser
-			    .species(resp.species)
-			    .chr(resp.seq_region_name)
-			    .from(resp.start - extra)
-			    .to(resp.end + extra);
-
-			genome_browser.start( { species : resp.species,
-					  chr     : resp.seq_region_name,
-					  from    : resp.start - extra,
-					  to      : resp.end + extra
-					} );
-		    }
-		   });
+		genome_browser.start( { species : data.species,
+					chr     : data.seq_region_name,
+					from    : data.start - extra,
+					to      : data.end + extra
+				      } );
+	    });
     };
 
     var split_homologues = function (homologues) {
