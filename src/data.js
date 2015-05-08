@@ -27,8 +27,6 @@ board.track.data.retriever.ensembl = function () {
 			}
 		    }
 
-		    console.log("PASSING ELEMENTS:");
-		    console.log(resp.body);
 		    data_parent.elements(resp.body);
 
 		    // plug-in defined
@@ -69,7 +67,6 @@ var data_sequence = function () {
 
     var updater = board.track.data.retriever.ensembl()
 	.ignore (function (loc) {
-	    console.log(loc.to - loc.from);
 	    return (loc.to - loc.from) > limit;
 	})
 	.endpoint("sequence")
