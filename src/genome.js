@@ -28,7 +28,6 @@ tnt_board_genome = function() {
 	zoom_in  : 200
     };
 
-
     // We "inherit" from board
     var genome_browser = tnt_board();
 
@@ -104,7 +103,6 @@ tnt_board_genome = function() {
 
 	genome_browser.right (function (done) {
 	    // Get the chromosome length and use it as the 'right' limit
-
 	    genome_browser.zoom_in (limits.zoom_in);
 	    genome_browser.zoom_out (limits.zoom_out);
 
@@ -199,7 +197,14 @@ tnt_board_genome = function() {
     };
 
     var api = apijs(genome_browser)
-	.getset (conf);
+	.getset (conf)
+	.method("zoom_in", function (v) {
+	    if (!arguments.length) {
+		return limits.zoom_in;
+	    }
+	    limits.zoom_in = v;
+	    return this;
+	});
 
     api.method ({
 	start      : start,

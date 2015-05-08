@@ -2,6 +2,54 @@ var apijs = require ("tnt.api");
 var layout = require("./layout.js");
 var board = require("tnt.board");
 
+tnt_feature_sequence = function () {
+
+    var config = {
+	fontsize : 10,
+	sequence : function (d) {
+	    return d.sequence;
+	}
+    };
+
+        // 'Inherit' from tnt.track.feature
+    var feature = board.track.feature()
+	.index (function (d) {
+	    return d.pos;
+	});
+    
+    var api = apijs (feature)
+	.getset (config);
+
+
+    feature.create (function (new_nts, xScale) {
+	var track = this;
+
+	new_nts
+            .append("text")
+            .attr("fill", track.background_color())
+            .style('font-size', config.fontsize + "px")
+            .attr("x", function (d) {
+		return xScale (d.pos);
+	    })
+            .attr("y", function (d) {
+		return ~~(track.height() / 2) + 5;
+	    })
+            .text(config.sequence)
+            .transition()
+            .duration(500)
+            .attr('fill', feature.foreground_color());
+    });
+
+    feature.mover (function (nts, xScale) {
+	nts.select ("text")
+            .attr("x", function (d) {
+		return xScale(d.pos);
+	    });
+    });
+
+    return feature;
+};
+
 tnt_feature_gene = function () {
 
     // 'Inherit' from tnt.track.feature
@@ -150,4 +198,8 @@ tnt_feature_gene = function () {
     return feature;
 };
 
-module.exports = exports = tnt_feature_gene;
+var genome_features = {
+    gene : tnt_feature_gene,
+    sequence : tnt_feature_sequence
+};
+module.exports = exports = genome_features;

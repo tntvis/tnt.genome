@@ -201,13 +201,14 @@ var tnt_theme_track_compact = function() {
 	    }
 	}
 
+	console.log(tnt.board.track.feature.genome);
 	var gene_track = tnt.board.track()
 	    .height(200)
 	    .background_color(gBrowserTheme.background_color())
-	    .display(tnt.board.track.feature.gene()
+	    .display(tnt.board.track.feature.genome.gene()
 		     .foreground_color(gBrowserTheme.foreground_color())
 		    )
-	    .data(tnt.board.track.data.gene());
+	    .data(tnt.board.track.data.genome.gene());
 
 	gene_track
 	    .display()
