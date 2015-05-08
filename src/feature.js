@@ -34,6 +34,7 @@ tnt_feature_sequence = function () {
             .attr("y", function (d) {
 		return ~~(track.height() / 2) + 5;
 	    })
+	    .style("font-family", '"Lucida Console", Monaco, monospace')
             .text(config.sequence)
             .transition()
             .duration(500)
