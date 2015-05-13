@@ -1,0 +1,9 @@
+0.0.4
+	- Added sequence data
+	- Added sequence feature (from tnt.board)
+	- Added zoom_in method to change the zoom level available
+0.0.5
+	- Added monospace font to sequence feature
+0.0.6
+	- Updated tnt.board version dependency (now 0.0.7)
+

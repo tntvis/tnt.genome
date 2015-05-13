@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "tnt.api": "0.0.0",
-    "tnt.board": "^0.0.7",
+    "tnt.board": "^0.0.8",
     "tnt.ensembl": "^0.0.2",
     "tnt.legend": "^0.0.0",
     "tnt.tooltip": "^0.0.6",
