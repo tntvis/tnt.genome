@@ -1,14 +1,14 @@
 {
   "name": "tnt.genome",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Minimal genome browser based on TnT board and Ensembl data",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-   "test": "gulp test",
-   "install" : "npm install && gulp build-browser"
+    "test": "gulp test",
+    "install": "npm install && gulp build-browser"
   },
   "repository": {
     "type": "git",
