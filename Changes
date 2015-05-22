@@ -6,6 +6,6 @@
 	- Added monospace font to sequence feature
 0.0.6
 	- Updated tnt.board version dependency (now 0.0.7)
-0.0.7
+0.0.8
 	- Added transcript data
 	- Added transcript feature
