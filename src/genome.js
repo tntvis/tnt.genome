@@ -11,7 +11,7 @@ tnt_board_genome = function() {
     var ens_re = /^ENS\w+\d+$/;
     var eRest = tnt_rest();
     var chr_length;
-    
+
     // Vars exposed in the API
     var conf = {
 	gene           : undefined,
@@ -39,7 +39,7 @@ tnt_board_genome = function() {
 	.display(tnt_board.track.feature.location());
 
     var axis_track = tnt_board.track()
-	.height(20)
+	.height(0)
 	.background_color("white")
 	.data(tnt_board.track.data.empty())
 	.display(tnt_board.track.feature.axis());
@@ -145,7 +145,7 @@ tnt_board_genome = function() {
 	} else {
 	    var url = eRest.url.xref ({
 		species : where.species,
-		name    : where.gene 
+		name    : where.gene
 	    });
 	    eRest.call(url)
 		.then (function(resp) {
@@ -170,7 +170,6 @@ tnt_board_genome = function() {
 		var data = resp.body;
 		conf.ensgene_search(data);
 		var extra = ~~((data.end - data.start) * (conf.context/100));
-		console.log(data);
 		genome_browser
 		    .species(data.species)
 		    .chr(data.seq_region_name)

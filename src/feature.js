@@ -2,7 +2,142 @@ var apijs = require ("tnt.api");
 var layout = require("./layout.js");
 var board = require("tnt.board");
 
-tnt_feature_sequence = function () {
+var tnt_feature_transcript = function () {
+    var feature = board.track.feature()
+        .layout (board.track.layout.feature())
+        .index (function (d) {
+            return d.id;
+        });
+
+    feature.create (function (new_elems, xScale) {
+        var track = this;
+        var gs = new_elems
+            .append("g")
+            .attr("transform", function (d) {
+                return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
+            })
+        // gene outline
+        gs
+            .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+            .attr("height", feature.layout().gene_slot().gene_height)
+            .attr("fill", "none")
+            .attr("stroke", track.background_color())
+            .transition()
+            .duration(500)
+            .attr("stroke", feature.foreground_color())
+
+        // exons
+        // pass the "slot" to the exons and introns
+        new_elems.each (function (d) {
+            if (d.exons) {
+                for (var i=0; i<d.exons.length; i++) {
+                    d.exons[i].slot = d.slot;
+                }
+            }
+        });
+
+        var exons = gs.selectAll(".exons")
+            .data(function (d) {
+                return d.exons || [];
+            }, function (d) {
+                return d.start;
+            });
+
+        exons
+            .enter()
+            .append("rect")
+            .attr("class", "tnt_exons")
+            .attr("x", function (d) {
+                return (xScale(d.start + d.offset) - xScale(d.start));
+            })
+            .attr("y", 0)
+            .attr("width", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+            .attr("height", feature.layout().gene_slot().gene_height)
+            .attr("fill", track.background_color())
+            .attr("stroke", track.background_color())
+            .transition()
+            .duration(500)
+            .attr("stroke", feature.foreground_color())
+            .attr("fill", function (d) {
+                if (d.coding) {
+                     return feature.foreground_color()(d);
+                }
+                if (d.coding === false) {
+                    return "pink";
+                }
+                return feature.foreground_color()(d);
+            });
+
+        // labels
+        gs
+            .append("text")
+            .attr("class", "tnt_name")
+            .attr("x", 0)
+            .attr("y", 25)
+            .attr("fill", track.background_color())
+            .text(function (d) {
+                if (feature.layout().gene_slot().show_label) {
+                    return d.display_label;
+                } else {
+                    return "";
+                }
+            })
+            .style("font-weight", "normal")
+            .transition()
+            .duration(500)
+            .attr("fill", feature.foreground_color());
+
+    })
+
+    feature.updater (function (transcripts, xScale) {
+        var track = this;
+        var gs = transcripts.select("g")
+            .transition()
+            .duration(500)
+            .attr("transform", function (d) {
+                return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
+            });
+        gs
+            .selectAll ("rect")
+            .attr("height", feature.layout().gene_slot().gene_height)
+        gs
+            .select ("text")
+            .text (function (d) {
+                if (feature.layout().gene_slot().show_label) {
+                    return d.display_label;
+                }
+                return "";
+            });
+    });
+
+    feature.mover (function (transcripts, xScale) {
+        var gs = transcripts.select("g")
+            .attr("transform", function (d) {
+                return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
+            });
+        gs.selectAll("rect")
+            .attr("width", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+        gs.selectAll(".tnt_exons")
+            .attr("x", function (d) {
+                return (xScale(d.start + d.offset) - xScale(d.start));
+            });
+
+    });
+
+    return feature;
+};
+
+
+var tnt_feature_sequence = function () {
 
     var config = {
 	fontsize : 10,
@@ -16,7 +151,7 @@ tnt_feature_sequence = function () {
 	.index (function (d) {
 	    return d.pos;
 	});
-    
+
     var api = apijs (feature)
 	.getset (config);
 
@@ -51,7 +186,7 @@ tnt_feature_sequence = function () {
     return feature;
 };
 
-tnt_feature_gene = function () {
+var tnt_feature_gene = function () {
 
     // 'Inherit' from tnt.track.feature
     var feature = board.track.feature()
@@ -60,46 +195,8 @@ tnt_feature_gene = function () {
 	    return d.id;
 	});
 
-    // var tooltip = function () {
-    //     var tooltip = board.tooltip.table();
-    //     var gene_tooltip = function(gene) {
-    //         var obj = {};
-    //         obj.header = {
-    //             label : "HGNC Symbol",
-    //             value : gene.external_name
-    //         };
-    //         obj.rows = [];
-    //         obj.rows.push( {
-    //             label : "Name",
-    //             value : "<a href=''>" + gene.ID  + "</a>"
-    //         });
-    //         obj.rows.push( {
-    //             label : "Gene Type",
-    //             value : gene.biotype
-    //         });
-    //         obj.rows.push( {
-    //             label : "Location",
-    //             value : "<a href=''>" + gene.seq_region_name + ":" + gene.start + "-" + gene.end  + "</a>"
-    //         });
-    //         obj.rows.push( {
-    //             label : "Strand",
-    //             value : (gene.strand === 1 ? "Forward" : "Reverse")
-    //         });
-    //         obj.rows.push( {
-    //             label : "Description",
-    //             value : gene.description
-    //         });
-
-    //         tooltip.call(this, obj);
-    //     };
-
-    //     return gene_tooltip;
-    // };
-
-
     feature.create(function (new_elems, xScale) {
 	var track = this;
-
 	new_elems
 	    .append("rect")
 	    .attr("x", function (d) {
@@ -119,7 +216,7 @@ tnt_feature_gene = function () {
 		if (d.color === undefined) {
 		    return feature.foreground_color();
 		} else {
-		    return d.color
+		    return d.color;
 		}
 	    });
 
@@ -135,17 +232,17 @@ tnt_feature_gene = function () {
 	    .attr("fill", track.background_color())
 	    .text(function (d) {
 		if (feature.layout().gene_slot().show_label) {
-		    return d.display_label
+		    return d.display_label;
 		} else {
-		    return ""
+		    return "";
 		}
 	    })
 	    .style("font-weight", "normal")
 	    .transition()
 	    .duration(500)
 	    .attr("fill", function() {
-		return feature.foreground_color();
-	    });	    
+            return feature.foreground_color();
+	    });
     });
 
     feature.updater(function (genes) {
@@ -186,21 +283,16 @@ tnt_feature_gene = function () {
 
 	genes.select("text")
 	    .attr("x", function (d) {
-		return xScale(d.start);
-	    })
+            return xScale(d.start);
+        });
     });
-
-    // apijs (feature)
-    // 	.method ({
-    // 	    tooltip : tooltip
-    // 	});
-
 
     return feature;
 };
 
 var genome_features = {
     gene : tnt_feature_gene,
-    sequence : tnt_feature_sequence
+    sequence : tnt_feature_sequence,
+    transcript : tnt_feature_transcript
 };
 module.exports = exports = genome_features;

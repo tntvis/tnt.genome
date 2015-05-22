@@ -201,11 +201,10 @@ var tnt_theme_track_compact = function() {
 	    }
 	}
 
-	console.log(tnt.board.track.feature.genome);
 	var gene_track = tnt.board.track()
 	    .height(200)
 	    .background_color(gBrowserTheme.background_color())
-	    .display(tnt.board.track.feature.genome.gene()
+	    .display(tnt.board.track.feature.genome.transcript()
 		     .foreground_color(gBrowserTheme.foreground_color())
 		    )
 	    .data(tnt.board.track.data.genome.gene());
@@ -307,7 +306,7 @@ var tnt_theme_track_compact = function() {
 
 	if (!curr_on_display) {
 	    sel.classed("tnt_TabBlock_active", true);
-	} 
+	}
 
 	return;
     };
@@ -331,7 +330,7 @@ var tnt_theme_track_compact = function() {
 	    .append("select")
 	    .attr("class", "tnt_top_option")
 	    .attr("id", "tnt_" + div_id + "_ensGene_select");
-	
+
 	ensGene_sel.selectAll("option")
 	    .data(gene_array)
 	    .enter()
@@ -366,7 +365,7 @@ var tnt_theme_track_compact = function() {
 	    .attr("class", "tnt_orth_option")
 	    .attr("value", function(d) {return d.id})
 	    .text(function(d) {return d.id + " (" + d.species + " - " + d.type + ")"});
-	
+
 	// We fill the number of orthologues in the tab label
 	d3.select("#" + n_orth_div_id)
 	    .text(orthologues === undefined ? 0 : orthologues.length);
@@ -436,7 +435,7 @@ var tnt_theme_track_compact = function() {
     var homologues_cbak = function(homologues) {
 
 	// var homologues = gBrowser.split_homologues(homologues);
-	
+
 	// The orthologues select + number of orthologues
 	var orthologues_sel = orthologues_select(homologues.orthologues);
 	orthologues_sel.on("change", function() {
@@ -589,4 +588,3 @@ var tnt_theme_track_compact = function() {
 
     return gBrowserTheme;
 };
-

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>TnT Genome Theme -- sequence track</title>
+
+<div id="body">
+
+  <!-- D3 -->
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <!-- TnT -->
+  <link rel="stylesheet" href="../../build/index.css" type="text/css" />
+  <script src="../../build/tnt.genome.js"></script>
+  <script src="sequence.js"></script>
+
+  <h1>TnT based genome browser with sequence track</h1>
+  <div id="genomeBrowser"></div>
+  <script>
+    var gB = tnt.board.genome().species("human").gene("brca2").width(950);
+    var gBTheme = sequence_theme();
+    var container = document.getElementById("genomeBrowser");
+    gBTheme (gB, container);
+   </script>
+</div>
+

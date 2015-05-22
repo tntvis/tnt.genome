@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>TnT Genome Theme -- transcript track</title>
+
+<div id="body">
+
+  <!-- D3 -->
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <!-- TnT -->
+  <link rel="stylesheet" href="../../build/index.css" type="text/css" />
+  <script src="../../build/tnt.genome.js"></script>
+  <script src="transcripts.js"></script>
+
+  <h1>TnT based genome browser showing transcripts</h1>
+  <div id="genomeBrowser"></div>
+  <script>
+    //var gB = tnt.board.genome().species("human").gene("ENSG00000090263").width(950);
+    //var gB = tnt.board.genome().species("human").chr(7).from(141073448).to(141237673);
+    var gB = tnt.board.genome().species("human").gene("BRAF");
+    var gBTheme = transcript_theme();
+    var container = document.getElementById("genomeBrowser");
+    gBTheme (gB, container);
+   </script>
+</div>
