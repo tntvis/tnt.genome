@@ -126,13 +126,18 @@ var data_transcript = function () {
     var updater = board.track.data.retriever.ensembl()
     .endpoint ("region")
     .extra({
-        "features" : ["transcript", "exon", "cds"]
+        "features" : ["gene", "transcript", "exon", "cds"]
     })
     .success (function (elems) {
         var transcripts = {};
+        console.log (elems);
+        var genes = {};
         for (var i=0; i<elems.length; i++) {
             var elem = elems[i];
             switch (elem.feature_type) {
+                case "gene" :
+                genes[elem.id] = elem;
+                break;
                 case "transcript" :
                 var newTranscript = {
                     "id" : elem.id,
@@ -142,6 +147,7 @@ var data_transcript = function () {
                     "end" : elem.end,
                     "strand" : elem.strand,
                     "gene" : elem.Parent,
+                    "gene_obj" : genes[elem.Parent],
                     "rawExons" : []
                 };
                 transcripts[elem.id] = newTranscript;
@@ -184,7 +190,7 @@ var data_transcript = function () {
                     transcript : t
                 }];
                 obj.id = t.id;
-                obj.gene = t.gene;
+                obj.gene = t.gene_obj;
                 obj.external_name = t.label;
                 obj.display_label = t.name;
                 obj.start = t.start;

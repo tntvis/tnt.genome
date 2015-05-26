@@ -7,9 +7,10 @@ var transcript_theme = function () {
             var newGenes = {};
             for (var i=0; i<transcripts.length; i++) {
                 var t = transcripts[i];
-                var parts = t.external_name.split('-');
-                parts.pop();
-                var mygene = parts.join('-');
+                //var parts = t.external_name.split('-');
+                //parts.pop();
+                //var mygene = parts.join('-');
+                var mygene = t.gene.external_name;
                 if (gB.gene() === mygene) {
                     newGenes[t.external_name] = t;
                     continue;
