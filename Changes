@@ -13,3 +13,5 @@
 	- Updated tnt.board to 0.0.11
 0.0.10
 	- transcripts now include full gene information
+0.0.11
+	- transcripts now include full transcript (from ensembl) information

@@ -130,7 +130,6 @@ var data_transcript = function () {
     })
     .success (function (elems) {
         var transcripts = {};
-        console.log (elems);
         var genes = {};
         for (var i=0; i<elems.length; i++) {
             var elem = elems[i];
@@ -146,8 +145,8 @@ var data_transcript = function () {
                     "start" : elem.start,
                     "end" : elem.end,
                     "strand" : elem.strand,
-                    "gene" : elem.Parent,
-                    "gene_obj" : genes[elem.Parent],
+                    "gene" : genes[elem.Parent],
+                    "transcript" : elem,
                     "rawExons" : []
                 };
                 transcripts[elem.id] = newTranscript;
@@ -190,7 +189,8 @@ var data_transcript = function () {
                     transcript : t
                 }];
                 obj.id = t.id;
-                obj.gene = t.gene_obj;
+                obj.gene = t.gene;
+                obj.transcript = t.transcript;
                 obj.external_name = t.label;
                 obj.display_label = t.name;
                 obj.start = t.start;
