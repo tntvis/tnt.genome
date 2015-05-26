@@ -9,3 +9,5 @@
 0.0.8
 	- Added transcript data
 	- Added transcript feature
+0.0.9
+	- Updated tnt.board to 0.0.11
