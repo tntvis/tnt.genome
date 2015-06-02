@@ -19,3 +19,5 @@
 	- Updated tnt.board dependency
 0.0.13
 	- Removed .npmignore
+	- Updated package.json
+
