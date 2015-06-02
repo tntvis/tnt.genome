@@ -20,4 +20,6 @@
 0.0.13
 	- Removed .npmignore
 	- Updated package.json
+0.0.14
+	- Updated dependencies
 
