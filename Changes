@@ -22,4 +22,6 @@
 	- Updated package.json
 0.0.14
 	- Updated dependencies
-
+0.0.15
+	- Fixed css imports
+	- Updated dependencies
