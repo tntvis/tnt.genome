@@ -17,3 +17,5 @@
 	- transcripts now include full transcript (from ensembl) information
 0.0.12
 	- Updated tnt.board dependency
+0.0.13
+	- Removed .npmignore
