@@ -6,14 +6,15 @@ var gene_layout = function() {
     var max_slots;
 
     // vars exposed in the API:
-    var conf = {
-        height   : 150,
-        scale    : undefined
-    };
+    var height = 150;
+    // var conf = {
+    //     height   : 150,
+    //     scale    : undefined
+    // };
 
-    var conf_ro = {
-        elements : []
-    };
+    var old_elements = [];
+
+    var scale;
 
     var slot_types = {
         'expanded'   : {
@@ -30,7 +31,9 @@ var gene_layout = function() {
     var current_slot_type = 'expanded';
 
     // The returned closure / object
-    var genes_layout = function (new_genes, scale) {
+    var genes_layout = function (new_genes, xScale) {
+        var track = this;
+        scale = xScale;
 
         // We make sure that the genes have name
         for (var i = 0; i < new_genes.length; i++) {
@@ -39,13 +42,13 @@ var gene_layout = function() {
             }
         }
 
-        max_slots = ~~(conf.height / slot_types.expanded.slot_height);
+        max_slots = ~~(track.height() / slot_types.expanded.slot_height);
 
-        if (scale !== undefined) {
-            genes_layout.scale(scale);
-        }
+        // if (scale !== undefined) {
+        //     genes_layout.scale(scale);
+        // }
 
-        slot_keeper(new_genes, conf_ro.elements);
+        slot_keeper(new_genes, old_elements);
         var needed_slots = collition_detector(new_genes);
         if (needed_slots > max_slots) {
             current_slot_type = 'collapsed';
@@ -53,7 +56,9 @@ var gene_layout = function() {
             current_slot_type = 'expanded';
         }
 
-        conf_ro.elements = new_genes;
+        //conf_ro.elements = new_genes;
+        old_elements = new_genes;
+        return new_genes;
     };
 
     var gene_slot = function () {
@@ -104,12 +109,12 @@ var gene_layout = function() {
             if (query_gene.id === subj_gene.id) {
                 continue;
             }
-            var y_label_end = subj_gene.display_label.length * 8 + conf.scale(subj_gene.start); // TODO: It may be better to have a fixed font size (instead of the hardcoded value)?
-            var y1  = conf.scale(subj_gene.start);
-            var y2  = conf.scale(subj_gene.end) > y_label_end ? conf.scale(subj_gene.end) : y_label_end;
-            var x_label_end = query_gene.display_label.length * 8 + conf.scale(query_gene.start);
-            var x1 = conf.scale(query_gene.start);
-            var x2 = conf.scale(query_gene.end) > x_label_end ? conf.scale(query_gene.end) : x_label_end;
+            var y_label_end = subj_gene.display_label.length * 8 + scale(subj_gene.start); // TODO: It may be better to have a fixed font size (instead of the hardcoded value)?
+            var y1  = scale(subj_gene.start);
+            var y2  = scale(subj_gene.end) > y_label_end ? scale(subj_gene.end) : y_label_end;
+            var x_label_end = query_gene.display_label.length * 8 + scale(query_gene.start);
+            var x1 = scale(query_gene.start);
+            var x2 = scale(query_gene.end) > x_label_end ? scale(query_gene.end) : x_label_end;
             if ( ((x1 <= y1) && (x2 >= y1)) ||
             ((x1 >= y1) && (x1 <= y2)) ) {
                 return false;
@@ -150,11 +155,12 @@ var gene_layout = function() {
 
     // API
     var api = apijs (genes_layout)
-    .getset (conf)
-    .get (conf_ro)
-    .method ({
-        gene_slot : gene_slot
-    });
+//    .getset (conf)
+//    .get (conf_ro)
+        .getset ("elements", function () {})
+        .method ({
+            gene_slot : gene_slot
+        });
 
     return genes_layout;
 };

@@ -25,3 +25,5 @@
 0.0.15
 	- Fixed css imports
 	- Updated dependencies
+0.0.16
+	- Updated layout to work with the new tnt.board's layout system
