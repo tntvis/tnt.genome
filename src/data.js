@@ -125,10 +125,10 @@ var data_gene = function () {
 var data_transcript = function () {
     var updater = board.track.data.retriever.ensembl()
     .endpoint ("region")
-    .extra({
-        "features" : ["gene", "transcript", "exon", "cds"]
+    .extra ({
+        "features" : ["gene", "transcript", "exon", "cds"],
     })
-    .success (function (elems) {
+     .success (function (elems) {
         var transcripts = {};
         var genes = {};
         for (var i=0; i<elems.length; i++) {
