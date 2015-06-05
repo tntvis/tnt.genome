@@ -31,3 +31,6 @@
 	- Updated dependencies
 0.0.18
 	- bugfix: removed extra hidden character
+0.0.19
+	- removed 'gulp-rimraf' dependency (using 'del' instead)
+

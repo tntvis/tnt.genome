@@ -9,7 +9,7 @@ var sass = require('gulp-sass');
 
 // gulp helper
 var gzip = require('gulp-gzip');
-var clean = require('gulp-rimraf');
+var del = require("del");
 var rename = require('gulp-rename');
 
 // path tools
@@ -51,8 +51,8 @@ gulp.task('watch', function() {
 
 
 // will remove everything in build
-gulp.task('clean', function() {
-  return gulp.src(buildDir).pipe(clean());
+gulp.task('clean', function (cb) {
+    del ([buildDir], cb);
 });
 
 // just makes sure that the build dir exists
