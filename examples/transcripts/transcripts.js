@@ -53,7 +53,7 @@ var transcript_theme = function () {
                     }
                     return "red";
                 })
-                .on_click(function (d) {
+                     .on("click", function (d) {
                     console.log(d);
                 })
              )

@@ -17,14 +17,27 @@ var tnt_feature_transcript = function () {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
             })
         // gene outline
+        // gs
+        //     .append("rect")
+        //     .attr("x", 0)
+        //     .attr("y", 0)
+        //     .attr("width", function (d) {
+        //         return (xScale(d.end) - xScale(d.start));
+        //     })
+        //     .attr("height", feature.layout().gene_slot().gene_height)
+        //     .attr("fill", "none")
+        //     .attr("stroke", track.background_color())
+        //     .transition()
+        //     .duration(500)
+        //     .attr("stroke", feature.foreground_color())
         gs
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", function (d) {
+            .append("line")
+            .attr("x1", 0)
+            .attr("y1", ~~(feature.layout().gene_slot().gene_height/2))
+            .attr("x2", function (d) {
                 return (xScale(d.end) - xScale(d.start));
             })
-            .attr("height", feature.layout().gene_slot().gene_height)
+            .attr("y2", ~~(feature.layout().gene_slot().gene_height/2))
             .attr("fill", "none")
             .attr("stroke", track.background_color())
             .transition()
@@ -106,7 +119,14 @@ var tnt_feature_transcript = function () {
             });
         gs
             .selectAll ("rect")
-            .attr("height", feature.layout().gene_slot().gene_height)
+            .attr("height", feature.layout().gene_slot().gene_height);
+        gs
+            .selectAll("line")
+            .attr("x2", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+            .attr("y1", ~~(feature.layout().gene_slot().gene_height/2))
+            .attr("y2", ~~(feature.layout().gene_slot().gene_height/2));
         gs
             .select ("text")
             .text (function (d) {
@@ -122,6 +142,15 @@ var tnt_feature_transcript = function () {
             .attr("transform", function (d) {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
             });
+        gs.selectAll("line")
+            .attr("x2", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+            .attr("y1", ~~(feature.layout().gene_slot().gene_height/2))
+            .attr("y2", ~~(feature.layout().gene_slot().gene_height/2))
+            // .attr("width", function (d) {
+            //     return (xScale(d.end) - xScale(d.start));
+            // })
         gs.selectAll("rect")
             .attr("width", function (d) {
                 return (xScale(d.end) - xScale(d.start));
@@ -140,36 +169,36 @@ var tnt_feature_transcript = function () {
 var tnt_feature_sequence = function () {
 
     var config = {
-	fontsize : 10,
-	sequence : function (d) {
-	    return d.sequence;
-	}
+        fontsize : 10,
+        sequence : function (d) {
+            return d.sequence;
+        }
     };
 
-        // 'Inherit' from tnt.track.feature
+    // 'Inherit' from tnt.track.feature
     var feature = board.track.feature()
-	.index (function (d) {
-	    return d.pos;
-	});
+    .index (function (d) {
+        return d.pos;
+    });
 
     var api = apijs (feature)
-	.getset (config);
+    .getset (config);
 
 
     feature.create (function (new_nts, xScale) {
-	var track = this;
+        var track = this;
 
-	new_nts
+        new_nts
             .append("text")
             .attr("fill", track.background_color())
             .style('font-size', config.fontsize + "px")
             .attr("x", function (d) {
-		return xScale (d.pos);
-	    })
+                return xScale (d.pos);
+            })
             .attr("y", function (d) {
-		return ~~(track.height() / 2) + 5;
-	    })
-	    .style("font-family", '"Lucida Console", Monaco, monospace')
+                return ~~(track.height() / 2) + 5;
+            })
+            .style("font-family", '"Lucida Console", Monaco, monospace')
             .text(config.sequence)
             .transition()
             .duration(500)
@@ -177,11 +206,11 @@ var tnt_feature_sequence = function () {
     });
 
     feature.mover (function (nts, xScale) {
-	nts.select ("text")
+        nts.select ("text")
             .attr("x", function (d) {
-		return xScale(d.pos);
-	    });
-    });
+                return xScale(d.pos);
+            });
+        });
 
     return feature;
 };

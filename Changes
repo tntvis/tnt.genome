@@ -33,4 +33,5 @@
 	- bugfix: removed extra hidden character
 0.0.19
 	- removed 'gulp-rimraf' dependency (using 'del' instead)
-
+0.0.20
+	- Changed layout for transcripts
