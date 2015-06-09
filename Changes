@@ -35,3 +35,5 @@
 	- removed 'gulp-rimraf' dependency (using 'del' instead)
 0.0.20
 	- Changed layout for transcripts
+0.0.21
+	- bugfix: avoid losing exons when they go out of scope
