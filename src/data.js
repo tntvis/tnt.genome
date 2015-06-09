@@ -188,6 +188,7 @@ var data_transcript = function () {
                     strand : t.strand,
                     transcript : t
                 }];
+                obj.key = (t.id + "_" + obj.exons.length)
                 obj.id = t.id;
                 obj.gene = t.gene;
                 obj.transcript = t.transcript;

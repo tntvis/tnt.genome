@@ -6,7 +6,7 @@ var tnt_feature_transcript = function () {
     var feature = board.track.feature()
         .layout (board.track.layout.feature())
         .index (function (d) {
-            return d.id;
+            return d.key;
         });
 
     feature.create (function (new_elems, xScale) {
@@ -40,6 +40,7 @@ var tnt_feature_transcript = function () {
             .attr("y2", ~~(feature.layout().gene_slot().gene_height/2))
             .attr("fill", "none")
             .attr("stroke", track.background_color())
+            .attr("stroke-width", 2)
             .transition()
             .duration(500)
             .attr("stroke", feature.foreground_color())
@@ -113,7 +114,7 @@ var tnt_feature_transcript = function () {
         var track = this;
         var gs = transcripts.select("g")
             .transition()
-            .duration(500)
+            .duration(200)
             .attr("transform", function (d) {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
             });
