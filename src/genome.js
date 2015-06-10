@@ -17,14 +17,15 @@ tnt_board_genome = function() {
         xref_search    : function () {},
         ensgene_search : function () {},
         context        : 0,
-        eRest          : tnt_rest()
+        rest          : tnt_rest()
     };
+    console.warn (conf);
 
     var gene;
     var limits = {
         left : 0,
 	right : undefined,
-	zoom_out : conf.eRest.limits.region,
+	zoom_out : conf.rest.limits.region,
 	zoom_in  : 200
     };
 
@@ -106,12 +107,12 @@ tnt_board_genome = function() {
         genome_browser.zoom_in (limits.zoom_in);
         genome_browser.zoom_out (limits.zoom_out);
 
-        var url = conf.eRest.url.chr_info ({
+        var url = conf.rest.url.chr_info ({
             species : where.species,
             chr     : where.chr
         });
 
-        conf.eRest.call (url)
+        conf.rest.call (url)
             .then( function (resp) {
                 done(resp.body.length);
             });
@@ -120,8 +121,8 @@ tnt_board_genome = function() {
     };
 
     var homologues = function (ensGene, callback)  {
-        var url = conf.eRest.url.homologues ({id : ensGene})
-        conf.eRest.call(url)
+        var url = conf.rest.url.homologues ({id : ensGene})
+        conf.rest.call(url)
             .then (function(resp) {
                 var homologues = resp.body.data[0].homologies;
                 if (callback !== undefined) {
@@ -143,11 +144,11 @@ tnt_board_genome = function() {
         if (isEnsemblGene(where.gene)) {
             get_ensGene(where.gene)
         } else {
-            var url = conf.eRest.url.xref ({
+            var url = conf.rest.url.xref ({
                 species : where.species,
                 name    : where.gene
             });
-            conf.eRest.call(url)
+            conf.rest.call(url)
                 .then (function(resp) {
                     var data = resp.body;
                     data = data.filter(function(d) {
@@ -164,8 +165,8 @@ tnt_board_genome = function() {
     };
 
     var get_ensGene = function (id) {
-        var url = conf.eRest.url.gene ({id : id})
-        conf.eRest.call(url)
+        var url = conf.rest.url.gene ({id : id})
+        conf.rest.call(url)
             .then (function(resp) {
                 var data = resp.body;
                 conf.ensgene_search(data);
@@ -191,8 +192,10 @@ tnt_board_genome = function() {
         var orthologues = homologues.filter(function(d){return d.type.match(orthoPatt)});
         var paralogues  = homologues.filter(function(d){return d.type.match(paraPatt)});
 
-        return {'orthologues' : orthologues,
-        'paralogues'  : paralogues};
+        return {
+            'orthologues' : orthologues,
+            'paralogues'  : paralogues
+        };
     };
 
     var api = apijs(genome_browser)
@@ -204,6 +207,8 @@ tnt_board_genome = function() {
             limits.zoom_in = v;
             return this;
         });
+
+    console.warn (genome_browser.rest());
 
     api.method ({
         start      : start,
