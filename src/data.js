@@ -1,12 +1,12 @@
 var board = require("tnt.board");
 var apijs = require("tnt.api");
-var ensemblRestAPI = require("tnt.ensembl");
+//var ensemblRestAPI = require("tnt.ensembl");
 
 board.track.data.retriever.ensembl = function () {
     var success = [function () {}];
     var ignore = function () { return false; };
     //var extra = []; // extra fields to be passed to the rest api
-    var eRest = ensemblRestAPI();
+    var eRest = board.track.data.genome.rest;
     var update_track = function (obj) {
         var data_parent = this;
         // Object has loc and a plug-in defined callback

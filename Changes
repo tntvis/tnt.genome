@@ -41,3 +41,5 @@
 	- Exposing the rest api (allows for proxy settings)
 0.0.23
 	- Renaming eRest => rest
+0.0.24
+	- bugfix: tnt.track.data.genome uses the same "rest" instance defined in tnt.track.genome

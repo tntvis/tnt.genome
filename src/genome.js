@@ -1,8 +1,9 @@
 var tnt_rest = require("tnt.ensembl");
 var apijs = require("tnt.api");
 var tnt_board = require("tnt.board");
-tnt_board.track.layout.gene = require("./layout.js");
-tnt_board.track.feature.gene = require("./feature.js");
+tnt_board.track.data.genome = require("./data.js");
+tnt_board.track.feature.genome = require("./feature");
+tnt_board.track.layout.feature = require("./layout");
 
 tnt_board_genome = function() {
     "use strict"
@@ -17,16 +18,16 @@ tnt_board_genome = function() {
         xref_search    : function () {},
         ensgene_search : function () {},
         context        : 0,
-        rest          : tnt_rest()
+        rest           : tnt_rest()
     };
-    console.warn (conf);
+    tnt_board.track.data.genome.rest = conf.rest;
 
     var gene;
     var limits = {
         left : 0,
-	right : undefined,
-	zoom_out : conf.rest.limits.region,
-	zoom_in  : 200
+        right : undefined,
+        zoom_out : conf.rest.limits.region,
+        zoom_in  : 200
     };
 
     // We "inherit" from board
@@ -207,8 +208,6 @@ tnt_board_genome = function() {
             limits.zoom_in = v;
             return this;
         });
-
-    console.warn (genome_browser.rest());
 
     api.method ({
         start      : start,
