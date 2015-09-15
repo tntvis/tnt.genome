@@ -15,7 +15,7 @@ var tnt_feature_transcript = function () {
             .append("g")
             .attr("transform", function (d) {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
-            })
+            });
         // gene outline
         // gs
         //     .append("rect")
@@ -43,7 +43,10 @@ var tnt_feature_transcript = function () {
             .attr("stroke-width", 2)
             .transition()
             .duration(500)
-            .attr("stroke", feature.foreground_color())
+            .attr("stroke", function (d) {
+                return feature.foreground_color()(d);
+            });
+            //.attr("stroke", feature.foreground_color());
 
         // exons
         // pass the "slot" to the exons and introns
@@ -78,13 +81,17 @@ var tnt_feature_transcript = function () {
             .attr("stroke", track.background_color())
             .transition()
             .duration(500)
-            .attr("stroke", feature.foreground_color())
+            //.attr("stroke", feature.foreground_color())
+            .attr("stroke", function (d) {
+                return feature.foreground_color()(d);
+            })
             .attr("fill", function (d) {
                 if (d.coding) {
                      return feature.foreground_color()(d);
                 }
                 if (d.coding === false) {
-                    return "pink";
+                    return track.background_color();
+                    // return "pink";
                 }
                 return feature.foreground_color()(d);
             });
