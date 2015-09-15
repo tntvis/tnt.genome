@@ -7,23 +7,23 @@
   <!-- Fontawesome -->
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
   <link rel="stylesheet" href="cttv-target.css"/>
-  
+
   <!-- D3 -->
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
   <!-- TnT -->
   <link rel="stylesheet" href="../../build/index.css" type="text/css" />
-  <script src="../../node_modules/tnt.ensembl/build/tnt.ensembl.js"></script>
+  <!-- <script src="../../node_modules/tnt.ensembl/build/tnt.ensembl.js"></script> -->
   <script src="../../build/tnt.genome.js"></script>
   <script src="cttv-target.js"></script>
 
   <h1>TnT based genome browser</h1>
   <div id="genomeBrowser"></div>
   <script>
+    console.log(tnt.board.track.data.genome.rest);
     var gB = tnt.board.genome().species("human").gene("brca2").width(950);
     var gBTheme = cttv_genome_browser()
     gBTheme(gB, document.getElementById("genomeBrowser"));
- 
+
   </script>
 </div>
-

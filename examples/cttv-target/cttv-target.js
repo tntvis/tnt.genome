@@ -51,20 +51,20 @@ var cttv_genome_browser = function() {
 	    .append("i")
 	    .attr("title", "zoom in")
 	    .attr("class", "fa fa-search-plus fa-2x")
-	    .on("click", gBrowserTheme.zoomIn);
+	    .on("click", gBrowserTheme.zoomOut);
 
 	var zoomOut_button = opts_pane
 	    .append("i")
 	    .attr("title", "zoom out")
 	    .attr("class", "fa fa-search-minus fa-2x")
-	    .on("click", gBrowserTheme.zoomOut);
+	    .on("click", gBrowserTheme.zoomIn);
 
 	var right_button = opts_pane
 	    .append("i")
 	    .attr("title", "go right")
 	    .attr("class", "fa fa-arrow-circle-right fa-2x")
 	    .on("click", gBrowserTheme.right);
-	
+
 	var origLabel = opts_pane
 	    .append("i")
 	    .attr("title", "reload location")
@@ -295,4 +295,3 @@ var cttv_genome_browser = function() {
 
     return gBrowserTheme;
 };
-
