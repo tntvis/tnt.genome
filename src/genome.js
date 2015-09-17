@@ -38,7 +38,7 @@ tnt_board_genome = function() {
         .height(20)
         .background_color("white")
         .data(tnt_board.track.data.empty())
-        .display(tnt_board.track.feature.location());
+        .display(tnt_board.track.feature.genome.location());
 
     var axis_track = tnt_board.track()
         .height(0)
@@ -80,7 +80,7 @@ tnt_board_genome = function() {
                 if (where.from === undefined) {
                     where.from = genome_browser.from();
                 } else {
-                    genome_browser.from(where.from)
+                    genome_browser.from(where.from);
                 }
                 if (where.to === undefined) {
                     where.to = genome_browser.to();
@@ -96,10 +96,10 @@ tnt_board_genome = function() {
             return;
         } else {
             where = {};
-            where.species = genome_browser.species(),
-            where.chr     = genome_browser.chr(),
-            where.from    = genome_browser.from(),
-            where.to      = genome_browser.to()
+            where.species = genome_browser.species();
+            where.chr     = genome_browser.chr();
+            where.from    = genome_browser.from();
+            where.to      = genome_browser.to();
         }
     }
 
@@ -143,7 +143,7 @@ tnt_board_genome = function() {
 
     var get_gene = function (where) {
         if (isEnsemblGene(where.gene)) {
-            get_ensGene(where.gene)
+            get_ensGene(where.gene);
         } else {
             var url = conf.rest.url.xref ({
                 species : where.species,
@@ -156,11 +156,14 @@ tnt_board_genome = function() {
                         return !d.id.indexOf("ENS");
                     });
                     if (data[0] !== undefined) {
-                        conf.xref_search(resp);
-                        get_ensGene(data[0].id)
-                    } else {
-                        genome_browser.start();
+//                        conf.xref_search(resp);
+                        get_ensGene(data[0].id);
                     }
+                    conf.xref_search(resp);
+
+                    // else {
+                      // genome_browser.start();
+                      // }
                 });
         }
     };

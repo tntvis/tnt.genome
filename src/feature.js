@@ -327,9 +327,52 @@ var tnt_feature_gene = function () {
     return feature;
 };
 
+// genome location
+ var tnt_feature_location = function () {
+     var row;
+     var chr;
+     var species;
+     var text_cbak = function (sp, chr, from, to) {
+         return sp + " " + chr + ":" + from + "-" + to;
+     };
+
+     var feature = {};
+     feature.reset = function () {};
+     feature.plot = function () {};
+     feature.init = function () { row = undefined; };
+     feature.move = function (xScale) {
+         var domain = xScale.domain();
+         row.select ("text")
+            .text(text_cbak(species, chr, ~~domain[0], ~~domain[1]));
+     };
+     feature.update = function (xScale, where) {
+         chr = where.chr;
+         species = where.species;
+         var track = this;
+         var svg_g = track.g;
+         var domain = xScale.domain();
+         if (row === undefined) {
+             row = svg_g;
+             row
+                 .append("text")
+                 .text(text_cbak(species, chr, ~~domain[0], ~~domain[1]));
+         }
+     };
+     feature.text = function (cbak) {
+        if (!arguments.length) {
+            return text_cbak;
+        }
+        text_cbak = cbak;
+        return this;
+     };
+
+     return feature;
+ };
+
 var genome_features = {
     gene : tnt_feature_gene,
     sequence : tnt_feature_sequence,
-    transcript : tnt_feature_transcript
+    transcript : tnt_feature_transcript,
+    location : tnt_feature_location,
 };
 module.exports = exports = genome_features;
