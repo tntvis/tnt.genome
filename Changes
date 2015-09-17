@@ -45,3 +45,7 @@
 	- bugfix: tnt.track.data.genome uses the same "rest" instance defined in tnt.track.genome
 0.0.25
 	- bugfix: colors are now properly set up in the transcript features
+0.0.26
+	- Included the new genome.location feature and avoid circular calls to the rest api if the response from the api is empty
+0.0.27
+	- updated tnt.board
