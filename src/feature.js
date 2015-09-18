@@ -16,20 +16,7 @@ var tnt_feature_transcript = function () {
             .attr("transform", function (d) {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
             });
-        // gene outline
-        // gs
-        //     .append("rect")
-        //     .attr("x", 0)
-        //     .attr("y", 0)
-        //     .attr("width", function (d) {
-        //         return (xScale(d.end) - xScale(d.start));
-        //     })
-        //     .attr("height", feature.layout().gene_slot().gene_height)
-        //     .attr("fill", "none")
-        //     .attr("stroke", track.background_color())
-        //     .transition()
-        //     .duration(500)
-        //     .attr("stroke", feature.foreground_color())
+
         gs
             .append("line")
             .attr("x1", 0)

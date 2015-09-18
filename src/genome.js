@@ -6,7 +6,7 @@ tnt_board.track.feature.genome = require("./feature");
 tnt_board.track.layout.feature = require("./layout");
 
 tnt_board_genome = function() {
-    "use strict"
+    "use strict";
 
     // Private vars
     var ens_re = /^ENS\w+\d+$/;
@@ -122,16 +122,16 @@ tnt_board_genome = function() {
     };
 
     var homologues = function (ensGene, callback)  {
-        var url = conf.rest.url.homologues ({id : ensGene})
+        var url = conf.rest.url.homologues ({id : ensGene});
         conf.rest.call(url)
             .then (function(resp) {
                 var homologues = resp.body.data[0].homologies;
                 if (callback !== undefined) {
-                    var homologues_obj = split_homologues(homologues)
+                    var homologues_obj = split_homologues(homologues);
                     callback(homologues_obj);
                 }
         });
-    }
+    };
 
     var isEnsemblGene = function(term) {
         if (term.match(ens_re)) {
@@ -159,7 +159,7 @@ tnt_board_genome = function() {
 //                        conf.xref_search(resp);
                         get_ensGene(data[0].id);
                     }
-                    conf.xref_search(resp);
+                    conf.xref_search(resp, where.gene, where.species);
 
                     // else {
                       // genome_browser.start();
