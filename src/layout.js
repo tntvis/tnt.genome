@@ -50,11 +50,19 @@ var gene_layout = function() {
 
         slot_keeper(new_genes, old_elements);
         var needed_slots = collition_detector(new_genes);
-        if (needed_slots > max_slots) {
+        slot_types.collapsed.needed_slots = needed_slots;
+        slot_types.expanded.needed_slots = needed_slots;
+        if (genes_layout.fixed_slot_type()) {
+            current_slot_type = genes_layout.fixed_slot_type();
+        }
+        else if (needed_slots > max_slots) {
             current_slot_type = 'collapsed';
         } else {
             current_slot_type = 'expanded';
         }
+
+        // run the user-defined callback
+        genes_layout.on_layout_run()(slot_types, current_slot_type);
 
         //conf_ro.elements = new_genes;
         old_elements = new_genes;
@@ -71,7 +79,7 @@ var gene_layout = function() {
         var needed_slots = 0;
         for (var i = 0; i < genes.length; i++) {
             if (genes[i].slot > needed_slots && genes[i].slot < max_slots) {
-                needed_slots = genes[i].slot
+                needed_slots = genes[i].slot;
             }
         }
 
@@ -140,7 +148,7 @@ var gene_layout = function() {
             hash[gene.id] = gene.slot;
         }
         return hash;
-    }
+    };
 
     var sort_genes_by_slot = function (genes) {
         var slots = [];
@@ -158,9 +166,19 @@ var gene_layout = function() {
 //    .getset (conf)
 //    .get (conf_ro)
         .getset ("elements", function () {})
+        .getset ("on_layout_run", function () {})
+        .getset ("fixed_slot_type")
         .method ({
-            gene_slot : gene_slot
+            gene_slot : gene_slot,
+            // height : function () {
+            //     return slot_types.expanded.needed_slots * slot_types.expanded.slot_height;
+            // }
         });
+
+    // Check that the fixed slot type is valid
+    genes_layout.fixed_slot_type.check(function (val) {
+            return ((val === "collapsed") || (val === "expanded"));
+    });
 
     return genes_layout;
 };

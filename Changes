@@ -49,3 +49,5 @@
 	- Included the new genome.location feature and avoid circular calls to the rest api if the response from the api is empty
 0.0.27
 	- updated tnt.board
+0.0.28
+	- Improvements in the genome's layout API (to allow re-height of the tracks)
