@@ -1,6 +1,6 @@
 {
   "name": "tnt.genome",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "Minimal genome browser based on TnT board and Ensembl data",
   "main": "index.js",
   "directories": {
