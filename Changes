@@ -53,3 +53,6 @@
 	- Improvements in the genome's layout API (to allow re-height of the tracks)
 0.0.29
 	- the xref callback now returns the gene and species of the queried gene
+0.0.30
+	- fixes in code formatting
+	- updated tnt.board

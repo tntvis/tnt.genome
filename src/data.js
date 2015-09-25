@@ -42,8 +42,8 @@ board.track.data.retriever.ensembl = function () {
         }
     };
     apijs (update_track)
-    .getset ('endpoint')
-    .getset ('extra', {})
+        .getset ('endpoint')
+        .getset ('extra', {});
 
     // TODO: We don't have a way of resetting the success array
     // TODO: Should this also be included in the sync retriever?
@@ -106,19 +106,17 @@ var data_sequence = function () {
 // A predefined track for genes
 var data_gene = function () {
     var updater = board.track.data.retriever.ensembl()
-    .endpoint ("region")
-    // TODO: If success is defined here, means that it can't be user-defined
-    // is that good? enough? API?
-    // UPDATE: Now success is backed up by an array. Still don't know if this is the best option
-    .success (function (genes) {
-        for (var i = 0; i < genes.length; i++) {
-            if (genes[i].strand === -1) {
-                genes[i].display_label = "<" + genes[i].external_name;
-            } else {
-                genes[i].display_label = genes[i].external_name + ">";
+        .endpoint ("region")
+        // UPDATE: Now success is backed up by an array. Still don't know if this is the best option
+        .success (function (genes) {
+            for (var i = 0; i < genes.length; i++) {
+                if (genes[i].strand === -1) {
+                    genes[i].display_label = "<" + genes[i].external_name;
+                } else {
+                    genes[i].display_label = genes[i].external_name + ">";
+                }
             }
-        }
-    });
+        });
     return board.track.data().update(updater);
 };
 
