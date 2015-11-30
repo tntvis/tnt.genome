@@ -66,3 +66,7 @@
 	- updated dependencies
 0.0.35
 	- added spinner
+0.0.36
+	- Improvements in the spinner
+	- Included "slot_keeper" in the feature layout
+	- Internal "limits" removed and using the underlying board

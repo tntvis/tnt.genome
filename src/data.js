@@ -29,7 +29,7 @@ board.track.data.retriever.ensembl = function () {
             data_parent.elements([]);
             plugin_cbak();
         } else {
-            spinner.on(track.g, track.height());
+            spinner.on(track.g, track.background_color());
             eRest.call(url)
                 .then (function (resp) {
                     // User defined
@@ -40,6 +40,7 @@ board.track.data.retriever.ensembl = function () {
                         }
                     }
                     data_parent.elements(resp.body);
+
                     spinner.off(track.g);
                     // plug-in defined
                     plugin_cbak();
