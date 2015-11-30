@@ -48,7 +48,9 @@ var gene_layout = function() {
         //     genes_layout.scale(scale);
         // }
 
-        slot_keeper(new_genes, old_elements);
+        if (genes_layout.keep_slots()) {
+            slot_keeper(new_genes, old_elements);
+        }
         var needed_slots = collition_detector(new_genes);
         slot_types.collapsed.needed_slots = needed_slots;
         slot_types.expanded.needed_slots = needed_slots;
@@ -168,6 +170,7 @@ var gene_layout = function() {
         .getset ("elements", function () {})
         .getset ("on_layout_run", function () {})
         .getset ("fixed_slot_type")
+        .getset ("keep_slots", true)
         .method ({
             gene_slot : gene_slot,
             // height : function () {
