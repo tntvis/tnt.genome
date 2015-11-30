@@ -59,8 +59,10 @@
 0.0.31
 	- updated tnt.board
 0.0.32
-	-updated tnt.board
+	- updated tnt.board
 0.0.33
-	-updated tnt.board
+	- updated tnt.board
 0.0.34
-	-updated dependencies
+	- updated dependencies
+0.0.35
+	- added spinner
