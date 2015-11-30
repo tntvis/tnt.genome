@@ -22,16 +22,19 @@ tnt_board_genome = function() {
     };
     tnt_board.track.data.genome.rest = conf.rest;
 
-    var gene;
-    var limits = {
-        left : 0,
-        right : undefined,
-        zoom_out : conf.rest.limits.region,
-        zoom_in  : 200
-    };
-
     // We "inherit" from board
-    var genome_browser = tnt_board();
+    var genome_browser = tnt_board()
+        .zoom_in(200)
+        .zoom_out(conf.rest.limits.region)
+        .left(0);
+
+    var gene;
+    // var limits = {
+    //     left : 0,
+    //     right : undefined,
+    //     zoom_out : conf.rest.limits.region,
+    //     zoom_in  : 200
+    // };
 
     // The location and axis track
     var location_track = tnt_board.track()
@@ -105,8 +108,8 @@ tnt_board_genome = function() {
 
     genome_browser.right (function (done) {
         // Get the chromosome length and use it as the 'right' limit
-        genome_browser.zoom_in (limits.zoom_in);
-        genome_browser.zoom_out (limits.zoom_out);
+        // genome_browser.zoom_in (limits.zoom_in);
+        // genome_browser.zoom_out (limits.zoom_out);
 
         var url = conf.rest.url.chr_info ({
             species : where.species,
@@ -206,9 +209,9 @@ tnt_board_genome = function() {
         .getset (conf)
         .method("zoom_in", function (v) {
             if (!arguments.length) {
-                return limits.zoom_in;
+                return genome_browser.zoom_in();
             }
-            limits.zoom_in = v;
+            genome_browser.zoom_in(v);
             return this;
         });
 
