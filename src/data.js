@@ -1,14 +1,18 @@
 var board = require("tnt.board");
 var apijs = require("tnt.api");
+var spinner = require("./spinner")();
+
 //var ensemblRestAPI = require("tnt.ensembl");
 
 board.track.data.retriever.ensembl = function () {
-    var success = [function () {}];
+    var success = [];
+
     var ignore = function () { return false; };
     //var extra = []; // extra fields to be passed to the rest api
     var eRest = board.track.data.genome.rest;
     var update_track = function (obj) {
-        var data_parent = this;
+        var track = this;
+        var data_parent = track.data();
         // Object has loc and a plug-in defined callback
         var loc = obj.loc;
         if (Object.keys(update_track.extra()).length) {
@@ -25,20 +29,21 @@ board.track.data.retriever.ensembl = function () {
             data_parent.elements([]);
             plugin_cbak();
         } else {
+            spinner.on(track.g, track.height());
             eRest.call(url)
-            .then (function (resp) {
-                // User defined
-                for (var i=0; i<success.length; i++) {
-                    var mod = success[i](resp.body);
-                    if (mod) {
-                        resp.body = mod;
+                .then (function (resp) {
+                    // User defined
+                    for (var i=0; i<success.length; i++) {
+                        var mod = success[i](resp.body);
+                        if (mod) {
+                            resp.body = mod;
+                        }
                     }
-                }
-                data_parent.elements(resp.body);
-
-                // plug-in defined
-                plugin_cbak();
-            });
+                    data_parent.elements(resp.body);
+                    spinner.off(track.g);
+                    // plug-in defined
+                    plugin_cbak();
+                });
         }
     };
     apijs (update_track)
@@ -55,6 +60,14 @@ board.track.data.retriever.ensembl = function () {
         success.push (cb);
         return update_track;
     };
+
+    // update_track.request = function (cb) {
+    //     if (!arguments.length) {
+    //         return request;
+    //     }
+    //     request = cb;
+    //     return update_track;
+    // };
 
     update_track.ignore = function (cb) {
         if (!arguments.length) {
