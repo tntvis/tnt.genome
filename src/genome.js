@@ -196,8 +196,8 @@ tnt_board_genome = function() {
         var orthoPatt = /ortholog/;
         var paraPatt = /paralog/;
 
-        var orthologues = homologues.filter(function(d){return d.type.match(orthoPatt)});
-        var paralogues  = homologues.filter(function(d){return d.type.match(paraPatt)});
+        var orthologues = homologues.filter(function(d){return d.type.match(orthoPatt);});
+        var paralogues  = homologues.filter(function(d){return d.type.match(paraPatt);});
 
         return {
             'orthologues' : orthologues,
@@ -207,13 +207,6 @@ tnt_board_genome = function() {
 
     var api = apijs(genome_browser)
         .getset (conf);
-        // .method("zoom_in", function (v) {
-        //     if (!arguments.length) {
-        //         return genome_browser.zoom_in();
-        //     }
-        //     conf.zoom_in = v;
-        //     return this;
-        // });
 
     api.method ({
         start      : start,

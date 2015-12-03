@@ -71,3 +71,5 @@
 	- Included "slot_keeper" in the feature layout
 	- Internal "limits" removed and using the underlying board
 	- features css (genes) with smaller fonts
+0.0.37
+	- bugfix: recursive call to zoom_in
