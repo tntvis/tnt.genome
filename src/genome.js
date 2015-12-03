@@ -206,14 +206,14 @@ tnt_board_genome = function() {
     };
 
     var api = apijs(genome_browser)
-        .getset (conf)
-        .method("zoom_in", function (v) {
-            if (!arguments.length) {
-                return genome_browser.zoom_in();
-            }
-            genome_browser.zoom_in(v);
-            return this;
-        });
+        .getset (conf);
+        // .method("zoom_in", function (v) {
+        //     if (!arguments.length) {
+        //         return genome_browser.zoom_in();
+        //     }
+        //     conf.zoom_in = v;
+        //     return this;
+        // });
 
     api.method ({
         start      : start,
