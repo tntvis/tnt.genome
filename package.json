@@ -58,8 +58,8 @@
   },
   "dependencies": {
     "tnt.api": "0.0.1",
-    "tnt.board": "0.0.28",
-    "tnt.ensembl": "0.0.11",
+    "tnt.board": "0.0.29",
+    "tnt.ensembl": "0.0.12",
     "tnt.tooltip": "0.0.11",
     "tnt.utils": "^0.0.1"
   }

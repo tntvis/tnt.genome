@@ -25,78 +25,84 @@ var gene_colors = function() {
 
     var theme = function(gB, div) {
 
-	gB(div);
+    	gB(div);
 
-	var gene_track = tnt.board.track()
-	    .height(200)
-	    .background_color("#FFFFFF")
-        .display(tnt.board.track.feature.genome.gene()
-		     .foreground_color("#550055")
-		)
-	    .data(tnt.board.track.data.genome.gene());
-	gB.add_track(gene_track);
+    	var gene_track = tnt.board.track()
+    	    .height(200)
+    	    .background_color("#FFFFFF")
+            .display(tnt.board.track.feature.genome.gene()
+    		     .foreground_color("#550055")
+    		)
+    	    .data(tnt.board.track.data.genome.gene());
+    	gB.add_track(gene_track);
 
-	var legend_div = d3.select(div)
-	    .append("div")
-	    .attr("class", "tnt_legend_div");
+    	var legend_div = d3.select(div)
+    	    .append("div")
+    	    .attr("class", "tnt_legend_div");
 
-	legend_div
-	    .append("text")
-	    .text("Gene legend:");
+    	legend_div
+    	    .append("text")
+    	    .text("Gene legend:");
 
-	d3.selectAll("tnt_biotype")
-        .data(gene_track.data().elements());
+    	d3.selectAll("tnt_biotype")
+            .data(gene_track.data().elements());
 
-	gene_track.data().update().success (function (genes) {
-	    genes.map(gene_color);
+        var gene_updater = gene_track.data().update().retriever();
+        gene_track.data().update().retriever ( function (obj) {
+            return gene_updater(obj)
+                .then (function (genes) {
+                    genes.map(gene_color);
 
-	    // And we setup/update the legend
-	    var biotypes_array = genes.map(function(e){
-            return biotype_to_legend[e.biotype];
+                    // And we setup/update the legend
+                    var biotypes_array = genes.map(function(e){
+                        return biotype_to_legend[e.biotype];
+                    });
+                    var biotypes_hash = {};
+                    for (var i=0; i<biotypes_array.length; i++) {
+                        biotypes_hash[biotypes_array[i]] = 1;
+                    }
+                    var biotypes = [];
+                    for (var p in biotypes_hash) {
+                        if (biotypes_hash.hasOwnProperty(p)) {
+                            biotypes.push(p);
+                        }
+                    }
+                    var biotype_legend = legend_div.selectAll(".tnt_biotype_legend")
+                        .data(biotypes, function(d){
+                            return d;
+                        });
+
+                    var new_legend = biotype_legend
+                        .enter()
+                        .append("div")
+                        .attr("class", "tnt_biotype_legend")
+                        .style("display", "inline");
+
+                    new_legend
+                        .append("div")
+                        .style("display", "inline-block")
+                        .style("margin", "0px 2px 0px 15px")
+                        .style("width", "10px")
+                        .style("height", "10px")
+                        .style("border", "1px solid #000")
+                        .style("background", function(d){return colors[d];});
+                    new_legend
+                        .append("text")
+                    .text(function(d){return d;});
+                    biotype_legend
+                        .exit()
+                        .remove();
+
+                    return genes;
+                });
         });
-	    var biotypes_hash = {};
-	    for (var i=0; i<biotypes_array.length; i++) {
-		biotypes_hash[biotypes_array[i]] = 1;
-	    }
-	    var biotypes = [];
-	    for (var p in biotypes_hash) {
-		if (biotypes_hash.hasOwnProperty(p)) {
-		    biotypes.push(p);
-		}
-	    }
-	    var biotype_legend = legend_div.selectAll(".tnt_biotype_legend")
-		.data(biotypes, function(d){return d;});
 
-	    var new_legend = biotype_legend
-		.enter()
-		.append("div")
-		.attr("class", "tnt_biotype_legend")
-		.style("display", "inline");
+    	var gene_color =  function (gene) {
+    	    gene.color = colors[biotype_to_legend[gene.biotype]];
+    	    return;
+    	};
 
-	    new_legend
-		.append("div")
-		.style("display", "inline-block")
-		.style("margin", "0px 2px 0px 15px")
-		.style("width", "10px")
-		.style("height", "10px")
-		.style("border", "1px solid #000")
-		.style("background", function(d){return colors[d];});
-	    new_legend
-		.append("text")
-		.text(function(d){return d;});
-	    biotype_legend
-		.exit()
-		.remove();
-
-	});
-
-	var gene_color =  function (gene) {
-	    gene.color = colors[biotype_to_legend[gene.biotype]];
-	    return;
-	};
-
- 	gB.start();
-
+     	gB.start();
     };
 
     return theme;

@@ -17,6 +17,7 @@ var variable_height = function() {
         // expand or contract the height of the gene track as needed
         gene_track.display().layout()
             .fixed_slot_type("expanded")
+            .keep_slots(false)
             .on_layout_run (function (types, current) {
                 var needed_height = types.expanded.needed_slots * types.expanded.slot_height;
                 if (needed_height !== current_height) {

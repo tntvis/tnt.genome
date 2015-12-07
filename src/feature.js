@@ -78,7 +78,6 @@ var tnt_feature_transcript = function () {
                 }
                 if (d.coding === false) {
                     return track.background_color();
-                    // return "pink";
                 }
                 return feature.foreground_color()(d);
             });
@@ -100,9 +99,11 @@ var tnt_feature_transcript = function () {
             .style("font-weight", "normal")
             .transition()
             .duration(500)
-            .attr("fill", feature.foreground_color());
+            .attr("fill", function (d) {
+                return feature.foreground_color()(d);
+            });
 
-    })
+    });
 
     feature.updater (function (transcripts, xScale) {
         var track = this;
@@ -142,14 +143,14 @@ var tnt_feature_transcript = function () {
                 return (xScale(d.end) - xScale(d.start));
             })
             .attr("y1", ~~(feature.layout().gene_slot().gene_height/2))
-            .attr("y2", ~~(feature.layout().gene_slot().gene_height/2))
+            .attr("y2", ~~(feature.layout().gene_slot().gene_height/2));
             // .attr("width", function (d) {
             //     return (xScale(d.end) - xScale(d.start));
             // })
         gs.selectAll("rect")
             .attr("width", function (d) {
                 return (xScale(d.end) - xScale(d.start));
-            })
+            });
         gs.selectAll(".tnt_exons")
             .attr("x", function (d) {
                 return (xScale(d.start + d.offset) - xScale(d.start));
@@ -220,95 +221,96 @@ var tnt_feature_gene = function () {
 	});
 
     feature.create(function (new_elems, xScale) {
-	var track = this;
-	new_elems
-	    .append("rect")
-	    .attr("x", function (d) {
-		return xScale(d.start);
-	    })
-	    .attr("y", function (d) {
-		return feature.layout().gene_slot().slot_height * d.slot;
-	    })
-	    .attr("width", function (d) {
-		return (xScale(d.end) - xScale(d.start));
-	    })
-	    .attr("height", feature.layout().gene_slot().gene_height)
-	    .attr("fill", track.background_color())
-	    .transition()
-	    .duration(500)
-	    .attr("fill", function (d) {
-		if (d.color === undefined) {
-		    return feature.foreground_color();
-		} else {
-		    return d.color;
-		}
-	    });
 
-	new_elems
-	    .append("text")
-	    .attr("class", "tnt_name")
-	    .attr("x", function (d) {
-		return xScale(d.start);
-	    })
-	    .attr("y", function (d) {
-		return (feature.layout().gene_slot().slot_height * d.slot) + 25;
-	    })
-	    .attr("fill", track.background_color())
-	    .text(function (d) {
-		if (feature.layout().gene_slot().show_label) {
-		    return d.display_label;
-		} else {
-		    return "";
-		}
-	    })
-	    .style("font-weight", "normal")
-	    .transition()
-	    .duration(500)
-	    .attr("fill", function() {
-            return feature.foreground_color();
-	    });
+        var track = this;
+        new_elems
+            .append("rect")
+            .attr("x", function (d) {
+                return xScale(d.start);
+            })
+            .attr("y", function (d) {
+                return feature.layout().gene_slot().slot_height * d.slot;
+            })
+            .attr("width", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            })
+            .attr("height", feature.layout().gene_slot().gene_height)
+            .attr("fill", track.background_color())
+            .transition()
+            .duration(500)
+            .attr("fill", function (d) {
+                if (d.color === undefined) {
+                    return feature.foreground_color();
+                } else {
+                    return d.color;
+                }
+            });
+
+        new_elems
+            .append("text")
+            .attr("class", "tnt_name")
+            .attr("x", function (d) {
+                return xScale(d.start);
+            })
+            .attr("y", function (d) {
+                return (feature.layout().gene_slot().slot_height * d.slot) + 25;
+            })
+            .attr("fill", track.background_color())
+            .text(function (d) {
+                if (feature.layout().gene_slot().show_label) {
+                    return d.display_label;
+                } else {
+                    return "";
+                }
+            })
+            .style("font-weight", "normal")
+            .transition()
+            .duration(500)
+            .attr("fill", function() {
+                return feature.foreground_color();
+            });
     });
 
     feature.updater(function (genes) {
-	var track = this;
-	genes
-	    .select("rect")
-	    .transition()
-	    .duration(500)
-	    .attr("y", function (d) {
-		return (feature.layout().gene_slot().slot_height * d.slot);
-	    })
-	    .attr("height", feature.layout().gene_slot().gene_height);
+        var track = this;
+        genes
+            .select("rect")
+            .transition()
+            .duration(500)
+            .attr("y", function (d) {
+                return (feature.layout().gene_slot().slot_height * d.slot);
+            })
+            .attr("height", feature.layout().gene_slot().gene_height);
 
-	genes
-	    .select("text")
-	    .transition()
-	    .duration(500)
-	    .attr("y", function (d) {
-		return (feature.layout().gene_slot().slot_height * d.slot) + 25;
-	    })
-	    .text(function (d) {
+        genes
+            .select("text")
+            .transition()
+            .duration(500)
+            .attr("y", function (d) {
+                return (feature.layout().gene_slot().slot_height * d.slot) + 25;
+            })
+            .text(function (d) {
                 if (feature.layout().gene_slot().show_label) {
-		    return d.display_label;
+                    return d.display_label;
                 } else {
-		    return "";
+                    return "";
                 }
-	    });
+            });
     });
 
     feature.mover(function (genes, xScale) {
-	genes.select("rect")
-	    .attr("x", function (d) {
-		return xScale(d.start);
-	    })
-	    .attr("width", function (d) {
-		return (xScale(d.end) - xScale(d.start));
-	    });
+        genes.select("rect")
+            .attr("x", function (d) {
+                return xScale(d.start);
+            })
+            .attr("width", function (d) {
+                return (xScale(d.end) - xScale(d.start));
+            });
 
-	genes.select("text")
-	    .attr("x", function (d) {
-            return xScale(d.start);
-        });
+        genes.select("text")
+            .attr("x", function (d) {
+                return xScale(d.start);
+            });
     });
 
     return feature;

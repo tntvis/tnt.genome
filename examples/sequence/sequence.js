@@ -16,7 +16,7 @@ var sequence_theme = function () {
 	    .display(tnt.board.track.feature.genome.sequence())
 	    .data(tnt.board.track.data.genome.sequence()
 		  .limit(150));
-	
+
 	gB(div);
 	gB
 	    .zoom_in(100)

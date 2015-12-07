@@ -73,3 +73,5 @@
 	- features css (genes) with smaller fonts
 0.0.37
 	- bugfix: recursive call to zoom_in
+0.0.38
+	- using the async data retriever in tnt.board

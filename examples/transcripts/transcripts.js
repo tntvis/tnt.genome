@@ -3,46 +3,6 @@ var transcript_theme = function () {
 
     var theme = function (gB, div) {
         var mydata = tnt.board.track.data.genome.transcript();
-        mydata.update().success(function (transcripts) {
-            var newGenes = {};
-            for (var i=0; i<transcripts.length; i++) {
-                var t = transcripts[i];
-                //var parts = t.external_name.split('-');
-                //parts.pop();
-                //var mygene = parts.join('-');
-                var mygene = t.gene.external_name;
-                if (gB.gene() === mygene) {
-                    newGenes[t.external_name] = t;
-                    continue;
-                } else if (newGenes[mygene] === undefined) {
-                    t.exons = [{
-                        start : t.start,
-                        end : t.end,
-                        offset : 0,
-                        isGene : true
-                    }];
-                    t.introns = [];
-                    t.display_label = mygene;
-                    t.isGene = true;
-                    newGenes[mygene] = t;
-                } else {
-                    var newStart = d3.min([newGenes[mygene].start, t.start]);
-                    newGenes[mygene].start = newStart;
-                    newGenes[mygene].exons[0].start = newStart;
-                    var newEnd = d3.max([newGenes[mygene].end, t.end]);
-                    newGenes[mygene].end = newEnd;
-                    newGenes[mygene].exons[0].end = newEnd;
-                }
-            }
-            var elems = [];
-            for (var elem in newGenes) {
-                if (newGenes.hasOwnProperty(elem)) {
-                    elems.push(newGenes[elem]);
-                }
-            }
-            return elems;
-        })
-
         var transcript_track = tnt.board.track()
             .height(200)
             .background_color("#EEEFFF")
@@ -53,7 +13,7 @@ var transcript_theme = function () {
                     }
                     return "red";
                 })
-                     .on("click", function (d) {
+                .on("click", function (d) {
                     console.log(d);
                 })
              )
