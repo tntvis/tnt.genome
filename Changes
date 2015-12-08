@@ -75,3 +75,5 @@
 	- bugfix: recursive call to zoom_in
 0.0.38
 	- using the async data retriever in tnt.board
+0.0.39
+	- updated tnt.board
