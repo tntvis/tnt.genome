@@ -58,7 +58,7 @@ gulp.task('clean', function (cb) {
 // just makes sure that the build dir exists
 gulp.task('init', ['clean'], function() {
   mkdirp(buildDir, function (err) {
-    if (err) console.error(err)
+    if (err) console.error(err);
   });
 });
 
@@ -68,6 +68,7 @@ gulp.task('sass', function () {
 	.pipe(sass({
 	    errLogToConsole: true
 	}))
+    .pipe(rename(outputFile + '.css'))
 	.pipe(gulp.dest(buildDir));
 });
 
