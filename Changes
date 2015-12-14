@@ -77,3 +77,5 @@
 	- using the async data retriever in tnt.board
 0.0.39
 	- updated tnt.board
+0.0.40
+	- better alignment of the sequence feature
