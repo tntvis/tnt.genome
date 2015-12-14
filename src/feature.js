@@ -189,7 +189,7 @@ var tnt_feature_sequence = function () {
             .attr("fill", track.background_color())
             .style('font-size', config.fontsize + "px")
             .attr("x", function (d) {
-                return xScale (d.pos);
+                return xScale (d.pos) - (config.fontsize/2) + 1;
             })
             .attr("y", function (d) {
                 return ~~(track.height() / 2) + 5;
@@ -204,7 +204,7 @@ var tnt_feature_sequence = function () {
     feature.mover (function (nts, xScale) {
         nts.select ("text")
             .attr("x", function (d) {
-                return xScale(d.pos);
+                return xScale(d.pos) - (config.fontsize/2) + 1;
             });
         });
 
