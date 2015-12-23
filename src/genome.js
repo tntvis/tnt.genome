@@ -172,7 +172,7 @@ tnt_board_genome = function() {
     };
 
     var get_ensGene = function (id) {
-        var url = conf.rest.url.gene ({id : id})
+        var url = conf.rest.url.gene ({id : id});
         conf.rest.call(url)
             .then (function(resp) {
                 var data = resp.body;
