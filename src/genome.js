@@ -26,11 +26,11 @@ tnt_board_genome = function() {
     var genome_browser = tnt_board()
         .zoom_in(200)
         .zoom_out(conf.rest.limits.region)
-        .left(0);
+        .min(0);
 
     var gene;
     // var limits = {
-    //     left : 0,
+    //     min : 0,
     //     right : undefined,
     //     zoom_out : conf.rest.limits.region,
     //     zoom_in  : 200
@@ -39,13 +39,13 @@ tnt_board_genome = function() {
     // The location and axis track
     var location_track = tnt_board.track()
         .height(20)
-        .background_color("white")
+        .color("white")
         .data(tnt_board.track.data.empty())
         .display(tnt_board.track.feature.genome.location());
 
     var axis_track = tnt_board.track()
         .height(0)
-        .background_color("white")
+        .color("white")
         .data(tnt_board.track.data.empty())
         .display(tnt_board.track.feature.axis());
 
@@ -106,22 +106,28 @@ tnt_board_genome = function() {
         }
     }
 
-    genome_browser.right (function (done) {
-        // Get the chromosome length and use it as the 'right' limit
-        // genome_browser.zoom_in (limits.zoom_in);
-        // genome_browser.zoom_out (limits.zoom_out);
-
-        var url = conf.rest.url.chr_info ({
-            species : where.species,
-            chr     : where.chr
+    var url = conf.rest.url.chr_info( {
+        species : where.species,
+        chr     : where.chr
+    });
+    conf.rest.call (url)
+        .then (function (resp) {
+            genome_browser.right = resp.body.length;
+            genome_browser._start();
         });
 
-        conf.rest.call (url)
-            .then( function (resp) {
-                done(resp.body.length);
-            });
-        });
-        genome_browser._start();
+    // genome_browser.right (function (done) {
+    //     var url = conf.rest.url.chr_info ({
+    //         species : where.species,
+    //         chr     : where.chr
+    //     });
+    //
+    //     conf.rest.call (url)
+    //         .then( function (resp) {
+    //             done(resp.body.length);
+    //         });
+    //     });
+    //     genome_browser._start();
     };
 
     var homologues = function (ensGene, callback)  {

@@ -4,14 +4,14 @@ var apijs = require("tnt.api");
 
 //var ensemblRestAPI = require("tnt.ensembl");
 
-board.track.data.retriever.ensembl = {};
+board.track.data.ensembl = {};
 
 var data_gene = function () {
     var eRest = board.track.data.genome.rest;
 
     var data = board.track.data()
       .update(
-          board.track.data.retriever.async()
+          board.track.data.async()
               .retriever (function (obj) {
                   var url = eRest.url.region(obj);
                   //spinner.on()
@@ -39,7 +39,7 @@ var data_transcript = function () {
 
     var data = board.track.data()
         .update (
-            board.track.data.retriever.async()
+            board.track.data.async()
                 .retriever (function (obj) {
                     obj.features = ["gene", "transcript", "exon", "cds"];
                     var url = eRest.url.region(obj);
@@ -224,7 +224,7 @@ var data_sequence = function () {
 
     var data = board.track.data()
         .update (
-            board.track.data.retriever.async()
+            board.track.data.async()
                 .retriever (function (obj) {
                     if ((obj.to - obj.from) < data.limit()) {
                         var url = eRest.url.sequence(obj);

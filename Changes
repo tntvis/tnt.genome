@@ -79,3 +79,6 @@
 	- updated tnt.board
 0.0.40
 	- better alignment of the sequence feature
+0.1.0
+	- Support for tnt.board 0.1.0
+	- Removed tnt.tooltip dependency
