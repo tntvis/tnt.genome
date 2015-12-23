@@ -1,26 +1,23 @@
 var board = require("tnt.board");
 var apijs = require("tnt.api");
-// var spinner = require("./spinner")();
-
-//var ensemblRestAPI = require("tnt.ensembl");
 
 board.track.data.ensembl = {};
 
 var data_gene = function () {
     var eRest = board.track.data.genome.rest;
 
-    var data = board.track.data()
-      .update(
-          board.track.data.async()
+    var data = board.track.data.async()
               .retriever (function (obj) {
+                  var track = this;
+                  var scale = track.display().scale();
                   var url = eRest.url.region(obj);
-                  //spinner.on()
                   return eRest.call(url)
                     .then (function (resp) {
                         var genes = resp.body;
                         // Set the display_label field
                         for (var i=0; i<genes.length; i++) {
-                            var gene = genes[i];                                        if (gene.strand === -1) {
+                            var gene = genes[i];
+                            if (gene.strand === -1) {
                                 gene.display_label = "<" + gene.external_name;
                             } else {
                                 gene.display_label = gene.external_name + ">";
@@ -28,8 +25,8 @@ var data_gene = function () {
                         }
                         return genes;
                     });
-              })
-      );
+              });
+    //   );
 
     return data;
 };
@@ -37,9 +34,7 @@ var data_gene = function () {
 var data_transcript = function () {
     var eRest = board.track.data.genome.rest;
 
-    var data = board.track.data()
-        .update (
-            board.track.data.async()
+    var data = board.track.data.async()
                 .retriever (function (obj) {
                     obj.features = ["gene", "transcript", "exon", "cds"];
                     var url = eRest.url.region(obj);
@@ -57,8 +52,8 @@ var data_transcript = function () {
                           return transcripts;
                       });
 
-                })
-        );
+                });
+        // );
 
     apijs(data)
         .method("gene2Transcripts", function (g) {
@@ -222,9 +217,7 @@ var data_transcript = function () {
 var data_sequence = function () {
     var eRest = board.track.data.genome.rest;
 
-    var data = board.track.data()
-        .update (
-            board.track.data.async()
+    var data = board.track.data.async()
                 .retriever (function (obj) {
                     if ((obj.to - obj.from) < data.limit()) {
                         var url = eRest.url.sequence(obj);
@@ -247,8 +240,8 @@ var data_sequence = function () {
                             resolve([]);
                         });
                     }
-                })
-        );
+                });
+        // );
 
     apijs(data)
         .getset("limit", 150);

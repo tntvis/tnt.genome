@@ -5,9 +5,9 @@ var transcript_theme = function () {
         var mydata = tnt.board.track.data.genome.transcript();
         var transcript_track = tnt.board.track()
             .height(200)
-            .background_color("#EEEFFF")
+            .color("#EEEFFF")
             .display(tnt.board.track.feature.genome.transcript()
-                .foreground_color (function (t) {
+                .color (function (t) {
                     if (t.isGene) {
                         return "#005588";
                     }
@@ -21,15 +21,15 @@ var transcript_theme = function () {
 
         var gene_track = tnt.board.track()
             .height(200)
-            .background_color("white")
+            .color("white")
             .display(tnt.board.track.feature.genome.gene()
-                .foreground_color("#550055")
+                .color("#550055")
 		    )
             .data(tnt.board.track.data.genome.gene());
 
         var sequence_track = tnt.board.track()
             .height(30)
-            .background_color("white")
+            .color("white")
             .display(tnt.board.track.feature.genome.sequence())
             .data(tnt.board.track.data.genome.sequence()
                 .limit(150)

@@ -92,29 +92,29 @@ tnt_board_genome = function() {
                 }
             }
         } else { // "where" is undef so look for gene or loc
-        if (genome_browser.gene() !== undefined) {
-            get_gene({ species : genome_browser.species(),
-                gene    : genome_browser.gene()
-            });
-            return;
-        } else {
-            where = {};
-            where.species = genome_browser.species();
-            where.chr     = genome_browser.chr();
-            where.from    = genome_browser.from();
-            where.to      = genome_browser.to();
+            if (genome_browser.gene() !== undefined) {
+                get_gene({ species : genome_browser.species(),
+                    gene    : genome_browser.gene()
+                });
+                return;
+            } else {
+                where = {};
+                where.species = genome_browser.species();
+                where.chr     = genome_browser.chr();
+                where.from    = genome_browser.from();
+                where.to      = genome_browser.to();
+            }
         }
-    }
 
-    var url = conf.rest.url.chr_info( {
-        species : where.species,
-        chr     : where.chr
-    });
-    conf.rest.call (url)
-        .then (function (resp) {
-            genome_browser.right = resp.body.length;
-            genome_browser._start();
+        var url = conf.rest.url.chr_info( {
+            species : where.species,
+            chr     : where.chr
         });
+        conf.rest.call (url)
+            .then (function (resp) {
+                genome_browser.max(resp.body.length);
+                genome_browser._start();
+            });
 
     // genome_browser.right (function (done) {
     //     var url = conf.rest.url.chr_info ({

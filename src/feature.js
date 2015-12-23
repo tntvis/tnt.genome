@@ -26,14 +26,14 @@ var tnt_feature_transcript = function () {
             })
             .attr("y2", ~~(feature.layout().gene_slot().gene_height/2))
             .attr("fill", "none")
-            .attr("stroke", track.background_color())
+            .attr("stroke", track.color())
             .attr("stroke-width", 2)
             .transition()
             .duration(500)
             .attr("stroke", function (d) {
-                return feature.foreground_color()(d);
+                return feature.color()(d);
             });
-            //.attr("stroke", feature.foreground_color());
+            //.attr("stroke", feature.color());
 
         // exons
         // pass the "slot" to the exons and introns
@@ -64,22 +64,22 @@ var tnt_feature_transcript = function () {
                 return (xScale(d.end) - xScale(d.start));
             })
             .attr("height", feature.layout().gene_slot().gene_height)
-            .attr("fill", track.background_color())
-            .attr("stroke", track.background_color())
+            .attr("fill", track.color())
+            .attr("stroke", track.color())
             .transition()
             .duration(500)
-            //.attr("stroke", feature.foreground_color())
+            //.attr("stroke", feature.color())
             .attr("stroke", function (d) {
-                return feature.foreground_color()(d);
+                return feature.color()(d);
             })
             .attr("fill", function (d) {
                 if (d.coding) {
-                     return feature.foreground_color()(d);
+                     return feature.color()(d);
                 }
                 if (d.coding === false) {
-                    return track.background_color();
+                    return track.color();
                 }
-                return feature.foreground_color()(d);
+                return feature.color()(d);
             });
 
         // labels
@@ -88,7 +88,7 @@ var tnt_feature_transcript = function () {
             .attr("class", "tnt_name")
             .attr("x", 0)
             .attr("y", 25)
-            .attr("fill", track.background_color())
+            .attr("fill", track.color())
             .text(function (d) {
                 if (feature.layout().gene_slot().show_label) {
                     return d.display_label;
@@ -100,7 +100,7 @@ var tnt_feature_transcript = function () {
             .transition()
             .duration(500)
             .attr("fill", function (d) {
-                return feature.foreground_color()(d);
+                return feature.color()(d);
             });
 
     });
@@ -133,7 +133,8 @@ var tnt_feature_transcript = function () {
             });
     });
 
-    feature.mover (function (transcripts, xScale) {
+    feature.mover (function (transcripts) {
+        var xScale = feature.scale();
         var gs = transcripts.select("g")
             .attr("transform", function (d) {
                 return "translate(" + xScale(d.start) + "," + (feature.layout().gene_slot().slot_height * d.slot) + ")";
@@ -186,7 +187,7 @@ var tnt_feature_sequence = function () {
 
         new_nts
             .append("text")
-            .attr("fill", track.background_color())
+            .attr("fill", track.color())
             .style('font-size', config.fontsize + "px")
             .attr("x", function (d) {
                 return xScale (d.pos) - (config.fontsize/2) + 1;
@@ -198,10 +199,11 @@ var tnt_feature_sequence = function () {
             .text(config.sequence)
             .transition()
             .duration(500)
-            .attr('fill', feature.foreground_color());
+            .attr('fill', feature.color());
     });
 
-    feature.mover (function (nts, xScale) {
+    feature.mover (function (nts) {
+        var xScale = feature.scale();
         nts.select ("text")
             .attr("x", function (d) {
                 return xScale(d.pos) - (config.fontsize/2) + 1;
@@ -235,12 +237,12 @@ var tnt_feature_gene = function () {
                 return (xScale(d.end) - xScale(d.start));
             })
             .attr("height", feature.layout().gene_slot().gene_height)
-            .attr("fill", track.background_color())
+            .attr("fill", track.color())
             .transition()
             .duration(500)
             .attr("fill", function (d) {
                 if (d.color === undefined) {
-                    return feature.foreground_color();
+                    return feature.color();
                 } else {
                     return d.color;
                 }
@@ -255,7 +257,7 @@ var tnt_feature_gene = function () {
             .attr("y", function (d) {
                 return (feature.layout().gene_slot().slot_height * d.slot) + 25;
             })
-            .attr("fill", track.background_color())
+            .attr("fill", track.color())
             .text(function (d) {
                 if (feature.layout().gene_slot().show_label) {
                     return d.display_label;
@@ -267,7 +269,7 @@ var tnt_feature_gene = function () {
             .transition()
             .duration(500)
             .attr("fill", function() {
-                return feature.foreground_color();
+                return feature.color();
             });
     });
 
@@ -298,7 +300,8 @@ var tnt_feature_gene = function () {
             });
     });
 
-    feature.mover(function (genes, xScale) {
+    feature.mover(function (genes) {
+        var xScale = feature.scale();
         genes.select("rect")
             .attr("x", function (d) {
                 return xScale(d.start);
@@ -318,6 +321,7 @@ var tnt_feature_gene = function () {
 
 // genome location
  var tnt_feature_location = function () {
+     var xScale;
      var row;
      var chr;
      var species;
@@ -329,12 +333,13 @@ var tnt_feature_gene = function () {
      feature.reset = function () {};
      feature.plot = function () {};
      feature.init = function () { row = undefined; };
-     feature.move = function (xScale) {
+     feature.move = function () {
+         var xScale = feature.scale();
          var domain = xScale.domain();
          row.select ("text")
             .text(text_cbak(species, chr, ~~domain[0], ~~domain[1]));
      };
-     feature.update = function (xScale, where) {
+     feature.update = function (where) {
          chr = where.chr;
          species = where.species;
          var track = this;
@@ -347,6 +352,15 @@ var tnt_feature_gene = function () {
                  .text(text_cbak(species, chr, ~~domain[0], ~~domain[1]));
          }
      };
+
+     feature.scale = function (s) {
+         if (!arguments.length) {
+             return xScale;
+         }
+         xScale = s;
+         return this;
+     };
+
      feature.text = function (cbak) {
         if (!arguments.length) {
             return text_cbak;

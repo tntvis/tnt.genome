@@ -205,7 +205,7 @@ var tnt_theme_track_compact = function() {
 	    .height(200)
 	    .color(gBrowserTheme.background_color())
 	    .display(tnt.board.track.feature.genome.transcript()
-		     .foreground_color(gBrowserTheme.foreground_color())
+		     .color(gBrowserTheme.foreground_color())
 		    )
 	    .data(tnt.board.track.data.genome.gene());
 

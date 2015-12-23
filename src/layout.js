@@ -7,10 +7,6 @@ var gene_layout = function() {
 
     // vars exposed in the API:
     var height = 150;
-    // var conf = {
-    //     height   : 150,
-    //     scale    : undefined
-    // };
 
     var old_elements = [];
 
@@ -31,9 +27,9 @@ var gene_layout = function() {
     var current_slot_type = 'expanded';
 
     // The returned closure / object
-    var genes_layout = function (new_genes, xScale) {
+    var genes_layout = function (new_genes) {
         var track = this;
-        scale = xScale;
+        scale = track.display().scale();
 
         // We make sure that the genes have name
         for (var i = 0; i < new_genes.length; i++) {
@@ -43,10 +39,6 @@ var gene_layout = function() {
         }
 
         max_slots = ~~(track.height() / slot_types.expanded.slot_height);
-
-        // if (scale !== undefined) {
-        //     genes_layout.scale(scale);
-        // }
 
         if (genes_layout.keep_slots()) {
             slot_keeper(new_genes, old_elements);
@@ -79,9 +71,9 @@ var gene_layout = function() {
         var genes_placed = [];
         var genes_to_place = genes;
         var needed_slots = 0;
-        for (var i = 0; i < genes.length; i++) {
-            if (genes[i].slot > needed_slots && genes[i].slot < max_slots) {
-                needed_slots = genes[i].slot;
+        for (var j=0; j<genes.length; j++) {
+            if (genes[j].slot > needed_slots && genes[j].slot < max_slots) {
+                needed_slots = genes[j].slot;
             }
         }
 
@@ -114,7 +106,7 @@ var gene_layout = function() {
         if (genes_in_this_slot === undefined) {
             return true;
         }
-        for (var j = 0; j < genes_in_this_slot.length; j++) {
+        for (var j=0; j<genes_in_this_slot.length; j++) {
             var subj_gene = genes_in_this_slot[j];
             if (query_gene.id === subj_gene.id) {
                 continue;
@@ -165,8 +157,6 @@ var gene_layout = function() {
 
     // API
     var api = apijs (genes_layout)
-//    .getset (conf)
-//    .get (conf_ro)
         .getset ("elements", function () {})
         .getset ("on_layout_run", function () {})
         .getset ("fixed_slot_type")

@@ -4,18 +4,19 @@ var sequence_theme = function () {
     var theme = function (gB, div) {
 	var gene_track = tnt.board.track()
 	    .height(200)
-	    .background_color("white")
-	    .display(tnt.board.track.feature.genome.gene()
-		     .foreground_color("#550055")
-		    )
+	    .color("white")
+        .display(tnt.board.track.feature.genome.gene()
+            .color("#550055")
+        )
 	    .data(tnt.board.track.data.genome.gene());
 
 	var sequence_track = tnt.board.track()
 	    .height(30)
-	    .background_color("white")
+	    .color("white")
 	    .display(tnt.board.track.feature.genome.sequence())
 	    .data(tnt.board.track.data.genome.sequence()
-		  .limit(150));
+		  .limit(150)
+        );
 
 	gB(div);
 	gB
