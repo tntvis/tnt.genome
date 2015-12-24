@@ -5,9 +5,9 @@
      <script src={{ site.baseurl }}/themes/gene-colors.js></script>
      <script>
          (function () {
-             var myBoard = tnt.board().from(20).to(500).max(500).width(700);
-             var theme = gene_colors();
-             theme(myBoard, document.getElementById("example"));
+             var gB = tnt.board.genome().species("human").gene("BRCA2").width(900);
+             var gBTheme = gene_colors();
+             gBTheme(gB, document.getElementById("example"));
          })();
      </script>
 {% endcase %}
