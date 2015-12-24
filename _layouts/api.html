@@ -1,0 +1,22 @@
+---
+layout : default
+---
+{{ content }}
+{% for toplevel in site.api %}
+  {% if toplevel.name == page.api_toplevel %}
+    {% for element in toplevel.elements %}
+      <h2><a name={{ element.name | replace:" ","_" }} href=#{{ element.name | replace:" ","_" }}>#</a>{{ element.name }}</h2>
+      <p> {{ element.preamble }} </p>
+      {% highlight javascript %}
+{{ element.example }}
+      {% endhighlight %}
+      {% for item in element.elements %}
+         <p><a name={{ item.name }} href=#{{ item.name }}>#</a> {% if item.class == "abstract" %} <span style="color:red">&lt;abstract&gt;</span> {% endif %} {{ item.path }}.<b>{{ item.name }}</b> ({% if item.args %}&lt;{{ item.args }}&gt;{% endif %})</p>
+         <p>{{ item.full }}</p>
+         {% if item.example %}{% highlight javascript %}
+{{ item.example }}
+         {% endhighlight %}{% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}

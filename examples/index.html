@@ -1,0 +1,78 @@
+---
+layout : default
+title : TnT Examples
+type : examples
+gists :
+   - title : simple
+     category : t
+     description : Simple board display with TnT Board
+     id : b3f9b1e4a3b4b7edd57c
+
+   - title : Allowing panning / zooming
+     category : t
+     description : Example showing how to dynamically set wether the board should respond to panning or zooming events
+     id : 3ed3566fe24178de03a7
+
+   - title : Asynchronous data retrieval
+     category : t
+     description : Example of asynchronous data retrieval for a track
+     id : 6130a7ae73d66727106b
+
+   - title : Composite feature
+     category : t
+     description : Example of composite features in TnT Board
+     id : f8f0061c832e8d7d9486
+
+   - title : Custom feature
+     category : t
+     description : Example of custom features in a track
+     id : caf13b8dbeb8ce9b2a49
+
+   - title : Mirror tracks
+     category : t
+     description : Example of inter-relationship between two track's data
+     id : 1bfb0d95e418c706b9bf
+
+   - title : Features example
+     category : t
+     description : Example showing different track features
+     id : 56030bffaf64463c76bc
+
+   - title : Track IDs
+     category : t
+     description : Example of how to set and use track ids
+     id : 3a7983dd0fee076384de
+
+   - title : Board reload
+     category : t
+     description : Example of how to re-start the board
+     id : 61a609789fed6d86b84f
+
+   - title : Tracks reorder
+     category : t
+     description : Example of how to create new tracks and reorder them dynamically
+     id : eb519b6641753a991d73
+
+   - title : Track update
+     category : t
+     description : Example of how to update the board programmatically
+     id : 40a14340cd802b5d6e48
+
+   - title : Contextual data updates
+     category : t
+     description : Example showing contextual data updates in the board
+     id : f2cd58e102b5dbff1572
+
+   - title : Board resize
+     category : t
+     description : Example of dynamic board resize
+     id : 2ae9f16799e8e171ade9
+
+---
+
+<p>These examples aim to document some important parts of the API by providing simple working code examples</p>
+<ul>
+{% for gist in page.gists %}
+<li><a href=http://bl.ocks.org/emepyc/{{ gist.id }}>{{ gist.description }}</li>
+{% endfor %}
+</ul>

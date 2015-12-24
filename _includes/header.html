@@ -1,0 +1,16 @@
+
+<header>
+  {% if page.type == 'overview' %}<b>{% endif %}
+    <a style="margin-left:1em;" href={{ site.baseurl }}/index.html>Overview</a></b>
+  {% if page.type == 'overview' %}</b>{% endif %}
+
+{% if page.type == 'examples' %}<b>{% endif %}
+  <a style="margin-left:1em;" href={{ site.baseurl }}/examples/index.html>Examples</a>
+  {% if page.type == 'examples' %}</b>{% endif %}
+
+{% if page.type == 'API' %}<b>{% endif %}
+  <a style="margin-left:1em;" href={{ site.baseurl }}/api/index.html>API</a>
+  {% if page.type == 'API' %}</b>{% endif %}
+
+  <a style="margin-left:1em;" href="https://github.com/emepyc/tnt.genome">Source</a>
+</header>

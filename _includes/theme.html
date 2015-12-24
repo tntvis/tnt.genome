@@ -1,0 +1,13 @@
+<div id="example"></div>
+
+{% case page.theme %}
+  {% when 'genesAndTranscripts' %}
+     <script src={{ site.baseurl }}/themes/genesAndTranscripts.js></script>
+     <script>
+         (function () {
+             var myBoard = tnt.board().from(20).to(500).max(500).width(700);
+             var theme = features_theme();
+             theme(myBoard, document.getElementById("example"));
+         })();
+     </script>
+{% endcase %}
