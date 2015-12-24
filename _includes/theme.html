@@ -2,11 +2,11 @@
 
 {% case page.theme %}
   {% when 'genesAndTranscripts' %}
-     <script src={{ site.baseurl }}/themes/genesAndTranscripts.js></script>
+     <script src={{ site.baseurl }}/themes/gene-colors.js></script>
      <script>
          (function () {
              var myBoard = tnt.board().from(20).to(500).max(500).width(700);
-             var theme = features_theme();
+             var theme = gene_colors();
              theme(myBoard, document.getElementById("example"));
          })();
      </script>
