@@ -47,9 +47,9 @@ var gene_colors = function() {
     	d3.selectAll("tnt_biotype")
             .data(gene_track.data().elements());
 
-        var gene_updater = gene_track.data().update().retriever();
-        gene_track.data().update().retriever ( function (obj) {
-            return gene_updater(obj)
+        var gene_updater = gene_track.data().retriever();
+        gene_track.data().retriever (function (obj) {
+            return gene_updater.call(gene_track, obj)
                 .then (function (genes) {
                     genes.map(gene_color);
 
