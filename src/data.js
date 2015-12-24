@@ -7,26 +7,26 @@ var data_gene = function () {
     var eRest = board.track.data.genome.rest;
 
     var data = board.track.data.async()
-              .retriever (function (obj) {
-                  var track = this;
-                  var scale = track.display().scale();
-                  var url = eRest.url.region(obj);
-                  return eRest.call(url)
-                    .then (function (resp) {
-                        var genes = resp.body;
-                        // Set the display_label field
-                        for (var i=0; i<genes.length; i++) {
-                            var gene = genes[i];
-                            if (gene.strand === -1) {
-                                gene.display_label = "<" + gene.external_name;
-                            } else {
-                                gene.display_label = gene.external_name + ">";
-                            }
+        .retriever (function (obj) {
+            var track = this;
+            var scale = track.display().scale();
+            var url = eRest.url.region(obj);
+            return eRest.call(url)
+            .then (function (resp) {
+                    var genes = resp.body;
+                    // Set the display_label field
+                    for (var i=0; i<genes.length; i++) {
+                        var gene = genes[i];
+                        if (gene.strand === -1) {
+                            gene.display_label = "<" + gene.external_name;
+                        } else {
+                            gene.display_label = gene.external_name + ">";
                         }
-                        return genes;
-                    });
-              });
-    //   );
+                    }
+                    return genes;
+                }
+            );
+        });
 
     return data;
 };
