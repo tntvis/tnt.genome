@@ -29,9 +29,9 @@ var gene_colors = function() {
 
     	var gene_track = tnt.board.track()
     	    .height(200)
-    	    .background_color("#FFFFFF")
+    	    .color("#FFFFFF")
             .display(tnt.board.track.feature.genome.gene()
-    		     .foreground_color("#550055")
+    		     .color("#550055")
     		)
     	    .data(tnt.board.track.data.genome.gene());
     	gB.add_track(gene_track);

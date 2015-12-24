@@ -187,30 +187,30 @@ var tnt_theme_track_compact = function() {
 
 	// The Browser div
 	// We set up the origin:
-	if (gBrowser.gene() !== undefined) {
-	    orig = {
-		species : gBrowser.species(),
-		gene    : gBrowser.gene()
-	    };
-	} else {
-	    orig = {
-		species : gBrowser.species(),
-		chr     : gBrowser.chr(),
-		from    : gBrowser.from(),
-		to      : gBrowser.to()
-	    }
-	}
+    if (gBrowser.gene() !== undefined) {
+        orig = {
+            species : gBrowser.species(),
+            gene    : gBrowser.gene()
+        };
+    } else {
+        orig = {
+            species : gBrowser.species(),
+            chr     : gBrowser.chr(),
+            from    : gBrowser.from(),
+            to      : gBrowser.to()
+        };
+    }
 
 	var gene_track = tnt.board.track()
 	    .height(200)
-	    .background_color(gBrowserTheme.background_color())
+	    .color(gBrowserTheme.background_color())
 	    .display(tnt.board.track.feature.genome.transcript()
-		     .foreground_color(gBrowserTheme.foreground_color())
+		     .color(gBrowserTheme.foreground_color())
 		    )
 	    .data(tnt.board.track.data.genome.gene());
 
 	gene_track
-	    .display()
+	    .display();
 	    //.on_click(gene_track.display().tooltip());
 
 	gBrowser(div);

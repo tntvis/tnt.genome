@@ -8,9 +8,9 @@ var variable_height = function() {
 
     	var gene_track = tnt.board.track()
     	    .height(current_height) // the default height
-    	    .background_color("#FFFFFF")
+    	    .color("#FFFFFF")
             .display(tnt.board.track.feature.genome.gene()
-    		     .foreground_color("#550055")
+    		     .color("#550055")
     		)
     	    .data(tnt.board.track.data.genome.gene());
 
@@ -23,7 +23,7 @@ var variable_height = function() {
                 if (needed_height !== current_height) {
                     current_height = needed_height;
                     gene_track.height(needed_height);
-                    gB.reorder(gB.tracks());
+                    gB.tracks(gB.tracks());
                 }
             });
 

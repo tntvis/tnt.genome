@@ -29,9 +29,9 @@ var gene_colors = function() {
 
     	var gene_track = tnt.board.track()
     	    .height(200)
-    	    .background_color("#FFFFFF")
+    	    .color("#FFFFFF")
             .display(tnt.board.track.feature.genome.gene()
-    		     .foreground_color("#550055")
+    		     .color("#550055")
     		)
     	    .data(tnt.board.track.data.genome.gene());
     	gB.add_track(gene_track);
@@ -47,9 +47,9 @@ var gene_colors = function() {
     	d3.selectAll("tnt_biotype")
             .data(gene_track.data().elements());
 
-        var gene_updater = gene_track.data().update().retriever();
-        gene_track.data().update().retriever ( function (obj) {
-            return gene_updater(obj)
+        var gene_updater = gene_track.data().retriever();
+        gene_track.data().retriever (function (obj) {
+            return gene_updater.call(gene_track, obj)
                 .then (function (genes) {
                     genes.map(gene_color);
 
