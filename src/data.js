@@ -1,14 +1,13 @@
 var board = require("tnt.board");
 var apijs = require("tnt.api");
 
-board.track.data.ensembl = {};
-
 var data_gene = function () {
-    var eRest = board.track.data.genome.rest;
+    var eRest = board.track.data.genome.ensembl;
 
     var data = board.track.data.async()
         .retriever (function (obj) {
             var track = this;
+            // var eRest = data.ensembl();
             var scale = track.display().scale();
             var url = eRest.url.region(obj);
             return eRest.call(url)
@@ -28,32 +27,32 @@ var data_gene = function () {
             );
         });
 
+    apijs(data)
+        .getset('ensembl');
+
     return data;
 };
 
 var data_transcript = function () {
-    var eRest = board.track.data.genome.rest;
+    var eRest = board.track.data.genome.ensembl;
 
     var data = board.track.data.async()
-                .retriever (function (obj) {
-                    obj.features = ["gene", "transcript", "exon", "cds"];
-                    var url = eRest.url.region(obj);
-                    return eRest.call(url)
-                      .then (function (resp) {
-                          var elems = resp.body;
-                          var genes = eRest.region2genes(elems);
-                          var transcripts = [];
-                          for (var i=0; i<genes.length; i++) {
-                              var g = genes[i];
-                              var ts = data.gene2Transcripts(g);
-                              transcripts = transcripts.concat(ts);
-
-                          }
-                          return transcripts;
-                      });
-
-                });
-        // );
+        .retriever (function (obj) {
+            obj.features = ["gene", "transcript", "exon", "cds"];
+            var url = eRest.url.region(obj);
+            return eRest.call(url)
+              .then (function (resp) {
+                  var elems = resp.body;
+                  var genes = eRest.region2genes(elems);
+                  var transcripts = [];
+                  for (var i=0; i<genes.length; i++) {
+                      var g = genes[i];
+                      var ts = data.gene2Transcripts(g);
+                      transcripts = transcripts.concat(ts);
+                  }
+                  return transcripts;
+              });
+        });
 
     apijs(data)
         .method("gene2Transcripts", function (g) {
@@ -210,38 +209,36 @@ var data_transcript = function () {
         return newExons;
     }
 
-
     return data;
 };
 
 var data_sequence = function () {
-    var eRest = board.track.data.genome.rest;
+    var eRest = board.track.data.genome.ensembl;
 
     var data = board.track.data.async()
-                .retriever (function (obj) {
-                    if ((obj.to - obj.from) < data.limit()) {
-                        var url = eRest.url.sequence(obj);
-                        return eRest.call(url)
-                            .then (function (resp) {
-                                var seq = resp.body;
-                                var fields = seq.id.split(":");
-                                var from = fields[3];
-                                var nts = [];
-                                for (var i=0; i<seq.seq.length; i++) {
-                                    nts.push({
-                                        pos: +from + i,
-                                        sequence: seq.seq[i]
-                                    });
-                                }
-                                return nts;
+        .retriever (function (obj) {
+            if ((obj.to - obj.from) < data.limit()) {
+                var url = eRest.url.sequence(obj);
+                return eRest.call(url)
+                    .then (function (resp) {
+                        var seq = resp.body;
+                        var fields = seq.id.split(":");
+                        var from = fields[3];
+                        var nts = [];
+                        for (var i=0; i<seq.seq.length; i++) {
+                            nts.push({
+                                pos: +from + i,
+                                sequence: seq.seq[i]
                             });
-                    } else { // Region too wide for sequence
-                        return new Promise (function (resolve, reject) {
-                            resolve([]);
-                        });
-                    }
+                        }
+                        return nts;
+                    });
+            } else { // Region too wide for sequence
+                return new Promise (function (resolve, reject) {
+                    resolve([]);
                 });
-        // );
+            }
+        });
 
     apijs(data)
         .getset("limit", 150);

@@ -1,12 +1,15 @@
-var tnt_rest = require("tnt.ensembl");
+// var ensembl_rest = require("tnt.ensembl")();
 var apijs = require("tnt.api");
 var tnt_board = require("tnt.board");
 tnt_board.track.data.genome = require("./data.js");
 tnt_board.track.feature.genome = require("./feature");
 tnt_board.track.layout.feature = require("./layout");
+tnt_board.track.data.genome.ensembl = require("tnt.ensembl")();
 
 tnt_board_genome = function() {
     "use strict";
+
+    var ensembl_rest = tnt_board.track.data.genome.ensembl;
 
     // Private vars
     var ens_re = /^ENS\w+\d+$/;
@@ -18,23 +21,15 @@ tnt_board_genome = function() {
         xref_search    : function () {},
         ensgene_search : function () {},
         context        : 0,
-        rest           : tnt_rest()
+        // rest           : tnt_rest()
     };
-    tnt_board.track.data.genome.rest = conf.rest;
-
     // We "inherit" from board
     var genome_browser = tnt_board()
         .zoom_in(200)
-        .zoom_out(conf.rest.limits.region)
+        .zoom_out(ensembl_rest.limits.region)
         .min(0);
 
     var gene;
-    // var limits = {
-    //     min : 0,
-    //     right : undefined,
-    //     zoom_out : conf.rest.limits.region,
-    //     zoom_in  : 200
-    // };
 
     // The location and axis track
     var location_track = tnt_board.track()
@@ -106,33 +101,20 @@ tnt_board_genome = function() {
             }
         }
 
-        var url = conf.rest.url.chr_info( {
+        var url = ensembl_rest.url.chr_info( {
             species : where.species,
             chr     : where.chr
         });
-        conf.rest.call (url)
+        ensembl_rest.call (url)
             .then (function (resp) {
                 genome_browser.max(resp.body.length);
                 genome_browser._start();
             });
-
-    // genome_browser.right (function (done) {
-    //     var url = conf.rest.url.chr_info ({
-    //         species : where.species,
-    //         chr     : where.chr
-    //     });
-    //
-    //     conf.rest.call (url)
-    //         .then( function (resp) {
-    //             done(resp.body.length);
-    //         });
-    //     });
-    //     genome_browser._start();
     };
 
     var homologues = function (ensGene, callback)  {
-        var url = conf.rest.url.homologues ({id : ensGene});
-        conf.rest.call(url)
+        var url = ensembl_rest.url.homologues ({id : ensGene});
+        ensembl_rest.call(url)
             .then (function(resp) {
                 var homologues = resp.body.data[0].homologies;
                 if (callback !== undefined) {
@@ -154,11 +136,11 @@ tnt_board_genome = function() {
         if (isEnsemblGene(where.gene)) {
             get_ensGene(where.gene);
         } else {
-            var url = conf.rest.url.xref ({
+            var url = ensembl_rest.url.xref ({
                 species : where.species,
                 name    : where.gene
             });
-            conf.rest.call(url)
+            ensembl_rest.call(url)
                 .then (function(resp) {
                     var data = resp.body;
                     data = data.filter(function(d) {
@@ -178,8 +160,8 @@ tnt_board_genome = function() {
     };
 
     var get_ensGene = function (id) {
-        var url = conf.rest.url.gene ({id : id});
-        conf.rest.call(url)
+        var url = ensembl_rest.url.gene ({id : id});
+        ensembl_rest.call(url)
             .then (function(resp) {
                 var data = resp.body;
                 conf.ensgene_search(data);
