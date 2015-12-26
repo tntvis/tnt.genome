@@ -5,7 +5,7 @@
      <script src={{ site.baseurl }}/themes/gene-colors.js></script>
      <script>
          (function () {
-             var gB = tnt.board.genome().species("human").gene("BRCA2").width(900);
+             var gB = tnt.board.genome().species("human").chr("13").from(32200000).to(33000000).width(900);
              var gBTheme = gene_colors();
              gBTheme(gB, document.getElementById("example"));
          })();
