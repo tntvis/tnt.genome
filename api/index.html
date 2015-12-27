@@ -1,0 +1,17 @@
+---
+layout : default
+title : API Reference
+type : API
+theme : null
+---
+{% for toplevel in site.api %}
+<a href={{ site.baseurl }}/api/{{ toplevel.name }}/index.html><h2>{{ toplevel.name | capitalize }}</h2></a>
+{% for element in toplevel.elements %}
+<h3>{{ element.name }}</h3>
+<ul>
+    {% for item in element.elements %}
+    <li type="circle"><a href={{ site.baseurl }}/api/{{ toplevel.name }}/index.html#{{ item.name }}>{{ item.path }}.{{ item.name }}</a> : {{ item.desc }}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endfor %}

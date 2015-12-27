@@ -1,0 +1,39 @@
+---
+layout : api
+title : API Reference
+type : api
+theme : null
+api_toplevel : genome
+---
+<h2>tnt.genome</h2>
+<p><a href="">tnt.board.genome</a> is a special type of <a href="">board</a> that exposes the same methods explained in its <a href="">API</a>. TnT Genome also offers a few elements that are explained below. The most important are: three new <a href="">features</a> for genes, transcripts and genomic sequences, a modified <a href="">location</a> feature that includes the species and the chromosome being displayed in the board, a <a href="">layout</a> that avoids overlaps in genes and transcripts and integration with the Ensembl REST API to fetch genomic data.</p>
+
+  {% highlight javascript linenos %}
+  // Genome is a board. Location and axis tracks are included by default
+  var genome = tnt.board.genome().species("human").gene("brca2").width(950);
+
+  var gene_track = tnt.board.track()
+      .height(200)
+      .color("white")
+      .display(tnt.board.track.feature.genome.gene()
+          .color("#550055")
+      )
+      .data(tnt.board.track.data.genome.gene());
+
+  var sequence_track = tnt.board.track()
+          .height(30)
+          .background_color("white")
+          .display(tnt.board.track.feature.genome.sequence())
+          .data(tnt.board.track.data.genome.sequence()
+              .limit(150)
+          );
+  genome
+      .zoom_in(100)
+      .add_track(sequence_track)
+      .add_track(gene_track);
+
+  genome(document.getElementById("mydiv"));
+  genome.start();
+  {% endhighlight %}
+
+  <p>In the example above two tracks are created using the new data endpoints and displays: the first one is a <a href="">gene track</a> and the second one a sequence track. Although no <a href="">location</a> or <a href="">axis</a> tracks are created, they are included by default in the genome board. <a href="">min</a> and <a href="">max</a> are set automatically to 0 and the chromosome length automatically. The rest of the elements are the same explained before for <a href="">TnT Board</a>.

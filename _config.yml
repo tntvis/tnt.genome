@@ -4,1308 +4,232 @@ safe: true
 highlighter: pygments
 baseurl : /tnt.genome
 api :
-    - name : tree
+    - name : genome
       elements :
-           - name : Tree Visualization
+           - name : genome
              preamble : |
-                        Trees can be created using the <a href="#tree">tnt.tree</a> method. The returned <i>tree</i> is configurable via the methods explained below. An example of use looks like:
+                        The genome board is a special type of board that <i>inherits</i> all its elements. A new genome board can be created using <a href="">tnt.board.genome</a>. An example of use looks like:
              example : |
-                        var mytree = tnt.tree()
-                                     .data (tnt.tree.parse_newick (newick))
-                                     .layout (tnt.tree.layout.vertical()
-                                              .width (650))
-                                     .label (tnt.tree.label.text()
-                                              .height(15))
-             elements :
-                - name : tree
-                  path : tnt
-                  args : null
-                  desc : creates a new tree visualization
-                  full : Creates a new tree visualization that can be configured using the methods explained below. The returned object is a function itself that can be called passing a DOM element as its argument. This DOM element is used as a container for the visualization.
-                  example : |
-                         var mytree = tnt.tree()
-                         mytree (document.getElementById ('my_div'));
+                // Giving species and gene name
+                var genome = tnt.board.genome()
+                    .species("human")
+                    .gene("brca2")
+                    .width(950);
 
-                - name : data
-                  path : tree
-                  args : object
-                  desc : sets the tree data (javascript object)
-                  full : Sets the data to be used in the tree visualization (the tree object). This tree needs to be a tree like structure in JSON format like the one shown below. This JSON object can be obtained with <a href="#parse_newick">tnt.tree.parse_json</a> or <a href="#parse_nhx">tnt.tree.parse_nhx</a>
-                  example : |
-                         var tree_obj = {
-                            name: "F",
-                            children: [
-                               {name: "A", length: 0.1},
-                               {name: "B", length: 0.2},
-                               {
-                                  name: "E",
-                                  length: 0.5,
-                                  children: [
-                                     {name: "C", length: 0.3},
-                                     {name: "D", length: 0.4}
-                                  ]
-                                }
-                            ]
-                         };
-                         var tree_vis = tnt.tree()
-                                           .data(tree_obj);
-                - name : duration
-                  path : tree
-                  args : integer
-                  desc : specifies duration of the tree transitions
-                  full : Specifies the duration of the transitions on trees. If no argument is provided it returns the current duration. By default this value is 500ms
-                  example : |
-                            var tree_vis = tnt.tree()
-                                             .duration(750);
-                            tree_vis.duration(); // returns 750
+                // Giving an ensembl ID (no species needed)
+                var genome = tnt.board.genome()
+                    .gene("ENSG00000012048");
 
-                - name : on.
-                  path : tree
-                  args : string, callback
-                  desc : adds an event listener to each node
-                  full : Adds an event listener to each node. Its first argument is a string with the event name. <i>click</i>, <i>dblclick</i>, <i>mouseover</i> and <i>mouseout</i> are accepted. The second argument is a callback that receives the <a href="#Nodes">tnt.tree.node</a> as its argument and is executed when the event is fired.
-                  example : |
-                            var tree_vis = tnt.tree();
-
-                            // collapse node on click
-                            tree_vis.on("click", function (node) {
-                                 node.toggle();
-                                 tree_vis.update();
-                            });
-
-
-                - name : root
-                  path : tree
-                  args : tnt.tree.node
-                  desc : sets the root node (tnt.tree.node) of the tree used in the visualization
-                  full : Sets the root <a href="#Nodes">node</a> of the tree used in the visualization. This object is used to manipulate and query the tree in different ways (see below for the supported methods). If called without arguments, the current root <a href="#Nodes">tnt.tree.node</a> is returned.
-                  example : |
-                            var tree_vis = tnt.tree()
-                                             .data (tnt.tree.parse_newick (newick));
-                            var root = tree_vis.root();
-
-
-                - name : branch_color
-                  path : tree
-                  args : string | callback
-                  desc : specifies the color of branches
-                  full : Specifies the color of the branches in the tree. This color can be given as a string specifying the name of the color (like "blue") or its hexadecimal code (like '#00FF00'). To get per branch colors use a callback instead. This callback will be called on each branch with the source and destination <a href="#Nodes">tnt.tree.nodes</a> as arguments. By default branches are black.
-                  example : |
-                            var tree_vis = tnt.tree()
-                                             .link_color (function (source, target) {
-                                                var color = 'grey';
-                                                var source_data = source.data();
-                                                var target_data = target.data();
-                                                switch (source_data.type) {
-                                                    case "speciation" :
-                                                      color = "green";
-                                                      break;
-                                                    case "duplication" :
-                                                      color = "red";
-                                                      break;
-                                                }
-                                                return color;
-                                             });
-
-                - name : node_display
-                  path : tree
-                  args : tnt.tree.node_display
-                  desc : specifies the shape, size and color of nodes
-                  full : Specifies the shape, size and color of nodes as a <a href="#node_display">tnt.tree.node_display</a> object. If called without arguments the current <a href="#node_display">tnt.tree.node_display</a> object is returned. By default black circles of size 4.5 pixels are displayed.
-                  example : |
-                            var tree_vis = tnt.tree()
-                                              .node_display (tnt.tree.node_display.circle()
-                                                              .size(5)
-                                                              .fill("blue");
-
-                - name : label
-                  path : tree
-                  args : tnt.tree.label
-                  desc : specifies the label type to be used in the tree visualization
-                  full : Specifies the label to be used in the tree visualization. Accepts an argument of type tnt.tree.label. Returns the current label object if called without arguments. By default, a <a href="#text">tnt.tree.label.text</a> is used displaying the <i>name</i> field of the node.
-                  example : |
-                            var tree_vis = tnt.tree()
-                                            .data(...)
-                                            .label (tnt.tree.label.text()
-                                                .height(30)
-                                                .text (function (node) {
-                                                    return node.property("scientific_name");
-                                                })
-                                            );
-
-                            var curr_label = tree_vis.label();
-
-                - name : layout
-                  path : tree
-                  args : tnt.tree.layout
-                  desc : specifies the layout to be used in the tree visualization
-                  full : Specifies the layout to be used in the tree visualization. Accepts an optional argument of type tnt.tree.layout. If called without arguments, returns the current layout object
-                  example : |
-                            var tree_vis = tnt.tree()
-                                             .layout (tnt.tree.layout.vertical());
-
-
-           - name : Nodes
-             preamble : |
-                        TnT provides several methods for tree manipulation, these include nodes searching, mapping callbacks to nodes, etc. TnT provides a special object (tnt.tree.node) for these operations. These objects can be obtained using the <a href="#root">root</a> method on the tree visualization object. Since the tree data object is separated from the visualization, it is also possible to use them directly using the <i>tnt.tree.node</i> object in tnt. For example
-             example : |
-                       // Create a tnt.tree.node from a json object:
-                       var jsonObj = {
-                          "name" : "root",
-                          "children" : [
-                               {
-                                  "name" : "leaf1"
-                               },
-                               {
-                                 "name" : "leaf2"
-                               }
-                          ]
-                       };
-                       var root = tnt.tree.node (jsonObj);
-                       var leaves = root.get_all_leaves();
-
-                       // Set this tree for visualization
-
-                       var tree_vis = tnt.tree()
-                                        .root (root);
-
-                       // Or create the tnt.tree.node object implicitely
-                       var tree_vis = tnt.tree()
-                                        .data (tree.parse_newick ("((human, chimp), mouse)"))
-                       var root = tree_vis.root(); // getter
-
-                       // get the node with name 'human' and 'mouse'
-                       var human_node = root.find_node_by_name ('human');
-                       var mouse_node = root.find_node_by_name ('mouse');
-
-                       // get the node that is the lca of human and mouse
-                       var lca = root.lca ([human_node, mouse_node]);
-
-                       // lca is a tnt.tree.node itself
-                       lca.find_node_by_name('human');
+                // Giving a genomic region
+                var genome = tnt.board.genome()
+                    .species("human")
+                    .chr(13)
+                    .from(30665877)
+                    .to(31380905);
 
              elements :
-                - name : node
-                  path : tnt.tree
-                  args : object
-                  desc : creates a new <i>tnt.tree.node</i> object
-                  full : Creates a new <a href="#Nodes">tnt.tree.node</a> object.
-                  example : |
-                            var node = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            var tree_object = node.data();
-
-                - name : data
-                  path : node
-                  args : object
-                  desc : re-sets the tree JSON object of a tnt.tree.node object
-                  full : Re-sets the tree JSON object. If called without arguments returns the current tree data object. This method can not be used to first set the data for a tnt.tree.node (see the example below)
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            // javascript object of the tree (JSON)
-                            var tree_object = root.data();
-                            // re-set the data:
-                            root.data(tnt.tree.parse_newick (newick2));
-
-                            // This doesn't work
-                            var root = tnt.tree.node()
-                                          .data (tnt.tree.parse_newick (newick));
-
-                - name : find_node
-                  path : node
-                  args : callbak, boolean
-                  desc : retrieves a node based on a given condition
-                  full : Retrieves a node based on a given condition. This method accepts two parameters. The first one is a callback that is called for every node. This callback is expected to accept a tnt.tree.node object and return <i>true</i> or <i>false</i>. The method returns the first node (tnt.tree.node) for which the condition is <i>true</i>. Use <a href="">#find_all</a> to get all the nodes satisfying the condition. The second argument is a boolean indicating if collapsed branches should be traversed or not. By default this option is <i>false</i> and collapsed branches are ignored.
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            // Using a field name
-                            var human_node = root.find_node (function (node) {
-                               return (node.node_name() === "human");
-                            });
-
-                - name : find_node_by_name
-                  path : node
-                  args : string, boolean
-                  desc : retrieves a node based on its name field
-                  full : Retrieves a node based on its 'name' field. This is a special case of <a href="#find_node">find_node</a>. The first argument specifies the name of the node and the second is a boolean indicating if collapsed branches should be traversed or not (<i>false</i> by default)
-                  example : null
-
-                - name : toggle
-                  path : node
+                - name : genome
+                  path : tnt.board
                   args : null
-                  desc : collapses / uncollapses the branch at the current node [REVISE]
-                  full : Toggles collapsibility of the current branch at the current node. If the current node is not collapsed, it becomes collapsed, if it is already collapsed, this method uncollapses it. The return value is the same node.
+                  desc : creates a new genome board
+                  full : Creates a new genome board that can be configured using the methods explained below. The returned <i>genome</i> is a function itself that can be called passing a DOM element as its argument. This DOM element is used as a container for the visualization.
                   example : |
-                            var tree_vis = tnt.tree()
-                                             .data(...)
-                                             .layout(...);
-                            tree_vis.on ("click", function (node) { // clicked node
-                                node.toggle();
-                                tree_vis.update();
-                            });
+                    var genome = tnt.board.genome();
+                    genome (document.getElementById ('my_div'));
 
-                - name : is_collapsed
-                  path : node
-                  args : null
-                  desc : checks if a node is collapsed
-                  full : Returns <i>true</i> if the branch is collapsed at the current node and <i>false</i> otherwise. It also returns <i>false</i> when the node is not collapsed but any of its ancestors is.
-                  example : null
-
-                - name : n_hidden
-                  path : node
-                  args : null
-                  desc : returns the number of nodes under a collapsed node.
-                  full : Returns the number of nodes under a collapsed node. This is, the number of nodes that would be hidden in the tree visualization if the node gets collapsed.
-                  example : |
-                            var newick_str = "((human, chimp)primates, (mouse, rat)rodents)mammals";
-                            var root = tnt.tree.node (tnt.tree.newick.parse_newick (newick_str));
-                            var primates = root.find_node_by_name ('primates');
-                            primates.toggle();
-                            // primates.n_hidden() === 2
-
-                - name : lca
-                  path : node
-                  args : Array
-                  desc : returns the lowest common ancestor of a set of nodes
-                  full : Returns the lowest common ancestor node of a set of nodes. These nodes have to be downstream the current node and passed to the function as an array.
-                  example : |
-                            var newick = "((human, chimp)primates, (mouse, rat)rodents)mammals";
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            var human_node = root.find_node_by_name('human');
-                            var mouse_node = root.find_node_by_name('mouse');
-                            var lca_node = root.lca([human_node, mouse_node]);
-                            // lca_node.node_name() === 'mammals';
-
-                - name : get_all_nodes
-                  path : node
-                  args : boolean
-                  desc : returns an array with all the nodes in the tree
-                  full : Returns an array containing all the nodes present in the tree. These nodes are tnt.tree.node objects. This method accepts an optional boolean argument that specifies if the collapsed nodes should be also traversed or not. This argument is set to <i>false</i> by default
-                  example : |
-                           var newick_str = "((human, chimp)anc1, mouse)anc2";
-                           var root = tnt.tree.node(tnt.tree.newick.parse_newick(newick_str));
-                           var nodes = root.get_all_nodes();
-                           nodes.length(); // Returns 5
-
-                           // On collapsed nodes
-                           root.toggle();
-                           root.get_all_nodes().length(); // Returns 1
-                           root.get_all_nodes(true).length(); // Returns 5
-
-                - name : get_all_leaves
-                  path : node
-                  args : boolean
-                  desc : returns an array with all the leaf nodes under the node
-                  full : Returns an array with all the leaf nodes under the current node. This method traverses all the tree to find the leaves. It accepts an optional boolean argument. If set to <i>true</i> the method also traverses collapsed nodes (<i>false</i> by default);
-                  example : |
-                           var newick_str = "((human, chimp)anc1, mouse)anc2";
-                           var root = tnt.tree.node(tnt.tree.newick.parse_newick(newick_str));
-                           var leaves = root.get_all_leaves();
-                           leaves.length(); // Returns 3
-
-                           // On collapsed nodes
-                           root.toggle();
-                           root.get_all_leaves().length(); // Returns 1
-                           root.get_all_leaves(true).length(); // Returns 3
-
-                - name : upstream
-                  path : node
-                  args : callback
-                  desc : applies a callback to all the upstream nodes of the current node
-                  full : Applies the passed callback to all the ancestors of the current node. This callback is called passing each ancestor node as its argument. The ancestors are passed in order until the root of the tree is reached.
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            var human_node = root.find_node_by_name ('human');
-                            human_node.upstream (function (node) {
-                               // this callback is called with all the upstream nodes to human_node
-                               // until the root node is reached (included)
-                            });
-
-                - name : subtree
-                  path : node
-                  args : Array, boolean
-                  desc : returns a new subtree given a set of leaves
-                  full : Returns the root of a new tree that has been made by getting the lowest common ancestor of the given leaves. Its first argument is an array of tnt.tree.node nodes. An optional second argument specifies if the subtree should keep singleton nodes (nodes with only one children). This argument is set to <i>false</i> by default, meaning that singletons are filtered out in the subtree. Because the returned subtree is made by copies of the original nodes, changing one doesn't affect the other.
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            var leaves = ... // get leaves
-                            var subtree = root.subtree (leaves);
-
-                - name : flatten
-                  path : node
-                  args : boolean
-                  desc : flattens all the descendants of the given node
-                  full : Flattens all the descendants of the given node. When called on a node, all the leaves under that node are attached directly to it. If called on a leaf, no action is made. By default, the intermediate (internal) nodes are discarded. It accepts an optional boolean value to keep them when set to <i>true</i>
-                  example : |
-                           var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                           var flattened_tree = root.flatten();
-
-                - name : present
-                  path : node
-                  args : callback
-                  desc : tests downstream nodes for a condition
-                  full : Returns <i>true</i> if any of the downstream nodes satisfied the passed condition or <i>false</i> otherwise. The condition is expected to be a callback that accepts a node (tnt.tree.node) as its argument and return <i>true</i> or <i>false</i>.
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            root.present (function (node) {
-                               return (node.property ('my_field') === 1);
-                            });
-
-                - name : sort
-                  path : node
-                  args : callback
-                  desc : orders the descendant nodes based on the given callback
-                  full : Recursively orders the children of each downstream node based on the given callback. This ordering does not affect the tree topology, it just reorders the children. The given callback is expected to receive a pair of nodes and return -1, 0 or 1 if the first node should be placed before the second, there is a tie or if the second should be placed before the first respectively.
-                  example : |
-                            // Helper function to get the lowest value in
-                            // the subnode -- this is used in the sort cbak
-                            var get_highest_val = function (node, prop) {
-                               var highest = 0;
-                               node.apply(function (n) {
-                                  if (n.property(prop) === "") {
-                                      return;
-                                  }
-                                  var val = parseFloat(n.property(prop));
-                                  if (val > highest) {
-                                     highest = val;
-                                  }
-                               });
-                              return highest;
-                            };
-
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            root.sort (function (node1, node2) {
-                                var highest1 = get_highest_val (node1, 'length');
-                                var highest2 = get_highest_val (node2, 'length');
-                                return highest1 - highest2;
-                            });
-
-                - name : apply
-                  path : node
-                  args : callback, boolean
-                  desc : applies the given callback to all the downstream nodes
-                  full : Recursively applies the given callback to each downstream node of the current node. The node is passed to the callback as its argument. See <a href="#sort">node.sort</a> for an example. This method also accepts a boolean as an optional second argument. If set to <i>true</i> also the collapsed nodes are visited.
-                  example : |
-                            var root = tnt.tree.root (tnt.tree.parse_newick (newick));
-                            root.apply (function (node) {
-                              // Process the node
-                            });
-
-                - name : property
-                  path : node
-                  args : string | callback, value
-                  desc : accesses properties in the nodes data
-                  full : Accesses to data properties in the current node. The first parameter is mandatory and corresponds with the data field to be accessed. If a second parameter is provided, the method sets the field with this value, if it is not provided, it returns the field. If a callback is used as its first parameter, it is treated as a way to access the field (for example if it is a deeper field in the node structure). For example
-                  example : |
-                            var tree_obj = {
-                               name: "F",
-                               deeper : { field : 1 },
-                               children: [
-                                  {name: "A", length: 0.1},
-                                  {name: "B", length: 0.2},
-                                  {
-                                     name: "E",
-                                     length: 0.5,
-                                     children: [
-                                        {name: "C", length: 0.3},
-                                        {name: "D", length: 0.4}
-                                     ]
-                                  }
-                               ]
-                            };
-
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-
-                            // As a getter:
-                            root.property ('name'); // returns "F"
-                            root.property (function (node) {
-                                 return node.deeper.field;
-                            }); // returns 1
-
-                            // As a setter:
-                            root.property ('name', 'A');
-                            root.property (function (node, value) {
-                                 node.deeper.new_field = value;
-                            }, 2);
-
-                - name : is_leaf
-                  path : node
-                  args : boolean
-                  desc : Checks if the node is a leaf
-                  full : Returns <i>true</i> if the current node is a leaf, <i>false</i> otherwise. An optional boolean argument can be passed to take into account collapsed nodes. For example
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            root.apply (function (node) {
-                                if (node.is_leaf()) {
-                                   console.log (node.node_name() + " is a leaf node");
-                                } else {
-                                   console.log (node.node_name() + " is an internal node");
-                                }
-                            });
-
-                            // Collapse root node
-                            root.toggle();
-                            root.is_leaf(); // true
-                            root.is_leaf(true); // false -- root has collapsed children
-
-                - name : node_name
-                  path : node
-                  args : null
-                  desc : returns the property 'name' of the given node
-                  full : Returns the property 'name' of the current node. It is an alias of node.<a href="#find_node">find_node</a> using 'name' as its value
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            var name = root.node_name();
-
-                - name : branch_length
-                  path : node
-                  args : null
-                  desc : returns the branch length of the current node
-                  full : Returns the branch length of the current node. If it is not set it returns <i>undefined</i>
-                  example : |
-                            var root = tnt.tree.node(tnt.tree.newick.parse_newick("((human:0.3, chimp:0.2):0.5,mouse:0.6):0.1"));
-                            var human = root.find_node_by_name("human");
-                            human.branch_length(); // Returns 0.3
-
-                - name : root_dist
-                  path : node
-                  args : null
-                  desc : returns the distance of the node to the root based on branch lengths
-                  full : Returns the distance of the current node to the root based on the branch lengths of the tree. Only the branch lengths up to the root node are considered, ie, if the root has a branch length itself, this is not included in the calculation
-                  example : |
-                            var root = tnt.tree.node(tnt.tree.newick.parse_newick("((human:0.3, chimp:0.2):0.5,mouse:0.6):0.1"));
-                            var human = root.find_node_by_name("human");
-                            human.root_dist(); // Returns 0.8
-
-                - name : children
-                  path : node
-                  args : boolean
-                  desc : returns all the children of the node
-                  full : Returns an array with all the children of the current node. This method accepts an optional boolean argument that if set to <i>true</i> makes this method to also return collapsed children
-                  example : |
-                            var root = tnt.tree.node (tnt.tree.parse_newick (newick));
-                            console.log (root.node_name + " has " + root.children().length + " children";
-
-                - name : parent
-                  path : node
-                  args : null
-                  desc : returns the parent of the node
-                  full : Returns the parent of the current node
-
-           - name : Nodes display
-             preamble : The size and shape of the nodes is also configurable and specified by the <i>node_display</i> object. There are different predefined shapes available in TnT like circles, squares and triangles, but it is easy to build your own SVG shapes. The size of the nodes have an impact in the height of trees with vertical layouts. See the <a href=#Layouts>layouts</a> section for details.
-             example : |
-                       var tree_vis = tnt.tree()
-                                         .data (tnt.tree.parse_newick (newick))
-                                         .node_display (tnt.tree.node_display.circle()
-                                                          .size(4)
-                                                          .fill("black")
-                                         .layout (tnt.tree.layout.vertical()
-                                                   .width(600)
-                                                )
-                                         .label (tnt.tree.label.text()
-                                                  .text (function (node) {
-                                                      return node.node_name();
-                                                  })
-                                                 );
-                          tree_vis (div);
-             elements :
-                - name : node_display
-                  path : tnt.tree
-                  class : abstract
-                  args : null
-                  desc : creates a new node renderer
-                  full : Creates a new node renderer. This renderer defines the size and shape of the nodes in the tree. TnT offers some predefined shapes renderers for <i>circles</i> (<a href="#circle">tnt.tree.node_display.circle</a>), <i>squares</i> (<a href="#square">tnt.tree.node_display.square</a>) or <i>triangles</i> (<a href="#triangle">tnt.tree.node_display.triangle</a>). It is possible to define other shapes by passing definint a new <a href="#display">display</a> method. For example, this is how <i>circle</i> nodes are defined in <a href="#circle">tnt.tree.node_display.circle</a>
-                  example : |
-                            var circle_display = tree.node_display();
-                                .display (function (node) {
-                                    d3.select(this)
-                                        .append("circle")
-                                        .attr("r", function (d) {
-                                            return d3.functor(n.size())(node);
-                                        })
-                                        .attr("fill", function (d) {
-                                            return d3.functor(n.fill())(node);
-                                        })
-                                        .attr("stroke", function (d) {
-                                            return d3.functor(n.stroke())(node);
-                                        })
-                                        .attr("stroke-width", function (d) {
-                                            return d3.functor(n.stroke_width())(node);
-                                        })
-                                });
-
-                            var tree_vis = tnt.tree()
-                                .node_display (circle_display
-                                    .size(10)
-                                    .stroke("black")
-                                    .fill("red")
-                                );
-
-                - name : display
-                  path : node_display
-                  args : callback
-                  desc : defines how to render a node
-                  full : Defines how to render a node. The expected argument is a callback that is called on each <a href="#Nodes">node</a> to display. Inside the argument, <i>this</i> is set to the <i>g</i> element where the node is rendered. If called without arguments, the current <a href="#display"></a> callback is returned. This callback is <i>undefined</i> in the abstract <a href="#node_module">tnt.tree.node_display</a> and defined in the specific node shapes (<a href="#circle">tnt.tree.node_display.circle</a> or <a href="#square">tnt.tree.node_display.square</a> for example)
-
-                - name : size
-                  path : node_display
-                  args : integer | callback
-                  desc : specifies the size of the nodes
-                  full : Specifies the size of the nodes. The expected argument is an integer representing the size of the node in pixels. If called without arguments, the currect node's size is returned. To obtain per node sizes use a callback instead. This callback is called on each node passing the tnt.tree.node object as its argument. This size has an impact in the total height of the trees with vertical layouts as the height of a node is calculated as the maximum height between its node's size and its label's height. The height of the node is calculated as the maximum height of all the nodes (in case that different nodes have different sizes).
-                  example : |
-                           var node_display = tnt.tree.node_display.circle()
-                                                .size (4);
-                - name : fill
-                  path : node_display
-                  args : string | callback
-                  desc : sets the fill color of the nodes
-                  full : Specifies the fill color of the nodes. This color can be given as a color name (like "blue") or its hexadecimal code (like "#00FF00"). To get per node fill colors use a callback instead. This callback is called on each node passing the tnt.tree.node object as its argument. The default color for nodes is "black".
-                  example : |
-                           var node_display = tnt.tree.node_display.circle()
-                                               .fill ("white");
-                - name : stroke
-                  path : node_display
-                  args : string | callback
-                  desc : sets the stroke color for nodes
-                  full : Specifies the stroke color of nodes. This color can be given as a color name ("red") or its hexadecimal code ("#FF0000"). To get per node stroke colors use a callback instead. This callback is called on each node passing the tnt.tree.node object as its argument. The default stroke color is "black"
-                  example : |
-                            var node_display = tnt.tree.node_display.circle()
-                                                .stroke ("red");
-
-                            var node_display = tnt.tree.node_display.circle()
-                                                .stroke (function (node) {
-                                                    if (node.is_collapse()) {
-                                                        return "grey";
-                                                    }
-                                                    return "black";
-                                                });
-                - name : stroke_width
-                  path : node_display
-                  args : integer
-                  desc : sets the stroke width for nodes
-                  full : Specifies the stroke with of nodes. The expected argument is the stroke width in pixels. To get per node stroke widths use a callback instead. This callback is called on each node passing the tnt.tree.node object as its argument. The default stroke-width is 1px
-                  example : |
-                           var node_display = tnt.tree.node_display.circle()
-                                               .stroke-width (2);
-                - name : circle
-                  path : tree.node_display
-                  args : null
-                  desc : nodes as circles
-                  full : Sets circle shapes for nodes. This display is a tnt.tree.node_display object, so it has all the methods described above for tnt.tree.node_display objects
-                  example : |
-                           var node_display = tnt.tree.node_display.circle();
-                - name : square
-                  path : tnt.tree.node_display
-                  args : null
-                  desc : nodes as squares
-                  full : Sets square shapes for nodes. This display is a tnt.tree.node_display object, so it has all the methods described above for tnt.tree.node_display objects
-                  example : |
-                           var node_display = tnt.tree.node_display.square();
-                - name : triangle
-                  path : tnt.tree.node_display
-                  args : null
-                  desc : nodes as triangles
-                  full : Sets triangle shapes for nodes. This display is a tnt.tree.node_display object, so it has all the methods described above for tnt.tree.node_display objects
-                  example : |
-                            var node_display = tnt.tree.node_display.triangle();
-           - name : Layouts
-             preamble : The layout specifies the shape of the tree. Currently TnT supports two types of layouts, "vertical" and "radial". Both layouts have a common set of methods that control different aspects, for example the width of "vertical" trees and the diameter for "radial" trees. In the case of "vertical" trees, the height is calculated dynamically based on the maximum leaf height multiplied by the number of leaves. For each leaf, its height is calculated as the maximum value between the nodes height and the label height (see <a href="#label">tnt.tree.label</a> and <a href="#Nodes_display">tnt.tree.node_display</a>)
-             example : |
-                       var tree_vis = tnt.tree()
-                                         .data (tnt.tree.parse_newick (newick))
-                                         .layout (tnt.tree.layout.vertical()
-                                                     .width (400)
-                                                     .scale (false)
-                                         );
-             elements :
-                - name : scale
-                  path : layout
-                  args : boolean
-                  desc : specifies if the branches should be scaled based on the tree's branch lengths
-                  full : Specifies if the branches should be scaled based on the tree's branch lengths (<i>true</i>) or not (<i>false</i>) (<i>true</i> by default). If called without arguments, returns the current scale value.
-                  example : |
-                            var layout = tnt.tree.layout.radial()
-                                            .scale(true);
-                            var tree_vis = tnt.tree()
-                                            .layout(layout);
-
-                - name : width
-                  path : layout
-                  args : integer | string
-                  desc : specifies the width of the tree layout
-                  full : Specifies the width of the tree layout in pixels. If called without arguments returns the current width.
-                  example : |
-                            var layout = tnt.tree.layout.vertical()
-                                            .width(300)
-
-                - name : vertical
-                  path : tnt.tree.layout
-                  args : null
-                  desc : vertical layout
-                  full : Returns a vertical layout. This layout is a tnt.tree.layout, so it has all the methods explained above for tnt.tree.layout objects
-                  example : |
-                            var layout = tnt.tree.layout.vertical();
-
-                - name : radial
-                  path : tnt.tree.layout
-                  args : null
-                  desc : radial layout
-                  full : Returns a radial layout. This layout is a tnt.tree.layout, so it has all the methods explained above for tnt.tree.layout objects
-                  example : |
-                            var layout = tnt.tree.layout.radial();
-
-           - name : Labels
-             preamble : Specifies the information that annotates each node. The height of the labels also affects the space between nodes (and the total height of the tree in the vertical layout). See below for different examples of labels
-             example : |
-                       var tree_vis = tnt.tree()
-                                        .data(...)
-                                        .label (tnt.tree.label.text()
-                                                 .height (20)
-                                                 .text (function (node) {
-                                                    return node.data().scientific_name;
-                                                 });
-             elements :
-                - name : label
-                  path : tnt.tree
-                  args : null
-                  class : abstract
-                  desc : creates a new label <i>renderer</i>.
-                  full : Creates a new label <i>renderer</i>. This <i>renderer</i> is called on every node to display information along the displayed node. tnt.tree.label is a general interface for labels. TnT also defines specific renderers for text and image labels.
-                  example : |
-                            var tree_vis = tnt.tree()
-                                .data (...)
-                                .label (tnt.tree.label()
-                                    .display (...)
-                                    .transform (...)
-                                    .width (...)
-                                    .height (...)
-                                )
-                - name : display
-                  path : label
-                  args : callback
-                  desc : specifies how to render the label
-                  full : Specifies how to render the label. It accepts a callback as its argument. This callback is called when each node is rendered passing the current <a href="#Nodes">node</a> and the <a href="#Layouts">layout type</a> (ie, "radial" or "vertical"). If called without arguments, returns the current display callback.
-
-                - name : width
-                  path : label
-                  args : integer
-                  desc : specifies the width of the label
-                  full : Specifies the width of the label. If called without arguments returns the current width.
-                  example : |
-                            var label = tnt.tree.label.img()
-                                          .width (30);
-
-                - name : height
-                  path : label
-                  args : integer
-                  desc : specifies the height of the label
-                  full : Specifies the height of the label. If called without arguments returns the current height. This value affects the total height of the tree if using a <a href="#vertical">vertical layout</a>.
-                  example : |
-                            var label = tnt.tree.label.text()
-                                          .height (30);
-
-                - name : on.
-                  path : label
-                  args : string, callback
-                  desc : adds an event listener to each label
-                  full : Adds an event listener to each label. Its first argument is a string with the event name. <i>click</i>, <i>dblclick</i>, <i>mouseover</i> and <i>mouseout</i> are accepted event names. The second argument is a callback that receives the corresponding <a href="#Nodes>tnt.tree.node</a> as its argument and is executed when the event is fired. By default, labels inherit events listeners defined on their corresponding nodes (See node's <a href="#on.">on</a> method) unless the same event listener is defined in the label.
-                  example : |
-                            var mylabel = tnt.tree.label.text()
-                                .on ("click", function (node) {
-                                    console.log (node.data());
-                                });
-
-                            var tree_vis = tnt.tree()
-                                .label (mylabel);
-
-                - name : text
-                  path : tnt.tree.label
-                  args : null
-                  desc : creates a text label renderer
-                  full : Creates a text label renderer. This renderer is a <a href="#Labels">tnt.tree.label</a> renderer and hence has the same methods described for general labels. It also defines additional methods described below. In text labels, the <a href="#width">width</a> of the label is automatically set based on the defined fontsize (see below).
-                  example : |
-                            var label = tnt.tree.label.text()
-                                .fontsize (30)
-
-                - name : fontsize
-                  path : label.text
-                  args : integer | callback
-                  desc : sets the fontsize of the text label
-                  full : Sets the fontsize of the text label. The font size is specified as an integer meaning the pixel size of the font. To get per label font sizes use a callback instead. This callback is called on each node passing the corresponding <a href="#Nodes>tnt.tree.node</a> as its argument and should return the font size (in pixels) for that label. If called without arguments the current value (string or callback) is returned.
-                  example : |
-                            var text_label = tnt.tree.label.text()
-                                .fontsize (9);
-
-                            // Define a different font size for leaves or
-                            // internal nodes
-                            var text_label = tnt.tree.label.text()
-                                .fontsize (function (node) {
-                                    if (node.is_leaf() {
-                                        return 12;
-                                    })
-                                    return 14;
-                                })
-
-                - name : color
-                  path : label.text
-                  args : string | callback
-                  desc : sets the color of the text
-                  full : Specifies the color of the text label. This color can be given as a string specifying the name of the color (like "black") or its hexadecimal code (like '#000000'). To get per label colors use a callback instead. This callback is called on each node passing the tnt.tree.node object as its argument and should return the color for that label. The default color of the text labels is "black". If called without arguments, the current value (string or callback) is returned.
-                  example : |
-                            var text_label = tnt.tree.label.text()
-                                .color (function (node) {
-                                   if (node.is_leaf()) {
-                                      return 'black';
-                                   }
-                                   return 'blue';
-                                });
-
-                - name : text
-                  path : label.text
-                  args : string | callback
-                  desc : specifies the text to display in the label
-                  full : Specifies the text to display in the text label. The argument can be a literal string or a callback. If the latter, the callback is called with the node object (tnt.tree.node) as its argument
-                  example : |
-                            var label = tnt.tree.label.text()
-                                .text (function (node) {
-                                  return node.property("scientific_name");
-                                });
-
-                - name : img
-                  path : tnt.tree.label
-                  args : null
-                  desc : creates an image label renderer
-                  full : Creates an image label renderer. This label is a <a href="#Labels>tnt.tree.label</a> and hence has the same methods described for general labels plus some specific methods described below.
-                  example : |
-                            var img_label = tnt.tree.label.img()
-                               .src (function (node) {
-                                  return names[node.node_name()]
-                               })
-                               .width (function () {
-                                  return 50;
-                               })
-                               .height (function () {
-                                  return 50;
-                               });
-
-                - name : src
-                  path : label.img
-                  args : callback
-                  desc : specifies the path where the image labels can be found
-                  full : Specifies the path where the image labels are located. The argument is a callback that is called on each node with the node object (ie the tnt.tree.node) as its argument
-                  example : |
-                            var img_label = tnt.tree.label.img()
-                               .src (function (node) {
-                                 return "path_to_img/" + node.property('scientific_name');
-                               });
-
-                - name : composite
-                  path : tnt.tree.label
-                  args : null
-                  desc : creates a composite renderer made of two or more simple labels
-                  full : Returns a label renderer made of two or more simple labels. The total <a href="#width">width</a> of the composite label is the sum of widths of the individual labels (plus a fixed offset) while its <a href="#height">height</a> is set to the maximum height of the individual labels.
-                  example : |
-                            var img_label = tnt.tree.label.img()
-                               .src (function (node) {
-                                  return names[node.node_name()]
-                               })
-                               .width (function () {
-                                  return 50;
-                               })
-                               .height (function () {
-                                  return 50;
-                               });
-
-                            var text_label = tnt.tree.label.text()
-                               text (function (node) {
-                                 return node.node_name();
-                               });
-
-                            var composite_label = tnt.tree.label.composite()
-                               .add_label (img_label)
-                               .add_label (text_label);
-
-                - name : add_label
-                  path : label.composite
-                  args : tnt.tree.label
-                  desc : adds a new simple label to the composite label
-                  full : Addes a new simple label to the composite label. The order of the added labels is important because the new labels are moved right to accommodate previous ones
-                  example : |
-                         var composite_label = tnt.tree.label.composite()
-                            .add_label(tnt.tree.label.img()
-                              .src (...)
-                              .width (...)
-                              .height (...)
-                            .add_label(tnt.tree.label.text()
-                              .text (...)
-                            );
-
-           - name : Annotation
-             preamble : If you want to add track based information to your tree, a higher level object is needed to align and synchronize tree leaves and tracks. This higher level object is <i>tnt.tree_annot</i>, which accepts a tree, a board and a function that knows how to create tracks given a leaf and creates a combined visualization with both entities
-             example : |
-                       // Create a tree
-                       var tree = tnt.tree()
-                          .data (tnt.tree.parse_newick (newick))
-                          .layout (tnt.tree.layout.vertical()
-                             .width (500)
-                             .scale (false))
-                          .label (tnt.tree.label.text()
-                             .height (20);
-
-                       // Create a board
-                       var annot = tnt.board()
-                          .from (0)
-                          .to (1000)
-                          .width (400)
-                          .right (1000);
-
-                       // Create a function that knows hot to do a track given a leaf
-                       var track = function (leaf) {
-                          var sp = leaf.node_name();
-                          return tnt.track()
-                            .background_color ("#EBF5FF")
-                            .data (tnt.track.data()
-                               .update (tnt.track.retriever.sync()
-                                   .retriever (function () {
-                                      return data[sp] || [];
-                                   })
-                               )
-                            .display (tnt.track.feature.ensembl()
-                               .foreground_color ("steelblue")
-                               .index (function (d) {
-                                   return d.start;
-                               })
-                            );
-                       };
-
-                       var tree_annot = tnt.tree_annot()
-                         .tree (tree)
-                         .annotation (board)
-                         .ruler ("both")
-                         .track (track):
-
-                       tree_annot(div);
-             elements :
-                - name : tree_annot
-                  path : tnt
-                  args : null
-                  desc : creates a new annotated tree object
-                  full : Creates a new annotated tree object. This object supports several methods to assign the tree and annotated parts (a tnt.tree and a tnt.board respectively)
-                  example : |
-                            var tree_annot = tnt.tree_annot();
-                - name : tree
-                  path : tree_annot
-                  args : tnt.tree
-                  desc : sets the tree part of the annotated tree
-                  full : Sets the tree object (ie the tnt.tree) of the annotated tree. If called without arguments, retrieves the previously set tree
-                  example : |
-                            var tree = tnt.tree()
-                               .data (tnt.tree.parse_newick (newick))
-                               .layout (...);
-
-                            var tree_annot = tnt.tree_annot()
-                               .tree (tree);
-                - name : annotation
-                  path : tree_annot
-                  args : tnt.board
-                  desc : sets the annotation part of the annotated tree
-                  full : Sets the annotateion object (ie the tnt.board) of the annotated tree. If called without arguments, retrieves the previously set board
-                  example : |
-                            var board = tnt.board()
-                               .from (0)
-                               .to (1000)
-                               .width (400)
-                               .right (1000);
-
-                            var tree_annot = tnt.tree_annot()
-                               .annotation (board);
-                - name : track
-                  path : tree_annot
-                  args : callback
-                  desc : specifies a callback to use to create new tracks based on leaves
-                  full : Specifies a callback to use to create new tracks. The callback receives a tnt.tree.node object and returns a tnt.track. This callback is used by the tree_annot object to create the tracks in the board. One track is created by leaf in the tree. Re-setting the <i>track</i> callback re-creates the already existing tracks. See the example below for details
-                  example : |
-                            var track = function (leaf) {
-                               var sp = leaf.name;
-                               return tnt.track()
-                                  .background_color ('#E8E8E8')
-                                  .data (tnt.track.data()
-                                     .update (tnt.track.retriever.sync()
-                                         .retriever (function () {
-                                            return data[source][sp] || [];
-                                         })
-                                     )
-                                  )
-                                  .display (...);
-                            };
-
-                            var tree_annot = tnt.tree_annot()
-                               .tree (...)
-                               .annotation (...)
-                               .track (track);
-
-                            tree_annot (div);
-
-                            // If track is redefined, the tracks are recreated:
-                            tree_annot
-                               .track (track
-                                  .data(...));
-                - name : update
-                  path : tree_annot
-                  args : null
-                  desc : updates both the tree and the annotation
-                  full : Updates the tree and the annotation parts of the visualization. If the leaves are re-ordered, collapsed, etc, their associated tracks are updated accordingly
-                  example : |
-                            var tree_annot = tnt.tree_annot()
-                               .tree (tree)
-                               .annotation (board)
-                               .track (track);
-
-                            tree_annot (div);
-
-                            // Toggle one node and update the visualization
-                            tree.root().find_node_by_name ('Mammals').toggle();
-                            tree_annot.update();
-                - name : ruler
-                  path : tree_annot
+                - name : species
+                  path : genome
                   args : string
-                  desc : sets the ruler/s to be displayed in the annotation
-                  full : Sets the ruler/s to be displayed in the annotation. Possible values are "top", "bottom", "both" and "none".
+                  desc : sets the species for the genome board
+                  full : Sets the species for the genome board. Only species included in the <a href="">Ensembl project</a> are supported. Both scientific names (ie, "homo_sapiens") and common names ("human") are allowed. When called without arguments returns the current species. By default the species is "human".
                   example : |
-                            var tree_annot = tnt.tree_annot()
-                               .ruler("both");
-                - name : key
-                  path : tree_annot
-                  args : string | callback
-                  desc : specifies the key used to link tree nodes and tracks
-                  full : Specifies the key to be used when linking tree nodes and tracks. By default, the nodes and the tracks are linked by internal IDs transparent to the user. If some kind of object constancy (node constancy) is required, it is possible to define how a different way to link leaves and tracks. This new link (o key) can be defined either using a name field in the data (ie a string) or a callback that would be called on each leaf when creating or updating tracks. This callback is called with the leaf node (ie the tnt.tree.node) as its argument. See an example below
+                    var genome = tnt.board.genome()
+                        .species("mus_musculus");
+
+                - name : chr
+                  path : genome
+                  args : integer
+                  desc : sets the chromosome for the visualisation
+                  full : Sets the chromosome for the visualisation. When called without arguments returns the current chromosome.
                   example : |
-                            var newick1 = '((human, chimp), (mouse, rat));';
-                            var newick2 = '(((human, chimp), mouse), zebrafish)';
-                            var tree1 = tnt.tree.parse_newick (newick1);
-                            var tree2 = tnt.tree.parse_newick (newick2);
-                            var tree_annot = tnt.tree.annot()
-                               .tree (tree1);
-                               .key ('name'); // or .key (function (node) { return node.node_name() });
+                    var genome = tnt.board.genome()
+                        .chr(13);
 
-                            // at some later point...
-                            tree_annot
-                               .tree (tree2);
-                            tree_annot.update();
-                            // Above, a new tree is set in the tree annot. Because this is a different tree, if no key is defined for the tree annotation, no track constancy or node constancy would not be performed, but because we are using the 'name' field of the node to link leaves and tracks, when using the second tree, the common leaves (ie 'human, 'chimp' and 'mouse') and their associated annotation would be maintained
-           - name : Input trees
-             preamble : |
-                        TnT has several methods to convert string based trees to tnt.tree.node's. See below for a descrition of the supported methods
-             example : |
-                       var tree = tnt.tree.parse_newick (newick);
-                       var tree2 = tnt.tree.parse_nhx (nhx);
-             elements :
-                - name : parse_newick
-                  path : tree
+                - name : gene
+                  path : genome
                   args : string
-                  desc : parses newick formatted trees
-                  full : Parses a newick formatted tree returning a tnt.tree.node object. This method
+                  desc : sets the gene to show in the genome visualisation
+                  full : Sets the gene to show in the genome visualisation. This gene can be a gene name (for example, "BRCA2") or an ensembl ID ("ENSG00000139618"). If the former is provided it is also needed to specify the <a href="#species">species</a> since the gene name is not unique among species. When called without arguments returns the current gene.
+                  example : |
+                    var genome = tnt.board.genome()
+                        .species("human")
+                        .gene("BRCA2");
 
-                - name : parse_nhx
-                  path : tree
-                  args : string
-                  desc : parses nhx formatted trees
+                - name : expand
+                  path : genome
+                  args : integer
+                  desc : sets extra space in the visualisation
+                  full : Sets extra space in the visualisation when the <a href="#gene">gene</a> method is used. Instead of starting the visualisation exactly on the given gene some extra space is given. The argument to the function is the the percentage of the given extent that needs to be added to both ends of the genome board.
+                  example : |
+                    var genome = tnt.board.genome()
+                        .species("human")
+                        .gene("BRCA2")
+                        .expand(25); // extends the board to cover 25% more genome space to both sides
 
-    - name : track
-      elements :
-           - name : Board
+
+           - name : Feature
              preamble : |
-                        Boards are track-based visualizations that can be panned and zoomed making all the tracks in the board to update accordingly. TnT's boards can be configured using several methods that affect all the tracks in the board (like the <a href="#width">width</a> of the board). The height of the board is defined by the sum of the <a href="#height">heights</a> of all the tracks.
+                TnT Genome provides 3 new features for genes, transcripts and genomic sequences ready to use. They understand the data elements fetched by their corresponding data retrievers explained below. These features are attached to the tnt.board.track.feature.genome object
              example : |
-                        // Give an example
+                var gene_track = tnt.board.track()
+                    .height(200)
+                    .color("white")
+                    .display(tnt.board.track.feature.genome.gene()
+                        .color("#550055")
+                    )
+                    .data(tnt.board.track.data.genome.gene());
+
+                var sequence_track = tnt.board.track()
+                        .height(30)
+                        .background_color("white")
+                        .display(tnt.board.track.feature.genome.sequence())
+                        .data(tnt.board.track.data.genome.sequence()
+                            .limit(150)
+                        );
+
              elements :
-                - name : board
-                  path : tnt
+                - name : gene
+                  path : tnt.board.track.feature.genome
                   args : null
-                  desc : creates a new track-based board visualization
-                  full : Creates a new track-based board visualization that can be configured using the methods explained below. The returned object is also a function that can be called passing a DOM element as its argument. This DOM element is used as a container for the visualization.
+                  desc : creates a new <i>gene</i> feature
+                  full : Creates a new <i>gene</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>gene</i> data retriever.
                   example : |
-                             // example goes here
-                             var myBoard = tnt.board();
+                    var gene_display = tnt.board.track.feature.genome.gene();
 
-                - name : track.from
-                  path : tnt.board
-                  args : integer
-                  desc : defines the left coordinate of the board
-                  full : Defines the left coordinate of the board. If called without arguments returns the current left coordinate.
+                - name : transcript
+                  path : tnt.board.track.feature.genome
+                  args : null
+                  desc : creates a new <i>transcript</i> feature
+                  full : Creates a new <i>transcript</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>transcript</i> data retriever.
                   example : |
-                             var myBoard = tnt.board()
-                                           .from(20);
+                    var transcript_display = tnt.board.track.feature.genome.transcript();
 
-                - name : track.to
-                  path : tnt.board
-                  args : integer
-                  desc : defines the right coordinate of the board
-                  full : Defines the right coordinate of the board. If called without arguments returns the current right coordinate.
+                - name : sequence
+                  path : tnt.board.track.feature.sequence
+                  args : null
+                  desc : creates a new <i>sequence</i> feature
+                  full : Creates a new <i>sequence</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>sequence</i> data retriever.
                   example : |
-                             var myBoard = tnt.board()
-                                         .to(1000);
+                    var sequence_display = tnt.board.track.feature.genome.sequence();
 
-                - name : track.left
-                  path : tnt.board
-                  args : integer
-                  desc : defines the minimum possible coordinate of the board
-                  full : Defines the left limit (ie, minimum possible coordinate) of the board. If called without arguments returns the current left limit. By default this value is 0.
-                  example : |
-                             var myBoard = tnt.board()
-                                           .left (100);
 
-                - name : track.right
-                  path : tnt.board
-                  args : integer
-                  desc : defines the maximum possible value of the board
-                  full : Defines the right limit (ie, the maximum possible coordinate) of the board
-
-                - name : track.zoom_out
-                  path : tnt.board
-                  args : float
-                  desc : defines the zoom out limit of the track
-                - name : track.zoom_in
-                  desc : defines the zoom in limit of the track
-                - name : track.start
-                  desc : starts (or re-starts) the visualization
-                - name : track.move_right
-                  desc : moves the track right the specified amount
-                - name : track.move_left
-                  desc : moves the track left the specified amount
-                - name : track.zoom
-                  desc : zooms in/out the track the specified amount
-                - name : track.reorder
-                  desc : reorders the tracks based on the array of tracks given as argument
-                - name : track.add_track
-                  desc : adds a new track to the track visualization
-                - name : track.remove_track
-                  desc : removes the specified track from the visualization
-                - name : track.tracks
-                  desc : returns all the tracks in the visualization
-                - name : track.width
-                  desc : specifies the width of the track visualization
-                - name : track.allow_drag
-                  desc : specifies the draggability of the tracks in the visualization
-           - name : Tracks
-             elements :
-                - name : track.track
-                  desc : defines the track object
-                - name : track.background_color
-                  desc : defines the background color of the track
-                - name : track.height
-                  desc : defines the height of the track
            - name : Data
-             elements :
-                - name : track.data
-                  desc : base data object
-                - name : data.update
-                  desc : specifies how the data is updated
-                - name : data.retriever.sync
-                  desc : specifies a synchronous data retriever
-                - name : data.retriever.async
-                  desc : specifies an asynchronous data retriever
-                - name : async.url
-                  desc : specifies a url for the asynchronous call
-                - name : data.retriever.ensembl
-                  desc : specifies a data retriever based on the Ensembl REST server
-                - name : ensembl.endpoint
-                  desc : specifies the Ensembl REST endpoint
-                - name : track.data.gene
-                  desc : updater using the ensembl retriever
-                - name : track.data.empty
-                  desc : updater for data independent tracks
-           - name : Features
-             elements :
-                - name : track.feature
-                  desc : base object for features
-                - name : feature.foreground_color
-                  desc : defines the foreground color of the elements
-                - name : feature.info
-                  desc : defines the info to display when an element is clicked [REVISE]
-                - name : feature.create
-                  desc : sets a new callback to create new elements
-                - name : feature.mover
-                  desc : sets a new callback to move the elements
-                - name : feature.updater
-                  desc : specifies how the current elements should be visualy updated
-                - name : feature.guider
-                  desc : defines the visual aspect not associated with elements
-                - name : track.feature.block
-                  desc : defines block based features
-                - name : track.feature.axis
-                  desc : defines axes based features
-                - name : axis.orientation
-                  desc : specifies the orientation of the axis feature
-                - name : track.feature.location
-                  desc : defines location based features
-                - name : track.feature.ensembl
-                  desc : defines track visualizations similar to the old Ensembl tracks in trees
-                - name : track.feature.vline
-                  desc : defines vertical lines elements
-                - name : track.feature.sequence
-                  desc : defines sequence elements
-                - name : track.feature.gene
-                  desc : defines gene like elements
-                - name : track.feature.area
-                  desc : defines area elements
-                - name : track.feature.line
-                  desc : defines line elements
-                - name : line.tension
-                  desc : defines the tension of the line
-                - name : line.x
-                  desc : defines the field to be used as the 'x' value
-                - name : line.y
-                  desc : defines the field to be used as the 'y' value
-           - name : Layouts
-             elements :
-                - name : track.layout.identity
-                  desc : defines layouts for tracks that doesn't need layouts
-                - name : track.layout.feature
-                  desc : defines a feature layout that avoids overlaps
-                - name : feature.height
-                  desc : sets the total height of the layout
-                - name : feature.elements
-                  desc : gets the elements in the layout
-                - name : feature.scale
-                  desc : specifies the scale to convert data to visualization coordinates
-
-    - name : utils
-      elements :
-           - name : Tooltips
-             preamble : |
-                         TnT comes with a basic tooltip library. This library is not restricted to TnT and can be used in any other web page without tnt, but it has not been developed as a general tooltip library that matches all scenarios. There are some limitations (explained below). It is also possible to use TnT with other tooltip libraries too. See the examples page for different uses of the library.
+             preamble : TnT Board provides an interface to the Ensembl REST API to fetch genome data. This interface uses tnt.board.track.data.async under the hood, which means that are <i>promises</i> that can be chained with use-defined functions. The fetched elements are pluggable directly to their corresponding features explained above. These data retrievers are attached to the tnt.board.track.data.genome object
              example : |
-                     var myTooltip = function (data) {
-                          var obj = {};
-                          obj.header = "NAME";
-                          obj.rows = [];
-                          obj.rows.push ({
-                              "label" : "type",
-                              "value" : data.type
-                          });
-                          tnt.tooltip.table()
-                             .width(200)
-                             .call(this, obj);
-                     };
+                var gene_track = tnt.board.track()
+                    .height(200)
+                    .color("white")
+                    .display(tnt.board.track.feature.genome.gene()
+                        .color("#550055")
+                    )
+                    .data(tnt.board.track.data.genome.gene());
 
-                     var container = d3.select("#container")
-                           .style("height", "2000px");
-                     container
-                           .append("svg")
-                           .attr("height", 300)
-                           .attr("width", 300)
-                           .append("circle")
-                           .datum({name:"this is me", type:"this is my type"})
-                           .attr("cx", 150)
-                           .attr("cy", 150)
-                           .attr("r", 50)
-                           .attr("fill", "red")
-                           .on("click", myTooltip);
+                var sequence_track = tnt.board.track()
+                        .height(30)
+                        .background_color("white")
+                        .display(tnt.board.track.feature.genome.sequence())
+                        .data(tnt.board.track.data.genome.sequence()
+                            .limit(150)
+                        );
+
              elements :
-                - name : tooltip
-                  path : tnt
+                - name : gene
+                  path : tnt.board.track.data.genome
                   args : null
-                  desc : creates a new tooltip instance
-                  full : Creates a new tooltip instance that can be configured with the methods explained below. To display the tooltip the returned function has to be called with <i>this</i> set to the DOM element the tooltip is related to and the data to be used for rendering. This generic tooltip object only knows how to position the tooltip in the page and creates the DOM elements appropriately, but it does not know about how to render or display the data. See below for other objects that creates specific instances of this tooltip and formats the data in specific ways (like tables or lists)
+                  desc : creates a new gene retriever
+                  full : Creates a new gene retriever using the Ensembl REST API. Returns a <i>promise</i> that can be chained with other user-defined functions.
                   example : |
-                            var data = {
-                                 "header" : "tooltip header",
-                                 "rows" : [ {
-                                      "label" : "color",
-                                      "value" : "blue"
-                                   }
-                                 ]
-                            };
+                    var gene_data = tnt.board.track.data.genome.gene();
 
-                            var fill_cbak = function (data) {
-                                // ...
-                            };
-                            tnt.tooltip()
-                              .width (200)
-                              .id (1)
-                              .fill (fill_cbak)
-                              .call (this, obj);
+                - name : transcript
+                  path : tnt.board.track.data.genome
+                  args : null
+                  desc : creates a new transcript retriever
+                  full : Creates a new transcript retriever using the Ensembl REST API. Returns a <i>promise</i> that can be chained with other user-defined functions.
+                  example : |
+                    var transcript_data = tnt.board.track.data.genome.transcript();
 
-                - name : position
-                  path : tnt.tooltip
-                  args : string
-                  desc : sets the relative position of the tooltip with respect to the mouse
-                  full : Sets the relative position of the tooltip with respect to the mouse. Possible values are "left" and "right". By default, "right" positioning is used and the left upper corner of the tooltip is positioned where the mouse is. If call without arguments, returns the current positioning value.
+                - name : sequence
+                  path : tnt.board.track.data.sequence
+                  args : null
+                  desc : creates a new sequence retriever
+                  full : Creates a new sequence retriever using the Ensembl REST API. Returns a <i>promise</i> that can be chained with other user-defined functions.
                   example : |
-                         var tooltip = tnt.tooltip.table()
-                                         .position ("left");
-                - name : allow_drag
-                  path : tnt.tooltip
-                  args : boolean
-                  desc : determines if the tooltip is draggable or not
-                  full : Determines if the tooltip is draggable or not. By default, this option is set to <i>true</i>. If no argument is provided, returns the current value.
-                  example : |
-                          var tooltip = tnt.tooltip.table()
-                                          .allow_drag (false);
-                - name : show_closer
-                  path : tnt.tooltip
-                  args : boolean
-                  desc : determines if the closing cross is displayed
-                  full : Determines if the closing cross is displayed on the tooltip. If set to false, the tooltip can not be closed directly by the user (clicking on the cross), but only programmatically calling the <a href="#close">close</a> method. By default this option is set to <i>true</i>. If called without arguments, the current value is returned.
-                  example : |
-                         var tooltip = tnt.tooltip.table()
-                                         .show_closer (false);
-                - name : width
-                  path : tnt.tooltip
+                    var sequence_data = tnt.board.track.genome.sequence();
+
+                - name : limit
+                  path : sequence
                   args : integer
-                  desc : sets the minimum width of the tooltip
-                  full : Sets the minimum width of the tooltip. This width is not enforced if elements inside of the tooltip (like images) have greater <i>width</i>. The numeric argument determines the width in pixels. If called without arguments, returns the current value of this method
+                  desc : sets a limit for returning the genomic sequence
+                  full : Sets a limit for returning the genomic sequence. If the length of the sequence to retrieve is greater than the limit, nothing is returned or displayed. By default, this limit is set to 150. If called without arguments returns the current limit
                   example : |
-                          var tooltip = tnt.tooltip.table()
-                                          .width (200) // 200 pixels
-                - name : id
-                  path : tnt.tooltip
-                  args : integer | string
-                  desc : sets an id for the tooltip
-                  full : Sets an id for the tooltip. This controls the number of tooltips that can be displayed simultaneously in the same page. Everytime a tooltip is created, any previous tooltips with the same <i>id</i> is removed. This is typically used to allow different tooltips to co-exist in the same page or restrict their number. For example, if the <i>id</i> is always set to the same value, everytime a tooltip is created any previous tooltip is destroyed. Another option is to have a different <i>id</i> per different type of element in the page, allowing only one type of tooltip per element. If called without arguments, the current <i>id</i> of the tooltip is returned
+                    var sequence_data = tnt.board.track.genome.sequence()
+                        .limit (200);
+
+           - name : Layout
+             preamble : The layout analyses all the genes, transcripts and labels in a track and distributes them vertically to avoid overlaps. It is run after the data is retrieved and before the features are displayed. It also supports several configuration methods explained below.
+
+             elements :
+                - name : layout
+                  path : display
+                  args : tnt.board.track.layout
+                  desc : sets a layout for the elements of a track
+                  full : Sets a layout for the elements of a track. It accepts a tnt.board.track.layout as its argument. When called without arguments returns the current layout. In TnT Genome the layout is set to tnt.board.track.layout.feature by default, that avoids overlaps between elements to display (and their labels). This method is specially useful to configure this default layout.
                   example : |
-                           var myTooltip = function (data) {
-                             var obj = {};
-                             obj.header = "Circle";
-                             obj.rows = [];
-                             obj.rows.push ({
-                                 "label" : "type",
-                                 "value" : data.type
-                             });
-                             tnt.tooltip.table()
-                                 .width (200)
-                                 .id (data.type)
-                                 .call (this, obj);
-                           };
-                - name : fill
-                  path : tnt.tooltip
+                    // expand or contract the height of the gene track as needed
+                    var curr_layout = gene_track.display().layout();
+                    curr_layout
+                        .fixed_slot_type("expanded")
+                        .keep_slots(false)
+                        .on_layout_run (function (types, current) {
+                            var needed_height = types.expanded.needed_slots * types.expanded.slot_height;
+                            if (needed_height !== current_height) {
+                                current_height = needed_height;
+                                gene_track.height(needed_height);
+                                genome.tracks(genome.tracks());
+                            }
+                        });
+
+                - name : fixed_slot_type
+                  path : layout.feature
+                  args : string
+                  desc : specifies if the layout should always keep one slot type
+                  full : Specifies if the layout should always keep one slot type. By default the layout shows <i>genes</i> with label and 10px height if they all fit in the current board (<i>expanded</i> slot type) and <i>condensed</i> genes witout labels and only 5px height if they don't (<i>collapsed slot type</i>). Setting this option to "expanded" the <i>genes</i> will always be shown in the former form. Using "collapsed" as its argument uses always the latter.
+                  example : |
+                    gene_track.display().layout()
+                        .fixed_slot_type("expanded");
+
+                - name : keep_slots
+                  path : layout.feature
+                  args : boolean
+                  desc : specifies if the elements should keep vertical positions between updates
+                  full : Specifies if the elements should keep vertical positions between updates. By default this is set to <i>true</i> which means that elements (genes or transcripts) that are in display between two updates will keep their vertical position. Once they go out of sight, they are removed from the track. If this option is set to <i>false</i> the layout recomputes the positions of the elements (genes or transcripts) on every data update.
+                  example : |
+                    gene_track.display().layout()
+                        .keep_slots(false);
+
+                - name : on_layout_run
+                  path : layout.feature
                   args : callback
-                  desc : specifies the rendering of the tooltip
-                  full : This method specifies the rendering of the tooltip. The callback is run passing the container element as a d3 selection as <i>this</i> and the data obj as the argument. See <a href="#table">tnt.tooltip.table</a> or <a href="#plain">tnt.tooltip.plain</a> for examples of how to use this method. If called without arguments, the current callback is returned
+                  desc : sets a callback to be run after the layout has finished positioning elements
+                  full : Sets a callback to be run after the layout has finished positioning elements. That callback is called with the two <i>slot types</i> described above and the one currently used.
                   example : |
-                           var t = tnt.tooltip()
-                                   .width (200)
-                                   .fill (function (data) {
-                                       var container = this;
-
-                                       var table = container
-                                            .append ("table")
-                                            .style ("width", t.width() + "px");
-
-                                       table
-                                            .append ("tr")
-                                            .append ("th")
-                                            .text (data.header);
-
-                                       table
-                                            .append ("tr")
-                                            .append ("td")
-                                            .style ("text-align", "center")
-                                            .html (data.body);
-                                   });
-                - name : plain
-                  path : tnt.tooltip
-                  args : null
-                  desc : tooltips showing data in a loosely structured way
-                  full : Returns a tooltip that accept a data object consisting in two fields, <i>header</i> and <i>body</i>. The former typically contains a string that will be used as the header of the tooltip. The latter will be rendered as the body of the tooltip and can contain any valid html
+                    gene_track.display().layout()
+                        .on_layout_run (function (types, current) {
+                            var needed_height = types.expanded.needed_slots * types.expanded.slot_height;
+                            if (needed_height !== current_height) {
+                                current_height = needed_height;
+                                gene_track.height(needed_height);
+                                genome.tracks(genome.tracks());
+                            }
+                        });
