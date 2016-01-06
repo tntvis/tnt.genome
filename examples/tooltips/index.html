@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>TnT Genome Theme -- sequence track</title>
+
+<div id="body">
+
+  <!-- D3 -->
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <!-- TnT -->
+  <link rel="stylesheet" href="../../build/tnt.genome.css" type="text/css" />
+  <script src="../../build/tnt.genome.js"></script>
+
+  <!-- TnT Tooltips -->
+  <link rel="stylesheet" href="http://emepyc.github.com/tnt.tooltip/build/tnt.tooltip.css" type="text/css"/>
+  <script src="http://emepyc.github.com/tnt.tooltip/build/tnt.tooltip.min.js"></script>
+
+
+  <h1>TnT based genome browser with sequence track</h1>
+  <div id="genomeBrowser"></div>
+  <script>
+      var gene_track = tnt.board.track()
+          .height(200)
+          .color("white")
+          .display(tnt.board.track.feature.genome.gene()
+            .color("#550055")
+            .on("click", function (d) {
+                tnt.tooltip.table()
+                    .width(120)
+                    .call(this, {
+                        header : d.external_name,
+                        rows : [
+                            {"label": "id", "value": d.gene_id},
+                            {"label": "desc", "value": d.description},
+                            {"label": "Coords", "value": ""},
+                            {"label": "chr", "value": d.seq_region_name},
+                            {"label": "start", "value": d.start},
+                            {"label": "end", "value": d.end}
+                        ]
+                    })
+            })
+          )
+          .data(tnt.board.track.data.genome.gene());
+
+      var genome = tnt.board.genome().species("human").gene("brca2").width(950);
+      genome
+        .zoom_in(100)
+        .add_track(gene_track);
+
+      genome (document.getElementById("genomeBrowser"));
+      genome.start();
+  </script>
+</div>
