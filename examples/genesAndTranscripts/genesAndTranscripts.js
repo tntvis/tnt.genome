@@ -22,7 +22,7 @@ var theme = function () {
         var mixed_data = tnt.board.track.data.genome.gene();
         thisGene = gB.gene();
 
-        var eRest = tnt.board.track.data.genome.rest;
+        var eRest = tnt.board.track.data.genome.ensembl;
         var gene_updater = mixed_data.retriever();
         mixed_data.retriever (function (loc) {
             return gene_updater.call(mixed_track, loc)
@@ -38,20 +38,24 @@ var theme = function () {
                             isGene: true
                         }];
                     }
-                    var url = eRest.url.xref({
-                        species: "human",
-                        name: thisGene
-                    });
+                    var url = eRest.url()
+                        .endpoint("xrefs/symbol/:species/:symbol")
+                        .parameters({
+                            species: "human",
+                            symbol: thisGene
+                        });
                     return eRest.call(url)
                         .then (function (resp) {
                             var ensId = resp.body[0].id;
                             return ensId;
                         })
                         .then (function (ensId) {
-                            var url = eRest.url.gene({
-                                id: ensId,
-                                expand: true
-                            });
+                            var url = eRest.url()
+                                .endpoint("lookup/id/:id")
+                                .parameters({
+                                    id: ensId,
+                                    expand: true
+                                });
                             return eRest.call(url);
                         })
                         .then (function (resp) { // transcripts + exons

@@ -4,7 +4,8 @@ var tnt_board = require("tnt.board");
 tnt_board.track.data.genome = require("./data.js");
 tnt_board.track.feature.genome = require("./feature");
 tnt_board.track.layout.feature = require("./layout");
-tnt_board.track.data.genome.ensembl = require("tnt.ensembl")();
+tnt_board.track.data.genome.ensembl = require("tnt.rest")()
+    .domain("rest.ensembl.org");
 
 tnt_board_genome = function() {
     "use strict";
@@ -21,12 +22,12 @@ tnt_board_genome = function() {
         xref_search    : function () {},
         ensgene_search : function () {},
         context        : 0,
-        // rest           : tnt_rest()
+        rest           : ensembl_rest
     };
     // We "inherit" from board
     var genome_browser = tnt_board()
         .zoom_in(200)
-        .zoom_out(ensembl_rest.limits.region)
+        .zoom_out(5000000) // ensembl region limit
         .min(0);
 
     var gene;
@@ -101,10 +102,12 @@ tnt_board_genome = function() {
             }
         }
 
-        var url = ensembl_rest.url.chr_info( {
-            species : where.species,
-            chr     : where.chr
-        });
+        var url = ensembl_rest.url()
+            .endpoint("info/assembly/:species/:region_name")
+            .parameters({
+                species: where.species,
+                region_name: where.chr
+            });
         ensembl_rest.call (url)
             .then (function (resp) {
                 genome_browser.max(resp.body.length);
@@ -136,10 +139,12 @@ tnt_board_genome = function() {
         if (isEnsemblGene(where.gene)) {
             get_ensGene(where.gene);
         } else {
-            var url = ensembl_rest.url.xref ({
-                species : where.species,
-                name    : where.gene
-            });
+            var url = ensembl_rest.url()
+                .endpoint("xrefs/symbol/:species/:symbol")
+                .parameters({
+                    species: where.species,
+                    symbol: where.gene
+                });
             ensembl_rest.call(url)
                 .then (function(resp) {
                     var data = resp.body;
@@ -147,20 +152,20 @@ tnt_board_genome = function() {
                         return !d.id.indexOf("ENS");
                     });
                     if (data[0] !== undefined) {
-//                        conf.xref_search(resp);
                         get_ensGene(data[0].id);
                     }
                     conf.xref_search(resp, where.gene, where.species);
-
-                    // else {
-                      // genome_browser.start();
-                      // }
                 });
         }
     };
 
     var get_ensGene = function (id) {
-        var url = ensembl_rest.url.gene ({id : id});
+        var url = ensembl_rest.url()
+            .endpoint("/lookup/id/:id")
+            .parameters({
+                id: id
+            });
+
         ensembl_rest.call(url)
             .then (function(resp) {
                 var data = resp.body;

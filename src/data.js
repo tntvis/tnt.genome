@@ -9,22 +9,29 @@ var data_gene = function () {
             var track = this;
             // var eRest = data.ensembl();
             var scale = track.display().scale();
-            var url = eRest.url.region(obj);
+            var url = eRest.url()
+                .endpoint("overlap/region/:species/:region")
+                .parameters({
+                    species : obj.species,
+                    region  : (obj.chr + ":" + obj.from + "-" + obj.to),
+                    feature: obj.features || ["gene"]
+                });
+            // var url = eRest.url.region(obj);
             return eRest.call(url)
-            .then (function (resp) {
-                    var genes = resp.body;
-                    // Set the display_label field
-                    for (var i=0; i<genes.length; i++) {
-                        var gene = genes[i];
-                        if (gene.strand === -1) {
-                            gene.display_label = "<" + gene.external_name;
-                        } else {
-                            gene.display_label = gene.external_name + ">";
-                        }
-                    }
-                    return genes;
-                }
-            );
+              .then (function (resp) {
+                      var genes = resp.body;
+                      // Set the display_label field
+                      for (var i=0; i<genes.length; i++) {
+                          var gene = genes[i];
+                          if (gene.strand === -1) {
+                              gene.display_label = "<" + gene.external_name;
+                          } else {
+                              gene.display_label = gene.external_name + ">";
+                          }
+                      }
+                      return genes;
+                  }
+              );
         });
 
     apijs(data)
@@ -38,12 +45,17 @@ var data_transcript = function () {
 
     var data = board.track.data.async()
         .retriever (function (obj) {
-            obj.features = ["gene", "transcript", "exon", "cds"];
-            var url = eRest.url.region(obj);
+            var url = eRest.url()
+                .endpoint("overlap/region/:species/:region")
+                .parameters({
+                    species : obj.species,
+                    region : (obj.chr + ":" + obj.from + "-" + obj.to),
+                    feature : ["gene", "transcript", "exon", "cds"]
+                });
             return eRest.call(url)
               .then (function (resp) {
                   var elems = resp.body;
-                  var genes = eRest.region2genes(elems);
+                  var genes = data.region2genes(elems);
                   var transcripts = [];
                   for (var i=0; i<genes.length; i++) {
                       var g = genes[i];
@@ -81,7 +93,67 @@ var data_transcript = function () {
                 transcripts.push(t);
             }
             return transcripts;
+        })
+        .method("region2genes", function (elems) {
+            var geneTranscripts = {};
+            var genes = [];
+            var transcripts = {};
+
+            // transcripts
+            for (var i=0; i<elems.length; i++) {
+                var e = elems[i];
+                if (e.feature_type == "transcript") {
+                    e.display_name = e.external_name;
+                    transcripts[e.id] = e;
+                    if (geneTranscripts[e.Parent] === undefined) {
+                        geneTranscripts[e.Parent] = [];
+                    }
+                    geneTranscripts[e.Parent].push(e);
+                }
+            }
+
+            // exons
+            for (var j=0; j<elems.length; j++) {
+                var e = elems[j];
+                if (e.feature_type === "exon") {
+                    var t = transcripts[e.Parent];
+                    if (t.Exon === undefined) {
+                        t.Exon = [];
+                    }
+                    t.Exon.push(e);
+                }
+            }
+
+            // cds
+            for (var k=0; k<elems.length; k++) {
+                var e = elems[k];
+                if (e.feature_type === "cds") {
+                    var t = transcripts[e.Parent];
+                    if (t.Translation === undefined) {
+                        t.Translation = e;
+                    }
+                    if (e.start < t.Translation.start) {
+                        t.Translation.start = e.start;
+                    }
+                    if (e.end > t.Translation.end) {
+                        t.Translation.end = e.end;
+                    }
+                }
+            }
+
+            // genes
+            for (var h=0; h<elems.length; h++) {
+                var e = elems[h];
+                if (e.feature_type === "gene") {
+                    e.display_name = e.external_name;
+                    e.Transcript = geneTranscripts[e.id];
+                    genes.push(e);
+                }
+            }
+
+            return genes;
         });
+
 
     function exonsToExonsAndIntrons (t) {
         var exons = t.exons;
@@ -218,7 +290,13 @@ var data_sequence = function () {
     var data = board.track.data.async()
         .retriever (function (obj) {
             if ((obj.to - obj.from) < data.limit()) {
-                var url = eRest.url.sequence(obj);
+                var url = eRest.url()
+                    .endpoint("/sequence/region/:species/:region")
+                    .parameters({
+                        "species": obj.species,
+                        "region": (obj.chr + ":" + obj.from + ".." + obj.to)
+                    });
+                // var url = eRest.url.sequence(obj);
                 return eRest.call(url)
                     .then (function (resp) {
                         var seq = resp.body;

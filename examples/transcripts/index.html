@@ -18,7 +18,6 @@
     //var gB = tnt.board.genome().species("human").gene("ENSG00000090263").width(950);
     //var gB = tnt.board.genome().species("human").chr(7).from(141073448).to(141237673);
     var gB = tnt.board.genome().species("human").gene("PTEN");
-    gB.rest().proxyUrl("http://rest.ensembl.org");
     var gBTheme = transcript_theme();
     var container = document.getElementById("genomeBrowser");
     gBTheme (gB, container);

@@ -34,9 +34,9 @@ gulp.task('default', ['lint', 'test', 'build-browser', 'build-browser-gzip']);
 
 
 gulp.task('lint', function() {
-  return gulp.src('./src/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
+    return gulp.src('./src/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
 });
 
 gulp.task('test', function () {
@@ -65,33 +65,33 @@ gulp.task('init', ['clean'], function() {
 // sass-import
 gulp.task('sass', function () {
     return gulp.src("index.scss")
-	.pipe(sass({
-	    errLogToConsole: true
-	}))
-    .pipe(rename(outputFile + '.css'))
-	.pipe(gulp.dest(buildDir));
+        .pipe(sass({
+            errLogToConsole: true
+        }))
+        .pipe(rename(outputFile + '.css'))
+        .pipe(gulp.dest(buildDir));
 });
 
 // browserify debug
 gulp.task('build-browser',['init', 'sass'], function() {
-  return gulp.src(browserFile)
-  .pipe(browserify({debug:true}))
-  .pipe(rename(outputFileSt))
-  .pipe(gulp.dest(buildDir));
+    return gulp.src(browserFile)
+        .pipe(browserify({debug:true}))
+        .pipe(rename(outputFileSt))
+        .pipe(gulp.dest(buildDir));
 });
 
 // browserify min
-gulp.task('build-browser-min',['init', 'sass'], function() {
-  return gulp.src(browserFile)
-  .pipe(browserify({}))
-  .pipe(uglify())
-  .pipe(rename(outputFileMinSt))
-  .pipe(gulp.dest(buildDir));
+gulp.task('build-browser-min',['build-browser'], function() {
+    return gulp.src(browserFile)
+        .pipe(browserify({}))
+        .pipe(uglify())
+        .pipe(rename(outputFileMinSt))
+        .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('build-browser-gzip', ['build-browser-min'], function() {
-  return gulp.src(outputFileMin)
-    .pipe(gzip({append: false, gzipOptions: { level: 9 }}))
-    .pipe(rename(outputFile + ".min.gz.js"))
-    .pipe(gulp.dest(buildDir));
-});
+    return gulp.src(outputFileMin)
+        .pipe(gzip({append: false, gzipOptions: { level: 9 }}))
+        .pipe(rename(outputFile + ".min.gz.js"))
+        .pipe(gulp.dest(buildDir));
+    });
