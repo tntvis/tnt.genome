@@ -82,5 +82,5 @@
 0.1.0
 	- Support for tnt.board 0.1.0
 	- Using tnt.rest instead of tnt.ensembl
-
+	- Removed tooltip
 

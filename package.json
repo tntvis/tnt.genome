@@ -57,10 +57,9 @@
     "uglify-js": "^2.6.1"
   },
   "dependencies": {
-    "tnt.api": "0.0.1",
-    "tnt.board": "0.0.30",
-    "tnt.rest" : "0.0.2",
-    "tnt.tooltip": "0.0.11",
-    "tnt.utils": "^0.0.1"
+    "tnt.api": "^0.1.0",
+    "tnt.board": "^0.1.0",
+    "tnt.rest" : "^0.1.0",
+    "tnt.utils": "^0.1.0"
   }
 }

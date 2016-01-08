@@ -3,4 +3,3 @@ if (typeof tnt === "undefined") {
 }
 tnt.board = require("./index.js");
 tnt.utils = require("tnt.utils");
-tnt.tooltip = require("tnt.tooltip");
