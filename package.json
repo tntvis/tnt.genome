@@ -1,6 +1,6 @@
 {
   "name": "tnt.genome",
-  "version": "0.0.39",
+  "version": "0.1.0",
   "description": "Minimal genome browser based on TnT Board and Ensembl data",
   "main": "index.js",
   "directories": {
@@ -59,7 +59,7 @@
   "dependencies": {
     "tnt.api": "^0.1.0",
     "tnt.board": "^0.1.0",
-    "tnt.rest" : "^0.1.0",
+    "tnt.rest": "^0.1.0",
     "tnt.utils": "^0.1.0"
   }
 }
