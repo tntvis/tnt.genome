@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/emepyc/tnt.genome.svg?branch=master)](https://travis-ci.org/emepyc/tnt.genome)
+[![NPM version](https://badge-me.herokuapp.com/api/npm/tnt.genome.png)](http://badges.enytc.com/for/npm/tnt.genome)
+
 # TnT Genome
 TnT Genome is a javascript library for displaying genome based annotations. It has been built on top of the [TnT Board](http://emepyc.github.io/tnt.board/) library and shares with it the same philosophy and design principles: a powerful API written with flexibility in mind that allows the creation of simple, dynamic and useful genome-based visualisations. The goal of TnT Genome is not to provide a full-featured genome browser but a simple tool to create specific and simple genome views. Its flexibility also allows the exploration of new ways of visualising genome-based annotations.
 
