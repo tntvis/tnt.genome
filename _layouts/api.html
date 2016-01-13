@@ -11,7 +11,7 @@ layout : default
 {{ element.example }}
       {% endhighlight %}
       {% for item in element.elements %}
-         <p><a name={{ item.name }} href=#{{ item.name }}>#</a> {% if item.class == "abstract" %} <span style="color:red">&lt;abstract&gt;</span> {% endif %} {{ item.path }}.<b>{{ item.name }}</b> ({% if item.args %}&lt;{{ item.args }}&gt;{% endif %})</p>
+         <p><a name={{ item.path }}.{{ item.name }} href=#{{ item.path }}.{{ item.name }}>#</a> {% if item.class == "abstract" %} <span style="color:red">&lt;abstract&gt;</span> {% endif %} {{ item.path }}.<b>{{ item.name }}</b> ({% if item.args %}&lt;{{ item.args }}&gt;{% endif %})</p>
          <p>{{ item.full }}</p>
          {% if item.example %}{% highlight javascript %}
 {{ item.example }}

@@ -10,7 +10,7 @@ theme : null
 <h3>{{ element.name }}</h3>
 <ul>
     {% for item in element.elements %}
-    <li type="circle"><a href={{ site.baseurl }}/api/{{ toplevel.name }}/index.html#{{ item.name }}>{{ item.path }}.{{ item.name }}</a> : {{ item.desc }}</li>
+    <li type="circle"><a href={{ site.baseurl }}/api/{{ toplevel.name }}/index.html#{{ item.path }}.{{ item.name }}>{{ item.path }}.{{ item.name }}</a> : {{ item.desc }}</li>
     {% endfor %}
 </ul>
 {% endfor %}

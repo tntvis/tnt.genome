@@ -1,12 +1,12 @@
 ---
 layout : api
 title : API Reference
-type : api
+type : API
 theme : null
 api_toplevel : genome
 ---
-<h2>tnt.genome</h2>
-<p><a href="">tnt.board.genome</a> is a special type of <a href="">board</a> that exposes the same methods explained in its <a href="">API</a>. TnT Genome also offers a few elements that are explained below. The most important are: three new <a href="">features</a> for genes, transcripts and genomic sequences, a modified <a href="">location</a> feature that includes the species and the chromosome being displayed in the board, a <a href="">layout</a> that avoids overlaps in genes and transcripts and integration with the Ensembl REST API to fetch genomic data.</p>
+<h2>Genome</h2>
+<p>TnT Genome is built on top of <a href="http://tntvis.github.io/tnt.board/">TnT Board</a> and exposes the same methods explained in <a href="http://tntvis.github.io/tnt.board/api/">TnT Board's API</a>. TnT Genome also offers a few elements explained below. The most important are: three new <a href="#Display">displays</a> for genes, transcripts and genomic sequences, a modified location display that includes the species and the chromosome being displayed in the board, a <a href="#Layout">layout</a> that avoids overlaps in genes and transcripts and integration with the <a href="http://rest.ensembl.org">Ensembl REST API</a> to fetch genomic <a href="#Data">data</a> through <a href="https://github.com/tntvis/tnt.rest">TnT Rest.</p>
 
   {% highlight javascript linenos %}
   // Genome is a board. Location and axis tracks are included by default
@@ -36,4 +36,4 @@ api_toplevel : genome
   genome.start();
   {% endhighlight %}
 
-  <p>In the example above two tracks are created using the new data endpoints and displays: the first one is a <a href="">gene track</a> and the second one a sequence track. Although no <a href="">location</a> or <a href="">axis</a> tracks are created, they are included by default in the genome board. <a href="">min</a> and <a href="">max</a> are set automatically to 0 and the chromosome length automatically. The rest of the elements are the same explained before for <a href="">TnT Board</a>.
+  <p>In the example above a new genome board is createdand configured using the two new methods <a href="#genome.species">species</a> and <a href="#genome.gene">gene</a>. Then two tracks are created using the new data endpoints and displays: the first one is a gene track and the second one a sequence track. Although no location or axis tracks are set in the board explicitely they are included by default in the genome board. <a href="#genome.min">min</a> and <a href="#genome.max">max</a> are set automatically to 0 and the chromosome length respectively by default. The rest of the elements are the same explained before for <a href="http://tntvis.github.io/tnt.board/">TnT Board</a>.

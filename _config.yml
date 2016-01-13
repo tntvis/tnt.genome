@@ -6,9 +6,9 @@ baseurl : /tnt.genome
 api :
     - name : genome
       elements :
-           - name : genome
+           - name : Genome Visualisation
              preamble : |
-                        The genome board is a special type of board that <i>inherits</i> all its elements. A new genome board can be created using <a href="">tnt.board.genome</a>. An example of use looks like:
+                The genome board is a special type of <a href="http://tntvis.github.io/tnt.board/api/board/index.html#tnt.board">tnt.board</a> that <i>inherits</i> all its elements. A new genome board can be created using <a href="#tnt.board.genome">tnt.board.genome</a>. An example of use looks like:
              example : |
                 // Giving species and gene name
                 var genome = tnt.board.genome()
@@ -41,7 +41,7 @@ api :
                   path : genome
                   args : string
                   desc : sets the species for the genome board
-                  full : Sets the species for the genome board. Only species included in the <a href="">Ensembl project</a> are supported. Both scientific names (ie, "homo_sapiens") and common names ("human") are allowed. When called without arguments returns the current species. By default the species is "human".
+                  full : Sets the species for the genome board. Only species included in <a href="http://www.ensembl.org/info/about/speciestree.html">Ensembl</a> are supported. Both scientific names (ie, "homo_sapiens") and common names ("human") are allowed. When called without arguments returns the current species. By default the species is "human".
                   example : |
                     var genome = tnt.board.genome()
                         .species("mus_musculus");
@@ -59,7 +59,7 @@ api :
                   path : genome
                   args : string
                   desc : sets the gene to show in the genome visualisation
-                  full : Sets the gene to show in the genome visualisation. This gene can be a gene name (for example, "BRCA2") or an ensembl ID ("ENSG00000139618"). If the former is provided it is also needed to specify the <a href="#species">species</a> since the gene name is not unique among species. When called without arguments returns the current gene.
+                  full : Sets the gene to show in the genome visualisation. This gene can be a gene name (for example, "BRCA2") or an ensembl ID ("ENSG00000139618"). If the former is provided it is also needed to specify the <a href="#species">species</a> since the gene name may not be unique among species. When called without arguments returns the current gene.
                   example : |
                     var genome = tnt.board.genome()
                         .species("human")
@@ -69,7 +69,7 @@ api :
                   path : genome
                   args : integer
                   desc : sets extra space in the visualisation
-                  full : Sets extra space in the visualisation when the <a href="#gene">gene</a> method is used. Instead of starting the visualisation exactly on the given gene some extra space is given. The argument to the function is the the percentage of the given extent that needs to be added to both ends of the genome board.
+                  full : Sets extra space in the visualisation when the genome is centered to a given <a href="#genome.gene">gene<a>. Instead of starting the visualisation exactly on the specified gene some extra five and 3 prime space is given. The argument to the function is the the percentage of the extent and it is added to both ends (5' and 3') of the genome board.
                   example : |
                     var genome = tnt.board.genome()
                         .species("human")
@@ -77,54 +77,56 @@ api :
                         .expand(25); // extends the board to cover 25% more genome space to both sides
 
 
-           - name : Feature
+           - name : Display
              preamble : |
-                TnT Genome provides 3 new features for genes, transcripts and genomic sequences ready to use. They understand the data elements fetched by their corresponding data retrievers explained below. These features are attached to the tnt.board.track.feature.genome object
+                TnT Genome provides 3 new data displays for genes, transcripts and genomic sequences. They understand the data elements fetched by their corresponding data retrievers explained below.
              example : |
                 var gene_track = tnt.board.track()
                     .height(200)
                     .color("white")
+                    .data(tnt.board.track.data.genome.gene())
                     .display(tnt.board.track.feature.genome.gene()
                         .color("#550055")
-                    )
-                    .data(tnt.board.track.data.genome.gene());
+                    );
+
 
                 var sequence_track = tnt.board.track()
-                        .height(30)
-                        .background_color("white")
-                        .display(tnt.board.track.feature.genome.sequence())
-                        .data(tnt.board.track.data.genome.sequence()
-                            .limit(150)
-                        );
+                    .height(30)
+                    .color("white")
+                    .data(tnt.board.track.data.genome.sequence()
+                        .limit(150)
+                    );
+                    .display(tnt.board.track.feature.genome.sequence());
+
 
              elements :
                 - name : gene
                   path : tnt.board.track.feature.genome
                   args : null
-                  desc : creates a new <i>gene</i> feature
-                  full : Creates a new <i>gene</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>gene</i> data retriever.
+                  desc : creates a new <i>gene</i> display
+                  full : Creates a new <i>gene</i> display. This has the same methods and properties as any other <a href="http://tntvis.github.io/tnt.board/api/board/#Display">TnT Board display</a>. It understands the elements retrieved by the <a href="#tnt.board.track.data.genome.gene">gene data retriever</a>.
                   example : |
                     var gene_display = tnt.board.track.feature.genome.gene();
 
                 - name : transcript
                   path : tnt.board.track.feature.genome
                   args : null
-                  desc : creates a new <i>transcript</i> feature
-                  full : Creates a new <i>transcript</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>transcript</i> data retriever.
+                  desc : creates a new <i>transcript</i> display
+                  full : Creates a new <i>transcript</i> display. This has the same methods and properties as any other <a href="http://tntvis.github.io/tnt.board/api/board/#Display">TnT Board display</a>. It understands the elements retrieved by the <a href="#tnt.board.track.data.genome.transcript">transcript data retriever</a>.
                   example : |
                     var transcript_display = tnt.board.track.feature.genome.transcript();
 
                 - name : sequence
-                  path : tnt.board.track.feature.sequence
+                  path : tnt.board.track.feature.genome
                   args : null
-                  desc : creates a new <i>sequence</i> feature
-                  full : Creates a new <i>sequence</i> feature. This feature has the same properties and elements as any other TnT Board feature. This feature understands the elements retrieved by the <i>sequence</i> data retriever.
+                  desc : creates a new <i>sequence</i> display
+                  full : Creates a new <i>sequence</i> display. This has the same methods and properties as any other <a href="http://tntvis.github.io/tnt.board/api/board/#Display">TnT Board display</a>. It understands the elements retrieved by the <a href="#tnt.board.track.data.genome.sequence">sequence data retriever</a>.
                   example : |
                     var sequence_display = tnt.board.track.feature.genome.sequence();
 
 
            - name : Data
-             preamble : TnT Board provides an interface to the Ensembl REST API to fetch genome data. This interface uses tnt.board.track.data.async under the hood, which means that are <i>promises</i> that can be chained with use-defined functions. The fetched elements are pluggable directly to their corresponding features explained above. These data retrievers are attached to the tnt.board.track.data.genome object
+             preamble : TnT Genome provides an interface to the Ensembl REST API to fetch genomic data. This interface uses <a href="http://tntvis.github.io/tnt.board/api/board/index.html#tnt.board.track.data.async">tnt.board.track.data.async</a> under the hood, which means that uses <i>ES2015 promises</i> that can be chained with user-defined functions.
              example : |
                 var gene_track = tnt.board.track()
                     .height(200)
@@ -177,14 +179,14 @@ api :
                         .limit (200);
 
            - name : Layout
-             preamble : The layout analyses all the genes, transcripts and labels in a track and distributes them vertically to avoid overlaps. It is run after the data is retrieved and before the features are displayed. It also supports several configuration methods explained below.
+             preamble : The layout analyses all the genes, transcripts and labels in a track and distributes them vertically to avoid overlaps. It is set as a property of the board's <a href="tntvis.github.io/tnt.board/api/board/index.html#Display">display</a>. It is run after the data is retrieved and before the elements are displayed. It also supports several configuration methods explained below. The layout normally doesn't need to be set up by the library user.
 
              elements :
                 - name : layout
                   path : display
                   args : tnt.board.track.layout
                   desc : sets a layout for the elements of a track
-                  full : Sets a layout for the elements of a track. It accepts a tnt.board.track.layout as its argument. When called without arguments returns the current layout. In TnT Genome the layout is set to tnt.board.track.layout.feature by default, that avoids overlaps between elements to display (and their labels). This method is specially useful to configure this default layout.
+                  full : Sets a layout for the elements of a track. It accepts a tnt.board.track.layout as its argument. When called without arguments returns the current layout. In TnT Genome the layout is set to tnt.board.track.layout.genome, that avoids overlaps between elements to display (and their labels). This method is specially useful to configure this default layout.
                   example : |
                     // expand or contract the height of the gene track as needed
                     var curr_layout = gene_track.display().layout();
@@ -199,30 +201,35 @@ api :
                                 genome.tracks(genome.tracks());
                             }
                         });
+                - name : genome
+                  path : tnt.board.track.layout
+                  args : null
+                  desc : default layout for genes and transcripts
+                  full : Default layout for genes and transcripts. It avoids overlaps between genes or transcript (including their labels). The layout distributes the elements (genes or transcripts) into <i>slots</i>. The elements are placed in the different slots available (based on the height of the track) avoiding overlaps using a _expanded_ display. When there are too many elements to ensure that the overlaps are avoided the layout notifies that and the display uses a _collapsed_ display in which the labels are not shown and the element's height is reduced.
 
                 - name : fixed_slot_type
-                  path : layout.feature
+                  path : genome
                   args : string
-                  desc : specifies if the layout should always keep one slot type
-                  full : Specifies if the layout should always keep one slot type. By default the layout shows <i>genes</i> with label and 10px height if they all fit in the current board (<i>expanded</i> slot type) and <i>condensed</i> genes witout labels and only 5px height if they don't (<i>collapsed slot type</i>). Setting this option to "expanded" the <i>genes</i> will always be shown in the former form. Using "collapsed" as its argument uses always the latter.
+                  desc : specifies if the layout should always keep the slot type
+                  full : Specifies if the layout should always keep the slot type. By default the layout shows genes <i>expanded</i> (see above) if they all fit in the current board and <i>collapsed</i> if they don't. Setting this option to "expanded" the <i>genes</i> will always be shown in the former form. Using "collapsed" as its argument uses always the latter.
                   example : |
                     gene_track.display().layout()
                         .fixed_slot_type("expanded");
 
                 - name : keep_slots
-                  path : layout.feature
+                  path : genome
                   args : boolean
                   desc : specifies if the elements should keep vertical positions between updates
-                  full : Specifies if the elements should keep vertical positions between updates. By default this is set to <i>true</i> which means that elements (genes or transcripts) that are in display between two updates will keep their vertical position. Once they go out of sight, they are removed from the track. If this option is set to <i>false</i> the layout recomputes the positions of the elements (genes or transcripts) on every data update.
+                  full : Specifies if the elements should keep their assigned <i>slot</i> between updates. By default this is set to <i>true</i> which means that elements (genes or transcripts) that are in display between two updates will keep their vertical position to reduce the amount of transitions. Once they go out of sight, they are removed from the track. If this option is set to <i>false</i> the layout recomputes the positions of the elements (genes or transcripts) on every data update.
                   example : |
                     gene_track.display().layout()
                         .keep_slots(false);
 
                 - name : on_layout_run
-                  path : layout.feature
+                  path : genome
                   args : callback
                   desc : sets a callback to be run after the layout has finished positioning elements
-                  full : Sets a callback to be run after the layout has finished positioning elements. That callback is called with the two <i>slot types</i> described above and the one currently used.
+                  full : Sets a callback to be run after the layout has finished positioning elements. That callback is called with the an object containing the two <i>slot types</i> described above and the name of the one currently used.
                   example : |
                     gene_track.display().layout()
                         .on_layout_run (function (types, current) {

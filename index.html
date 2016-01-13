@@ -11,13 +11,15 @@ theme : gene-colors
 <p><aside>See <a href={{ site.baseurl }}/examples/index.html>more examples</a></aside></p>
 
 <h2><a name="introduction" href="#introduction">#</a>Introduction</h2>
-<p><b>TnT Genome</b> is a javascript library for displaying genome based annotations. It has been built on top of the <a href="">TnT Board</a> library and shares with it the same phylosophy and design principles: a powerful API written with flexibility in mind that allows the creation of simple, dynamic and useful genome-based visualisations. The goal of TnT Genome is not to provide a full-featured genome browser but a simple tool to create specific and simple genome views. Its flexibility also allows the exploration of new ways of visualising genome-based annotations.</p>
+<p><b>TnT Genome</b> is a javascript library for displaying genome based annotations on the web. It has been built on top of the <a href="http://tntvis.github.io/tnt.board">TnT Board</a> library and shares with it the same phylosophy and design principles: a powerful API written with flexibility in mind that allows the creation of simple, dynamic and useful genome-based visualisations. The goal of TnT Genome is not to provide a full-featured genome browser but a simple tool to create specific and simple genome views. Its flexibility also allows the exploration of new ways of visualising genome-based annotations.</p>
 
-<p>Like TnT Board, TnT Genome defines several elements to facilitate the creation of visualisations: a board that is a container for tracks, tracks that are independent units of data representation, data retrievers to get the data synchronously or asynchronously and visual features to display the available data. Check the <a href="">documentation for TnT Board</a> to get more details about these elements. What TnT Genome offers is new features for genes and transcripts, new data retrievers for ensembl data (using the Ensembl Rest API) and a layout for distributing genes and transcripts avoiding overlaps between elements. Check the <a href="">API documentation</a> to get more details about these new elements</p>
+<p>Like <a href="http://tntvis.github.io/tnt.board">TnT Board</a>, TnT Genome defines several elements to facilitate the creation of visualisations: a <a href="http://tntvis.github.io/tnt.board/api/board/index.html#Board">board</a> that is a container for tracks, <a href="http://tntvis.github.io/tnt.board/api/board/index.html#Track">tracks</a> that are independent units of data representation, <a href="http://tntvis.github.io/tnt.board/api/board/index.html#Data">data retrievers</a> to get the data <i>synchronously</i> or <i>asynchronously</i> and <a href="http://tntvis.github.io/tnt.board/api/board/index.html#Display">visual features</a> to display the available data. Check the <a href="http://tntvis.github.io/tnt.board">documentation for TnT Board</a> to get more details about these elements.</p>
+
+<p>On top of <a href="http://tntvis.github.io/tnt.board">TnT Board</a>, TnT Genome offers new features for <a href="{{ site.baseurl }}/api/genome/index.html#tnt.board.track.feature.genome.gene">genes</a> and <a href="{{ site.baseurl }}/api/genome/index.html#tnt.board.track.feature.genome.transcript">transcripts</a>, a <a href="{{ site.baseurl }}/api/genome/index.html#Data">data retrievers</a> for ensembl data (using the <a href="http://rest.ensembl.org">Ensembl Rest API</a>) and a <a href="{{ site.baseurl }}/api/genome/index.html#Layout">layout</a> for distributing genes and transcripts avoiding overlaps between elements. Check the <a href="{{ site.baseurl }}/api/">API documentation</a> to get more details about these new elements</p>
 
 
 <h2><a name="example" href="#example">#</a>Example</h2>
-<p>Examples are a fundamental part of TnT documentation. Check more in the examples page</p>
+<p>Examples are a fundamental part of TnT documentation. Check more in the <a href="{{ site.baseurl }}/examples/">examples page</a></p>
 
 {% highlight javascript linenos %}
 // Genome is a board. Location and axis tracks are included by default
@@ -47,19 +49,22 @@ genome(document.getElementById("mydiv"));
 genome.start();
 {% endhighlight %}
 
-<p>The above example starts by defining a genome board using the human BRCA2 gene as its reference. The code also defines two tracks. The first one is a gene track and the second one is a sequence track. These tracks pulls data from the Ensembl REST API using the coordinates provided by the board (ie, BRCA2 coordinates). Once defined, the tracks are attached to the board. Once the board is configured the visualisation is ready to start.</p>
+<p>The above example starts by defining a <a href="{{ site.baseurl }}/api/genome/index.html#tnt.board.genome">genome board</a> using the human BRCA2 gene as its reference location. The code also defines two <a href="http://tntvis.github.io/tnt.board/api/genome/index.html#Track">tracks</a>. The first one is a gene track and the second one is a sequence track. These tracks pulls data from the <a href="http://rest.ensembl.org">Ensembl REST API</a> using the coordinates provided by the board (ie, BRCA2 coordinates). Once defined, the tracks are attached to the <a href="{{ site.baseurl }}/api/genome/index.html#tnt.board.genome">board</a>. Once it is configured the visualisation is ready to start.</p>
 
 
 <h2><a name="installation" href="#installation">#</a>Installation</h2>
 <p>TnT Genome can be linked directly from the github repo. It depends on the <a href="http://d3js.org">d3js</a> and this library needs to be linked before tnt.genome</p>
 
 {% highlight html linenos %}
-<link rel="stylesheet" href="http://emepyc.github.io/tnt/build/tnt.genome.css" type="text/css" />
+// D3js
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="http://emepyc.github.io/tnt/build/tnt.genome.js" charset="utf-8"></script>
+
+// TnT
+<link rel="stylesheet" href="http://tntvis.github.io/tnt/build/tnt.genome.css" type="text/css" />
+<script src="http://tntvis.github.io/tnt/build/tnt.genome.js" charset="utf-8"></script>
 {% endhighlight %}
 
-<p>It is also possible to install the source code and build the library locally. This can be achieved either by using <b>npm</b> or <b>github</b>:</p>
+<p>It is also possible to install the source code and build the library locally. This can be achieved either by using <i>npm</i> or <i>github</i>:</p>
 
 <ul>
     <li>
@@ -80,22 +85,10 @@ npm build-browser
 </ul>
 
 
-<h2><a name="usage" href="#usage">#</a>Usage</h2>
-
-<p><aside>Check out the <a href={{ site.baseurl }}/api/index.html>API</a></aside></p>
-
-<p>Once the library has been installed and built, it can be used directly:</p>
-
-{% highlight html linenos %}
-<link rel="stylesheet" href="http://emepyc.github.io/tnt.genome/buid/tnt.genome.css" type="text/css" />
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="http://emepyc.github.io/tnt.genome/build/tnt.genome.min.js" charset="utf-8"></script>
-{% endhighlight %}
-
 <h2><a name="browsers" href="#browsers">#</a>Browser support</h2>
 <p>TnT works on HTML5, CSS3 and SVG-compliant browser, which generally means any "modern browser". The TnT library and themes are tested regularly against Chrome (Chromium) and major changes are regularly tested in recent versions of Firefox, Safari (Webkit) and Opera. It has been also tested in IE versions 9+. If you find any problem, please <a href="https://github.com/emepyc/tnt/issues">let me know</a>.</p>
 
 <p>The TnT library depends on the <a href="http://d3js.org">D3.js</a> library. Check its <a href="https://github.com/mbostock/d3/wiki#browser--platform-support">browser's compatibility note</a> for more information.</p>
 
 <h2><a name="Feedback" href="#Feedback">#</a>Feedback</h2>
-<p>Please, send any feedback to <a href="mailto:emepyc@gmail.com">emepyc@gmail.com</a>. Bug reports and feature requests are also welcome <a href="https://github.com/emepyc/tnt.genome/issues">here</a>
+<p>Please, send any feedback to <a href="mailto:emepyc@gmail.com">emepyc@gmail.com</a>. Bug reports and feature requests are also welcome in the <a href="https://github.com/emepyc/tnt.genome/issues">issue tracker</a>
