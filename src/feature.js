@@ -4,7 +4,7 @@ var board = require("tnt.board");
 
 var tnt_feature_transcript = function () {
     var feature = board.track.feature()
-        .layout (board.track.layout.feature())
+        .layout (board.track.layout.genome())
         .index (function (d) {
             return d.key;
         });
@@ -217,7 +217,7 @@ var tnt_feature_gene = function () {
 
     // 'Inherit' from tnt.track.feature
     var feature = board.track.feature()
-	.layout(board.track.layout.feature())
+	.layout(board.track.layout.genome())
 	.index(function (d) {
 	    return d.id;
 	});

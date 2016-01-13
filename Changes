@@ -83,4 +83,6 @@
 	- Support for tnt.board 0.1.0
 	- Using tnt.rest instead of tnt.ensembl
 	- Removed tooltip
+0.1.1
+	- Changed tnt.board.track.layout.feature to tnt.board.track.layout.genome
 

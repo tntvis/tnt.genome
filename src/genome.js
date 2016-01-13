@@ -3,7 +3,7 @@ var apijs = require("tnt.api");
 var tnt_board = require("tnt.board");
 tnt_board.track.data.genome = require("./data.js");
 tnt_board.track.feature.genome = require("./feature");
-tnt_board.track.layout.feature = require("./layout");
+tnt_board.track.layout.genome = require("./layout");
 tnt_board.track.data.genome.ensembl = require("tnt.rest")()
     .domain("rest.ensembl.org");
 
