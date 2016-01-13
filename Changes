@@ -86,3 +86,5 @@
 0.1.1
 	- Changed tnt.board.track.layout.feature to tnt.board.track.layout.genome
 
+0.1.2
+	- requiring tnt.board 0.1.4 (feature method updater has been renamed distribute and mover x move)

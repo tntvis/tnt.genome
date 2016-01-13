@@ -105,7 +105,7 @@ var tnt_feature_transcript = function () {
 
     });
 
-    feature.updater (function (transcripts, xScale) {
+    feature.distribute (function (transcripts, xScale) {
         var track = this;
         var gs = transcripts.select("g")
             .transition()
@@ -133,7 +133,7 @@ var tnt_feature_transcript = function () {
             });
     });
 
-    feature.mover (function (transcripts) {
+    feature.move (function (transcripts) {
         var xScale = feature.scale();
         var gs = transcripts.select("g")
             .attr("transform", function (d) {
@@ -202,7 +202,7 @@ var tnt_feature_sequence = function () {
             .attr('fill', feature.color());
     });
 
-    feature.mover (function (nts) {
+    feature.move (function (nts) {
         var xScale = feature.scale();
         nts.select ("text")
             .attr("x", function (d) {
@@ -273,7 +273,7 @@ var tnt_feature_gene = function () {
             });
     });
 
-    feature.updater(function (genes) {
+    feature.distribute(function (genes) {
         var track = this;
         genes
             .select("rect")
@@ -300,7 +300,7 @@ var tnt_feature_gene = function () {
             });
     });
 
-    feature.mover(function (genes) {
+    feature.move(function (genes) {
         var xScale = feature.scale();
         genes.select("rect")
             .attr("x", function (d) {
@@ -333,7 +333,7 @@ var tnt_feature_gene = function () {
      feature.reset = function () {};
      feature.plot = function () {};
      feature.init = function () { row = undefined; };
-     feature.move = function () {
+     feature.mover = function () {
          var xScale = feature.scale();
          var domain = xScale.domain();
          row.select ("text")
