@@ -22,7 +22,7 @@ theme : gene-colors
 <p>Examples are a fundamental part of TnT documentation. Check more in the <a href="{{ site.baseurl }}/examples/">examples page</a></p>
 
 {% highlight javascript linenos %}
-// Genome is a board. Location and axis tracks are included by default
+// Genome is a TnT Board. Location and axis tracks are included by default
 var genome = tnt.board.genome().species("human").gene("brca2").width(950);
 
 var gene_track = tnt.board.track()
@@ -34,12 +34,13 @@ var gene_track = tnt.board.track()
     .data(tnt.board.track.data.genome.gene());
 
 var sequence_track = tnt.board.track()
-        .height(30)
-        .background_color("white")
-        .display(tnt.board.track.feature.genome.sequence())
-        .data(tnt.board.track.data.genome.sequence()
-            .limit(150)
-        );
+    .height(30)
+    .background_color("white")
+    .display(tnt.board.track.feature.genome.sequence())
+    .data(tnt.board.track.data.genome.sequence()
+        .limit(150)
+    );
+
 genome
     .zoom_in(100)
     .add_track(sequence_track)
