@@ -3,7 +3,7 @@ layout : default
 title : TnT Genome examples
 type : examples
 gists :
-   - title : sequence track
+   - title : Sequence track
      category : t
      description : Example of sequence track
      id : d64cf0c6d72a5ef2b1d1
@@ -38,6 +38,6 @@ gists :
 <p>These examples aim to document some important parts of the API by providing simple working code examples</p>
 <ul>
 {% for gist in page.gists %}
-<li><a href=http://bl.ocks.org/emepyc/{{ gist.id }}>{{ gist.description }}</a></li>
+<li><a href=http://bl.ocks.org/emepyc/{{ gist.id }}>{{ gist.title }}</a>: {{ gist.description }}</li>
 {% endfor %}
 </ul>
