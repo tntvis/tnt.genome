@@ -9,8 +9,9 @@ var tnt_feature_transcript = function () {
             return d.key;
         });
 
-    feature.create (function (new_elems, xScale) {
+    feature.create (function (new_elems) {
         var track = this;
+        var xScale = feature.scale();
         var gs = new_elems
             .append("g")
             .attr("transform", function (d) {
@@ -105,8 +106,9 @@ var tnt_feature_transcript = function () {
 
     });
 
-    feature.distribute (function (transcripts, xScale) {
+    feature.distribute (function (transcripts) {
         var track = this;
+        var xScale = feature.scale();
         var gs = transcripts.select("g")
             .transition()
             .duration(200)
@@ -182,8 +184,9 @@ var tnt_feature_sequence = function () {
     .getset (config);
 
 
-    feature.create (function (new_nts, xScale) {
+    feature.create (function (new_nts) {
         var track = this;
+        var xScale = feature.scale();
 
         new_nts
             .append("text")
@@ -217,14 +220,14 @@ var tnt_feature_gene = function () {
 
     // 'Inherit' from tnt.track.feature
     var feature = board.track.feature()
-	.layout(board.track.layout.genome())
-	.index(function (d) {
-	    return d.id;
-	});
+    	.layout(board.track.layout.genome())
+    	.index(function (d) {
+    	    return d.id;
+    	});
 
-    feature.create(function (new_elems, xScale) {
-
+    feature.create(function (new_elems) {
         var track = this;
+        var xScale = feature.scale();
         new_elems
             .append("rect")
             .attr("x", function (d) {
