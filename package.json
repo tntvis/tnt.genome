@@ -1,65 +1,67 @@
 {
-  "name": "tnt.genome",
-  "version": "0.1.2",
-  "description": "Minimal genome browser based on TnT Board and Ensembl data",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "gulp test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/emepyc/tnt.genome"
-  },
-  "keywords": [
-    "tnt",
-    "javascript",
-    "browser",
-    "genome"
-  ],
-  "author": "Miguel Pignatelli",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/emepyc/tnt.genome/issues"
-  },
-  "sniper": {
-    "js": [
-      "http://d3js.org/d3.v3.min.js",
-      "./build/tnt.genome.js"
+    "name": "tnt.genome",
+    "version": "0.1.2",
+    "description": "Minimal genome browser based on TnT Board and Ensembl data",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "gulp test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tntvis/tnt.genome"
+    },
+    "keywords": [
+        "tnt",
+        "javascript",
+        "browser",
+        "genome",
+        "biojs"
     ],
-    "snippets": [
-      "snippets"
-    ],
-    "css": [
-      "./build/index.css"
-    ],
-    "first": "simple"
-  },
-  "homepage": "https://github.com/emepyc/tnt.genome",
-  "devDependencies": {
-    "browserify": "^12.0.1",
-    "chai": "^3.4.1",
-    "del": "^2.1.0",
-    "gulp": "^3.9.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-gzip": "^1.2.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-mocha": "^2.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.0",
-    "gulp-uglify": "^1.5.1",
-    "gulp-watch": "^4.3.5",
-    "jshint": "^2.8.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^2.3.4",
-    "uglify-js": "^2.6.1"
-  },
-  "dependencies": {
-    "tnt.api": "^0.1.1",
-    "tnt.board": "^0.1.4",
-    "tnt.rest": "^0.1.0",
-    "tnt.utils": "^0.1.0"
-  }
+    "author": "Miguel Pignatelli",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/tntvis/tnt.genome/issues"
+    },
+    "homepage": "https://github.com/tntvis/tnt.genome",
+    "devDependencies": {
+        "browserify": "^12.0.1",
+        "chai": "^3.4.1",
+        "del": "^2.1.0",
+        "gulp": "^3.9.0",
+        "gulp-browserify": "^0.5.1",
+        "gulp-gzip": "^1.2.0",
+        "gulp-jshint": "^2.0.0",
+        "gulp-mocha": "^2.2.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-sass": "^2.1.0",
+        "gulp-uglify": "^1.5.1",
+        "gulp-watch": "^4.3.5",
+        "jshint": "^2.8.0",
+        "mkdirp": "^0.5.1",
+        "mocha": "^2.3.4",
+        "uglify-js": "^2.6.1"
+    },
+    "dependencies": {
+        "tnt.api": "^0.1.1",
+        "tnt.board": "^0.1.4",
+        "tnt.rest": "^0.1.0",
+        "tnt.utils": "^0.1.0"
+    },
+    "sniper": {
+        "js": [
+            "http://d3js.org/d3.v3.min.js",
+            "http://tntvis.github.io/tnt.genome/build/tnt.genome.min.js"
+        ],
+        "css": [
+            "http://tntvis.github.io/tnt.genome/build/tnt.genome.css"
+        ],
+        "snippets": [
+            "snippets"
+        ],
+        "first": "gene_colors"
+    }
+
 }

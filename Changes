@@ -88,3 +88,5 @@
 
 0.1.2
 	- requiring tnt.board 0.1.4 (feature method updater has been renamed distribute and mover x move)
+0.1.3
+	- biojs keyword and snippets included
