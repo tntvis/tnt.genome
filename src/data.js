@@ -8,7 +8,7 @@ var data_gene = function () {
         .retriever (function (obj) {
             var track = this;
             // var eRest = data.ensembl();
-            var scale = track.display().scale();
+            // var scale = track.display().scale();
             var url = eRest.url()
                 .endpoint("overlap/region/:species/:region")
                 .parameters({
