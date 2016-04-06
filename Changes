@@ -92,3 +92,5 @@
 	- biojs keyword and snippets included
 0.1.4
 	- removed unused scale in gene data retriever
+0.1.5
+	- updated tnt.rest
