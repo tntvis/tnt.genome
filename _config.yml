@@ -97,7 +97,7 @@ api :
                   path : genome
                   args : integer
                   desc : sets extra space in the visualisation
-                  full : Sets extra space in the visualisation when the genome is centered to a given <a href="#genome.gene">gene<a>. Instead of starting the visualisation exactly on the specified gene some extra five and 3 prime space is given. The argument to the function is the the percentage of the extent and it is added to both ends (5' and 3') of the genome board.
+                  full : Sets extra space in the visualisation when the genome is centered to a given <a href="#genome.gene">gene</a>. Instead of starting the visualisation exactly on the specified gene some extra five and 3 prime space is given. The argument to the function is the the percentage of the extent and it is added to both ends (5' and 3') of the genome board.
                   example : |
                     var genome = tnt.board.genome()
                         .species("human")
