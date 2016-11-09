@@ -8,7 +8,7 @@ api_toplevel : genome
 <h2>Genome</h2>
 <p>TnT Genome is built on top of <a href="http://tntvis.github.io/tnt.board/">TnT Board</a> and exposes the same methods explained in <a href="http://tntvis.github.io/tnt.board/api/">TnT Board's API</a>. TnT Genome also offers a few elements explained below. The most important are: three new <a href="#Display">displays</a> for genes, transcripts and genomic sequences, a modified location display that includes the species and the chromosome being displayed in the board, a <a href="#Layout">layout</a> that avoids overlaps in genes and transcripts and integration with the <a href="http://rest.ensembl.org">Ensembl REST API</a> to fetch genomic <a href="#Data">data</a> through <a href="https://github.com/tntvis/tnt.rest">TnT Rest</a>.</p>
 
-  {% highlight javascript linenos %}
+  {% highlight javascript %}
   // Genome is a board. Location and axis tracks are included by default
   var genome = tnt.board.genome().species("human").gene("brca2").width(950);
 
