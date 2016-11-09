@@ -94,3 +94,5 @@
 	- removed unused scale in gene data retriever
 0.1.5
 	- updated tnt.rest
+0.1.6
+	- added min_coord and max_coord methods (as promises)

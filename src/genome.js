@@ -7,6 +7,12 @@ tnt_board.track.layout.genome = require("./layout");
 tnt_board.track.data.genome.ensembl = require("tnt.rest")()
     .domain("rest.ensembl.org");
 
+// promises
+var Promise = require('es6-promise').Promise;
+var minPromise = new Promise(function (res) {
+    res(0);
+});
+
 tnt_board_genome = function() {
     "use strict";
 
@@ -16,8 +22,12 @@ tnt_board_genome = function() {
     var ens_re = /^ENS\w+\d+$/;
     var chr_length;
 
+
+
     // Vars exposed in the API
     var conf = {
+        max_coord       : undefined, // Promise that returns the max coordinate. If undef uses the length of the chromosome
+        min_coord       : minPromise, // Promise that returns the min coordinate. Defaults to 0
         gene           : undefined,
         xref_search    : function () {},
         ensgene_search : function () {},
@@ -27,8 +37,8 @@ tnt_board_genome = function() {
     // We "inherit" from board
     var genome_browser = tnt_board()
         .zoom_in(200)
-        .zoom_out(5000000) // ensembl region limit
-        .min(0);
+        .zoom_out(5000000); // ensembl region limit
+        // .min(0);
 
     var gene;
 
@@ -102,16 +112,29 @@ tnt_board_genome = function() {
             }
         }
 
-        var url = ensembl_rest.url()
-            .endpoint("info/assembly/:species/:region_name")
-            .parameters({
-                species: where.species,
-                region_name: where.chr
-            });
-        ensembl_rest.call (url)
-            .then (function (resp) {
-                genome_browser.max(resp.body.length);
+        // Min is 0 by default or use the provided promise
+        conf.min_coord
+            .then (function (min) {
+                genome_browser.min(min);
+                if (!conf.max_coord) {
+                    var url = ensembl_rest.url()
+                        .endpoint("info/assembly/:species/:region_name")
+                        .parameters({
+                            species: where.species,
+                            region_name: where.chr
+                        });
+
+                    conf.max_coord = ensembl_rest.call (url)
+                        .then (function (resp) {
+                            return resp.body.length;
+                        });
+                }
+                return conf.max_coord;
+            })
+            .then (function (max) {
+                genome_browser.max(max);
                 genome_browser._start();
+
             });
     };
 
