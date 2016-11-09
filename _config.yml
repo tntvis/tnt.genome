@@ -65,6 +65,34 @@ api :
                         .species("human")
                         .gene("BRCA2");
 
+                - name : min_coord
+                  path : genome
+                  args : Promise
+                  desc : sets the minimum allowed genome coordinate in the visualitation
+                  full : Sets the minimum allowed genome coordinate in the visualisation. It accepts a <i>Promise</i>. It defaults to a promise resolving to 0
+                  example : |
+                    // Example using es6-promise library. Any other Promise library can be used
+                    var genome = tnt.board.genome()
+                         .species("human")
+                         .gene("BRCA2")
+                         .min(new Promise (function (resolve) {
+                             resolve (0);
+                         }))
+
+                - name : max_coord
+                  path : genome
+                  args : Promise
+                  desc : sets the maximum allowed genome coordinate in the visualisation
+                  full : Sets the maximum allowed genome coordinate in the visualisation. It accepts a <i>Promise</i>. It defaults to a promise resolving to the max coordinate for the chromosome.
+                  example: |
+                    // Example using es6-promise library. Any other Promise library can be used
+                    var genome = tnt.board.genome()
+                         .species("human")
+                         .gene("BRCA2")
+                         .max(new Promise (function (resolve) {
+                               resolve (714314324);
+                         }))
+
                 - name : expand
                   path : genome
                   args : integer
