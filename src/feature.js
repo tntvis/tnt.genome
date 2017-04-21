@@ -107,6 +107,7 @@ var tnt_feature_transcript = function () {
     });
 
     feature.distribute (function (transcripts) {
+        console.log("distribute is called");
         var track = this;
         var xScale = feature.scale();
         var gs = transcripts.select("g")

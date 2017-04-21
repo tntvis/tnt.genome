@@ -26,24 +26,6 @@
     "url": "https://github.com/tntvis/tnt.genome/issues"
   },
   "homepage": "https://github.com/tntvis/tnt.genome",
-  "devDependencies": {
-    "browserify": "^12.0.1",
-    "chai": "^3.4.1",
-    "del": "^2.1.0",
-    "gulp": "^3.9.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-gzip": "^1.2.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-mocha": "^2.2.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.0",
-    "gulp-uglify": "^1.5.1",
-    "gulp-watch": "^4.3.5",
-    "jshint": "^2.8.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^2.3.4",
-    "uglify-js": "^2.6.1"
-  },
   "dependencies": {
     "tnt.api": "^0.1.1",
     "tnt.board": "^0.1.4",
@@ -63,5 +45,23 @@
       "snippets"
     ],
     "first": "gene_colors"
+  },
+  "devDependencies": {
+    "browserify": "^14.3.0",
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-gzip": "^1.4.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-mocha": "^4.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-watch": "^4.3.11",
+    "jshint": "^2.9.4",
+    "mkdirp": "^0.5.1",
+    "mocha": "^3.2.0",
+    "uglify-js": "^2.8.22"
   }
 }

@@ -95,3 +95,5 @@ gulp.task('build-browser-gzip', ['build-browser-min'], function() {
         .pipe(rename(outputFile + ".min.gz.js"))
         .pipe(gulp.dest(buildDir));
     });
+
+gulp.task('build-all', ['build-browser-gzip']);

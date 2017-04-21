@@ -13,7 +13,7 @@ var data_gene = function () {
                 .endpoint("overlap/region/:species/:region")
                 .parameters({
                     species : obj.species,
-                    region  : (obj.chr + ":" + obj.from + "-" + obj.to),
+                    region  : (obj.chr + ":" + ~~obj.from + "-" + ~~obj.to),
                     feature: obj.features || ["gene"]
                 });
             // var url = eRest.url.region(obj);
@@ -49,7 +49,7 @@ var data_transcript = function () {
                 .endpoint("overlap/region/:species/:region")
                 .parameters({
                     species : obj.species,
-                    region : (obj.chr + ":" + obj.from + "-" + obj.to),
+                    region : (obj.chr + ":" + ~~obj.from + "-" + ~~obj.to),
                     feature : ["gene", "transcript", "exon", "cds"]
                 });
             return eRest.call(url)
@@ -294,7 +294,7 @@ var data_sequence = function () {
                     .endpoint("/sequence/region/:species/:region")
                     .parameters({
                         "species": obj.species,
-                        "region": (obj.chr + ":" + obj.from + ".." + obj.to)
+                        "region": (obj.chr + ":" + ~~obj.from + ".." + ~~obj.to)
                     });
                 // var url = eRest.url.sequence(obj);
                 return eRest.call(url)
