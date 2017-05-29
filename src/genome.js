@@ -20,9 +20,6 @@ tnt_board_genome = function() {
 
     // Private vars
     var ens_re = /^ENS\w+\d+$/;
-    var chr_length;
-
-
 
     // Vars exposed in the API
     var conf = {
