@@ -107,7 +107,6 @@ var tnt_feature_transcript = function () {
     });
 
     feature.distribute (function (transcripts) {
-        console.log("distribute is called");
         var track = this;
         var xScale = feature.scale();
         var gs = transcripts.select("g")
@@ -279,6 +278,7 @@ var tnt_feature_gene = function () {
 
     feature.distribute(function (genes) {
         var track = this;
+
         genes
             .select("rect")
             .transition()

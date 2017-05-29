@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>TnT Themes</title>
+
+<div id="body">
+
+    <!-- D3 -->
+    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+
+    <!-- es6-promise -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+
+
+    <!-- TnT -->
+    <link rel="stylesheet" href="../../build/tnt.genome.css" type="text/css"/>
+    <script src="../../build/tnt.genome.js"></script>
+
+    <h1>TnT based genome browser</h1>
+    <div id="genomeBrowser"></div>
+    <script>
+
+        (function () {
+
+            // Genes data
+            var genes = [
+                {
+                    start: 32336637,
+                    end: 32367637,
+                    display_label: "Gene name 1>",
+                    id: 'Gene1'
+                },
+                {
+                    start: 32337637,
+                    end: 32368637,
+                    display_label: "Gene name 2 >",
+                    id: 'Gene2'
+                },
+                {
+                    start: 32393637,
+                    end: 32402637,
+                    display_label: "< Gene name 3",
+                    id: 'Gene3'
+                }
+            ];
+
+            var genes_data = tnt.board.track.data.sync()
+                .retriever(function () {
+                    return genes;
+                });
+
+            var genes_track = tnt.board.track()
+                .height(100)
+                .color("#FFFFFF")
+                .display(tnt.board.track.feature.genome.gene()
+                    .color("#550055")
+                )
+                .data(genes_data);
+
+            // transcripts data
+            var transcripts = [
+                {
+                    start: 32336637,
+                    end: 32367637,
+                    display_label: "Gene name 1>",
+                    key: 1,
+                    id: 'Gene1',
+                    exons: [
+                        {
+                            start: 32337637,
+                            end: 32338637,
+                            offset: 32337637 - 32336637,
+                            coding: false,
+                            transcript: {
+                                Parent: 'Gene1'
+                            }
+                        },
+                        {
+                            start: 32339637,
+                            end: 32357637,
+                            offset: 32339637 - 32336637,
+                            coding: true,
+                            transcript: {
+                                Parent: 'Gene1'
+                            }
+                        },
+                        {
+                            start: 32360637,
+                            end: 32360737,
+                            offset: 32360637 - 32336637,
+                            coding: true,
+                            transcript: {
+                                Parent: 'Gene1'
+                            }
+                        },
+
+                        {
+                            start: 32363637,
+                            end: 32367637,
+                            offset: 32363637 - 32336637,
+                            coding: false
+                        }
+                    ]
+                },
+                {
+                    start: 32346637,
+                    end: 32393637,
+                    display_label: "Overlapping gene",
+                    key: 3,
+                    id: 'OG1',
+                    exons: [
+                        {
+                            start: 32346637,
+                            end: 32393637,
+                            offset: 0,
+                            coding: true
+                        }
+                    ]
+                },
+                {
+                    start: 32393637,
+                    end: 32402637,
+                    display_label: "Gene name 2 >",
+                    key: 2,
+                    id: 'Gene2',
+                    exons: [
+                        {
+                            start: 32396637,
+                            end: 32400637,
+                            // Offset comes from the fact that in Ensembl, exons coordinates are relative to the parent transcript and not the gene
+                            // So an offset equals to o = exonStart - transcriptStart is applied if necessary (otherwise, set it to 0)
+                            offset: 32396637 - 32393637,
+                            coding: true,
+                            transcript: {
+                                Parent: 'Gene2',
+                            }
+                        }
+                    ]
+                }
+            ];
+
+            var transcripts_data = tnt.board.track.data.sync()
+                .retriever(function () {
+                    return transcripts;
+                });
+
+            var transcripts_track = tnt.board.track()
+                .height(100)
+                .color("#FFFFFF")
+                .display(tnt.board.track.feature.genome.transcript()
+                    .color(function (t) {
+                        if (t.isGene) {
+                            return "#005588";
+                        }
+                        return "red";
+                    })
+                )
+                .data(transcripts_data);
+
+
+            var gB = tnt.board.genome()
+                .species("human")
+                .gene("brca2")
+                .width(950)
+                .min_coord(new Promise(function (res) {
+                    res(32305637);
+                }))
+                .max_coord(new Promise(function (res) {
+                    res(32533414);
+                }));
+
+            gB(document.getElementById("genomeBrowser"));
+
+            gB.add_track(genes_track);
+            gB.add_track(transcripts_track);
+            gB.start();
+        })();
+
+    </script>
+</div>

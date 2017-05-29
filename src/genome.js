@@ -29,15 +29,13 @@ tnt_board_genome = function() {
         xref_search    : function () {},
         ensgene_search : function () {},
         context        : 0,
-        rest           : ensembl_rest
+        rest           : ensembl_rest,
     };
     // We "inherit" from board
     var genome_browser = tnt_board()
         .zoom_in(200)
         .zoom_out(5000000); // ensembl region limit
         // .min(0);
-
-    var gene;
 
     // The location and axis track
     var location_track = tnt_board.track()
@@ -135,17 +133,17 @@ tnt_board_genome = function() {
             });
     };
 
-    var homologues = function (ensGene, callback)  {
-        var url = ensembl_rest.url.homologues ({id : ensGene});
-        ensembl_rest.call(url)
-            .then (function(resp) {
-                var homologues = resp.body.data[0].homologies;
-                if (callback !== undefined) {
-                    var homologues_obj = split_homologues(homologues);
-                    callback(homologues_obj);
-                }
-        });
-    };
+    // var homologues = function (ensGene, callback)  {
+    //     var url = ensembl_rest.url.homologues ({id : ensGene});
+    //     ensembl_rest.call(url)
+    //         .then (function(resp) {
+    //             var homologues = resp.body.data[0].homologies;
+    //             if (callback !== undefined) {
+    //                 var homologues_obj = split_homologues(homologues);
+    //                 callback(homologues_obj);
+    //             }
+    //     });
+    // };
 
     var isEnsemblGene = function(term) {
         if (term.match(ens_re)) {
@@ -205,25 +203,25 @@ tnt_board_genome = function() {
             });
     };
 
-    var split_homologues = function (homologues) {
-        var orthoPatt = /ortholog/;
-        var paraPatt = /paralog/;
-
-        var orthologues = homologues.filter(function(d){return d.type.match(orthoPatt);});
-        var paralogues  = homologues.filter(function(d){return d.type.match(paraPatt);});
-
-        return {
-            'orthologues' : orthologues,
-            'paralogues'  : paralogues
-        };
-    };
+    // var split_homologues = function (homologues) {
+    //     var orthoPatt = /ortholog/;
+    //     var paraPatt = /paralog/;
+    //
+    //     var orthologues = homologues.filter(function(d){return d.type.match(orthoPatt);});
+    //     var paralogues  = homologues.filter(function(d){return d.type.match(paraPatt);});
+    //
+    //     return {
+    //         'orthologues' : orthologues,
+    //         'paralogues'  : paralogues
+    //     };
+    // };
 
     var api = apijs(genome_browser)
         .getset (conf);
 
     api.method ({
-        start      : start,
-        homologues : homologues
+        start      : start
+        // homologues : homologues
     });
 
     return genome_browser;
