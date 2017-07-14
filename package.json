@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "tnt.api": "^0.1.1",
-    "tnt.board": "^0.1.4",
+    "tnt.board": "^0.1.9",
     "tnt.rest": "^0.1.1",
     "tnt.utils": "^0.1.0",
     "es6-promise": "^3.0.2"
