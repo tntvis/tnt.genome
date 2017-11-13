@@ -1,6 +1,6 @@
 {
   "name": "tnt.genome",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Minimal genome browser based on TnT Board and Ensembl data",
   "main": "index.js",
   "directories": {
@@ -45,11 +45,11 @@
     "uglify-js": "^2.6.1"
   },
   "dependencies": {
+    "es6-promise": "^3.0.2",
     "tnt.api": "^0.1.1",
     "tnt.board": "^0.1.9",
     "tnt.rest": "^0.1.1",
-    "tnt.utils": "^0.1.0",
-    "es6-promise": "^3.0.2"
+    "tnt.utils": "^0.1.0"
   },
   "sniper": {
     "js": [
