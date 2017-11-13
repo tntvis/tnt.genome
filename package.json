@@ -1,6 +1,6 @@
 {
   "name": "tnt.genome",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Minimal genome browser based on TnT Board and Ensembl data",
   "main": "index.js",
   "directories": {
@@ -28,7 +28,7 @@
   "homepage": "https://github.com/tntvis/tnt.genome",
   "dependencies": {
     "tnt.api": "^0.1.1",
-    "tnt.board": "^0.1.4",
+    "tnt.board": "^0.1.9",
     "tnt.rest": "^0.1.1",
     "tnt.utils": "^0.1.0",
     "es6-promise": "^3.0.2"

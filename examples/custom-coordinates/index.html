@@ -5,7 +5,11 @@
 <div id="body">
 
     <!-- D3 -->
+<<<<<<< HEAD
     <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+=======
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+>>>>>>> master
 
     <!-- es6-promise -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
@@ -158,8 +162,8 @@
 
 
             var gB = tnt.board.genome()
-                .species("human")
-                .gene("brca2")
+                .from(32316637)
+                .to(32404637)
                 .width(950)
                 .min_coord(new Promise(function (res) {
                     res(32305637);

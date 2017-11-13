@@ -96,3 +96,5 @@
 	- updated tnt.rest
 0.1.6
 	- added min_coord and max_coord methods (as promises)
+0.1.7
+	- updated tnt.board
