@@ -5,7 +5,7 @@ var transcript_theme = function () {
         var mydata = tnt.board.track.data.genome.canonical();
         var transcript_track = tnt.board.track()
             .height(200)
-            .color("#F7F7FF")
+            .color("#FFFFFF")
             .display(tnt.board.track.feature.genome.transcript()
                 .color (function () {
                     return "#577399";

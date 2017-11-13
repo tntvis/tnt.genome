@@ -8,9 +8,46 @@
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
   <!-- TnT -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="../../build/tnt.genome.css" type="text/css" />
   <script src="../../build/tnt.genome.js"></script>
   <script src="canonical-transcripts.js"></script>
+
+  <style>
+    .tnt_track path,
+    .tnt_track line {
+      fill: none;
+      stroke: grey;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+    }
+    .tnt_track text {
+      font-family: 'Roboto', sans-serif;
+    }
+    .tnt_name {
+      font-family: 'Roboto', sans-serif;
+    }
+    .tnt_framed {
+      border: none;
+    }
+    .tnt_elem {
+      stroke-width: 2;
+    }
+    .tnt_elem line {
+      stroke-width: 2;
+    }
+    /*.tnt_exons {*/
+      /*stroke: #004500 !important;*/
+      /*fill: #8da0cb !important;*/
+    /*}*/
+    .tnt_name {
+      fill: #027be3;
+    }
+    /*.tnt_track text {*/
+    /*font-size: 0.9em;*/
+    /*}*/
+  </style>
+
 
   <h1>TnT based genome browser showing transcripts</h1>
   <div id="genomeBrowser"></div>
