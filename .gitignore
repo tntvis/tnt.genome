@@ -3,4 +3,5 @@ node_modules
 *~
 _site
 Gemfile.lock
+.idea
 

@@ -78,6 +78,19 @@ div .tnt_tooltip_active {
   .tnt_zmenu th:active {
     cursor: move; }
 
+.tnt_track path,
+.tnt_track line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+.tnt_elem {
+  stroke-width: 2; }
+
+.tnt_elem line {
+  stroke-width: 2; }
+
 .tick text {
   font-size: 10px; }
 
