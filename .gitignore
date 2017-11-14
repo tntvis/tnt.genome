@@ -4,4 +4,3 @@ node_modules
 _site
 .idea
 Gemfile.lock
-build

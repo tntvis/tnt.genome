@@ -110,7 +110,20 @@ div {
 
 }
 
+.tnt_track path,
+.tnt_track line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
 
+.tnt_elem {
+    stroke-width: 2;
+}
+.tnt_elem line {
+    stroke-width: 2;
+}
 
 .tick text {
     @include tiny-font;
