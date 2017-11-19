@@ -102,3 +102,5 @@
         - added canonical transcript data and example
 0.1.9
         - re-publish
+0.1.10
+        - using https for ensembl calls by default
