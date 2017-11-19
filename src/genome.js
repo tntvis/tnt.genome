@@ -5,6 +5,7 @@ tnt_board.track.data.genome = require("./data.js");
 tnt_board.track.feature.genome = require("./feature");
 tnt_board.track.layout.genome = require("./layout");
 tnt_board.track.data.genome.ensembl = require("tnt.rest")()
+    .protocol('https')
     .domain("rest.ensembl.org");
 
 // promises
