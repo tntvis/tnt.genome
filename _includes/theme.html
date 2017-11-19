@@ -6,6 +6,9 @@
      <script>
          (function () {
              var gB = tnt.board.genome().species("human").chr("13").from(32200000).to(33000000).width(900);
+             gB.rest()
+                 .protocol('https');
+
              var gBTheme = gene_colors();
              gBTheme(gB, document.getElementById("example"));
          })();
