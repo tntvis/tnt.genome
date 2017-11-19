@@ -99,4 +99,6 @@
 0.1.7
 	- updated tnt.board
 0.1.8
-    - added canonical transcript data and example
+        - added canonical transcript data and example
+0.1.9
+        - re-publish
