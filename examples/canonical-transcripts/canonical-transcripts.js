@@ -2,7 +2,6 @@ var transcript_theme = function () {
     "use strict";
 
     var theme = function (gB, div) {
-        var mydata = tnt.board.track.data.genome.canonical();
         var transcript_track = tnt.board.track()
             .height(200)
             .color("#FFFFFF")
@@ -14,15 +13,7 @@ var transcript_theme = function () {
                     console.log(d);
                 })
              )
-            .data(mydata);
-
-        var gene_track = tnt.board.track()
-            .height(200)
-            .color("white")
-            .display(tnt.board.track.feature.genome.gene()
-                .color("#550055")
-		    )
-            .data(tnt.board.track.data.genome.gene());
+            .data(tnt.board.track.data.genome.canonical());
 
         var sequence_track = tnt.board.track()
             .height(30)
@@ -36,7 +27,6 @@ var transcript_theme = function () {
         gB
             .zoom_in(100)
 	        .add_track(sequence_track)
-	    //  .add_track(gene_track)
             .add_track(transcript_track);
 
         gB.start();
