@@ -74,23 +74,24 @@ var transcript_theme = function () {
                 var slot_height = display.layout().gene_slot().slot_height;
                 var y = track.height();
 
+                // Sub-selection only with connectors
                 var connectorsSel = sel
                     .filter(function (t) {
                         return t.connectors && t.connectors.length;
                     });
 
-                var connectorsNestedArr = connectorsSel
+                connectorsSel
                     .data()
-                    .map(function (d) {
+                    .forEach(function (d) {
                         d.connectors.forEach(function (c) {
                            c.slot = d.slot;
                         });
-                        return d.connectors;
                     });
-                var connectors = [].concat.apply([],connectorsNestedArr);
 
                 connectorsSel.selectAll('.connector')
-                    .data(connectors)
+                    .data(function (d) {
+                        return d.connectors;
+                    })
                     .enter()
                     .append('path')
                     .attr('class', 'connector')
